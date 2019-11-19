@@ -158,7 +158,7 @@ class Header extends React.Component {
           }
 
           <Link className="app-logo mr-2 d-none d-sm-block" to="/">
-            <img src={require("assets/images/elim.png")} alt="Jambo" title="Jambo"/>
+            <img src={require("assets/images/elim.png")} alt="Misión Cristiana Elim" title="Misión Cristiana Elim"/>
           </Link>
 
 
@@ -169,7 +169,7 @@ class Header extends React.Component {
           <Menu/>}
 
           <ul className="header-notifications list-inline ml-auto">
-            <li className="list-inline-item">
+            {/* <li className="list-inline-item">
               <Dropdown
                 className="quick-menu app-notification"
                 isOpen={this.state.apps}
@@ -189,8 +189,8 @@ class Header extends React.Component {
                   {this.Apps()}
                 </DropdownMenu>
               </Dropdown>
-            </li>
-            <li className="d-inline-block d-lg-none list-inline-item">
+            </li> */}
+            {/* <li className="d-inline-block d-lg-none list-inline-item">
               <Dropdown
                 className="quick-menu nav-searchbox"
                 isOpen={this.state.searchBox}
@@ -211,8 +211,8 @@ class Header extends React.Component {
                              value={this.state.searchText}/>
                 </DropdownMenu>
               </Dropdown>
-            </li>
-            <li className="list-inline-item">
+            </li> */}
+            {/* <li className="list-inline-item">
               <Dropdown
                 className="quick-menu"
                 isOpen={this.state.langSwitcher}
@@ -232,10 +232,8 @@ class Header extends React.Component {
                                     handleRequestClose={this.handleRequestClose}/>
                 </DropdownMenu>
               </Dropdown>
-
-
-            </li>
-            <li className="list-inline-item app-tour">
+            </li> */}
+            {/* <li className="list-inline-item app-tour">
               <Dropdown
                 className="quick-menu"
                 isOpen={this.state.appNotification}
@@ -256,8 +254,8 @@ class Header extends React.Component {
                   <AppNotification/>
                 </DropdownMenu>
               </Dropdown>
-            </li>
-            <li className="list-inline-item mail-tour">
+            </li> */}
+            {/* <li className="list-inline-item mail-tour">
               <Dropdown
                 className="quick-menu"
                 isOpen={this.state.mailNotification}
@@ -280,7 +278,7 @@ class Header extends React.Component {
                   <MailNotification/>
                 </DropdownMenu>
               </Dropdown>
-            </li>
+            </li> */}
 
             {navigationStyle === HORIZONTAL_NAVIGATION &&
             <li className="list-inline-item user-nav">

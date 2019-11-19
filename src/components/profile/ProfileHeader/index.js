@@ -8,14 +8,14 @@ const ProfileHeader = () => {
         <div className="jr-profile-banner-top">
           <div className="jr-profile-banner-top-left">
             <div className="jr-profile-banner-avatar">
-              <Avatar className="size-90" alt="..." src={'https://via.placeholder.com/150x150'}/>
+              <Avatar className="size-90" alt="..." src={require("assets/images/users/user.png")}/>
             </div>
             <div className="jr-profile-banner-avatar-info">
-              <h2 className="mb-2 jr-mb-sm-3 jr-fs-xxl jr-font-weight-light">Kiley Brown</h2>
-              <p className="mb-0 jr-fs-lg">Florida, USA</p>
+              <h2 className="mb-2 jr-mb-sm-3 jr-fs-xxl jr-font-weight-light">Jorge Pérez</h2>
+              <p className="mb-0 jr-fs-lg">Santa Ana, El Salvador</p>
             </div>
           </div>
-          <div className="jr-profile-banner-top-right">
+          {/* <div className="jr-profile-banner-top-right">
             <ul className="jr-follower-list">
               <li>
                 <span className="jr-follower-title jr-fs-lg jr-font-weight-medium">2k+</span>
@@ -28,32 +28,26 @@ const ProfileHeader = () => {
                 <span className="jr-fs-sm">Friends</span>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
         <div className="jr-profile-banner-bottom">
           <div className="jr-tab-list">
             <ul className="jr-navbar-nav">
               <li>
-                <span className="jr-link">Timeline</span>
+                <span className="jr-link">Información</span>
               </li>
               <li>
-                <span className="jr-link">About</span>
+                <span className="jr-link">Cuotas</span>
               </li>
               <li>
-                <span className="jr-link">Photos</span>
-              </li>
-              <li>
-                <span className="jr-link">Friends <span className="jr-fs-xs">287</span></span>
-              </li>
-              <li>
-                <span className="jr-link">More</span>
+                <span className="jr-link">Contribuciones</span>
               </li>
             </ul>
           </div>
-          <span className="jr-link jr-profile-setting">
+          {/* <span className="jr-link jr-profile-setting">
             <i className="zmdi zmdi-settings mr-2"/>
             <span className="d-inline-flex align-middle ml-1 jr-ml-sm-0">Setting</span>
-          </span>
+          </span> */}
         </div>
       </div>
     </div>

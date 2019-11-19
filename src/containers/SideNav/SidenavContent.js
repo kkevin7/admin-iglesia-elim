@@ -107,10 +107,10 @@ class SidenavContent extends Component {
         <ul className="nav-menu">
 
           <li className="nav-header">
-            <IntlMessages id="sidebar.main"/>
+            MENÚ
           </li>
           <li className="menu no-arrow">
-            <NavLink to="/app/sample-page">
+            <NavLink to="/app/home">
               <i className="zmdi zmdi-view-dashboard zmdi-hc-fw"/>
               <span className="nav-text">Inicio</span>
             </NavLink>
@@ -122,8 +122,12 @@ class SidenavContent extends Component {
               <i className="zmdi zmdi-collection-text zmdi-hc-fw"/>
               <span className="nav-text">Librería </span>
             </NavLink>
-            <NavLink to="/app/Profile">
+            <NavLink to="/app/users">
               <i className="zmdi zmdi-accounts-list zmdi-hc-fw"/>
+              <span className="nav-text">Usuarios </span>
+            </NavLink>
+            <NavLink to="/app/Profile">
+              <i className="zmdi zmdi-account zmdi-hc-fw"/>
               <span className="nav-text">Perfil </span>
             </NavLink>
           </li>
