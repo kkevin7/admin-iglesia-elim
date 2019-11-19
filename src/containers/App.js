@@ -22,7 +22,7 @@ class App extends Component {
   render() {
     const {match, location, locale, isDirectionRTL} = this.props;
     if (location.pathname === '/') {
-      return ( <Redirect to={'/app/sample-page'}/> );
+      return ( <Redirect to={'/app/home'}/> );
     }
     const applyTheme = createMuiTheme(defaultTheme);
 

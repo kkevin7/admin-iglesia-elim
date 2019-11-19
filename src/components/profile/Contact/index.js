@@ -1,10 +1,26 @@
 import React from "react";
 import Widget from "components/Widget";
-import {contactList} from '../../../app/routes/socialApps/routes/Profile/data'
+// import {contactList} from '../../../app/routes/socialApps/routes/Profile/data'
+
 
 const Contact = () => {
+
+  const contactList = [
+    {
+      icon: "zmdi zmdi-email jr-fs-xxl text-grey",
+      title: "Email",
+      desc: "Jorge.perez@gmail.com"
+    },
+    {
+      icon: "zmdi zmdi-phone jr-fs-xxl text-greyy",
+      title: "Teléfono",
+      desc: "+503 7412-4598"
+    }
+
+  ];
+  
   return (
-    <Widget title="Contact" styleName="jr-card-profile-sm">
+    <Widget title="Contacto" styleName="jr-card-profile-sm">
       {contactList.map((data, index) =>
         <div key={index} className="media align-items-center flex-nowrap jr-pro-contact-list">
           <div className="mr-3">
