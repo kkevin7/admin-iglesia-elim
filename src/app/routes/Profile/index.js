@@ -19,9 +19,9 @@ class Profile extends Component {
                 <ProfileHeader />
                 {/* <Biography/> */}
 
-                <div class="jr-profile-content">
-                    <div class="row">
-                        <div class="col-xl-8 col-lg-8 col-md-7 col-12">
+                <div className="jr-profile-content">
+                    <div className="row">
+                        <div className="col-xl-8 col-lg-8 col-md-7 col-12">
                             <About aboutList={this.state.userData}/>
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-5 col-12">

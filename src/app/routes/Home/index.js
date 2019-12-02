@@ -7,7 +7,7 @@ class Home extends Component {
     render() {
         return (
             <div className="app-wrapper">
-        <ContainerHeader match={this.props.match} title={<IntlMessages id="Página de Inicio"/>}/>
+        <ContainerHeader match={this.props.match} title="Página de Inicio"/>
         <div className="d-flex justify-content-center">
           {/* <h1><IntlMessages id="pages.samplePage.description"/></h1> */}
         </div>

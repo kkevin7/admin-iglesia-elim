@@ -7,7 +7,7 @@ const Error404 = () => (
         <div className="page-error-content">
             <div className="error-code mb-4 animated zoomInDown">404</div>
             <h2 className="text-center fw-regular title bounceIn animation-delay-10 animated">
-                <IntlMessages id="extraPages.404Msg"/>
+                Lo sentimos, ocurrio un error. La página no fue encontrada.
             </h2>
             <form className="mb-4" role="search">
                 <div className="search-bar shadow flipInX animation-delay-16 animated">

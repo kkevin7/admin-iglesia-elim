@@ -32,7 +32,7 @@ class App extends React.Component {
 
     return (
       <div className={`app-container ${drawerStyle}`}>
-        <Tour/>
+        {/* <Tour/> */}
 
         <Sidebar/>
         <div className="app-main-container">
@@ -51,9 +51,13 @@ class App extends React.Component {
                   <Route path={`${match.url}/home`}
                          component={asyncComponent(() => import('./routes/Home'))}/>
                   <Route path={`${match.url}/paymentAdministration`}
-                         component={asyncComponent(() => import('./routes/PaymentAdministration'))}/>
+                         component={asyncComponent(() => import('./routes/Payment/Administration'))}/>
+
                   <Route path={`${match.url}/bookStore`}
-                         component={asyncComponent(() => import('./routes/BookStore'))}/>
+                         component={asyncComponent(() => import('./routes/Kiosko/Inventario'))}/>
+                  <Route path={`${match.url}/registrarProducto`}
+                         component={asyncComponent(() => import('./routes/Kiosko/Inventario/RegistrarProducto'))}/>
+
                   <Route path={`${match.url}/profile`}
                          component={asyncComponent(() => import('./routes/Profile'))}/>
                          <Route path={`${match.url}/users`}
