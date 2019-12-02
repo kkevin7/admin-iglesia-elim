@@ -9,7 +9,7 @@ const Error404 = () => (
             <h2 className="text-center fw-regular title bounceIn animation-delay-10 animated">
                 Lo sentimos, ocurrio un error. La página no fue encontrada.
             </h2>
-            <form className="mb-4" role="search">
+            {/* <form className="mb-4" role="search">
                 <div className="search-bar shadow flipInX animation-delay-16 animated">
                     <div className="form-group">
                         <input type="search" className="form-control form-control-lg border-0" placeholder="Search..."/>
@@ -18,9 +18,9 @@ const Error404 = () => (
                         </button>
                     </div>
                 </div>
-            </form>
+            </form> */}
             <p className="text-center zoomIn animation-delay-20 animated">
-                <Link className="btn btn-primary" to="/"><IntlMessages id="extraPages.goHome"/></Link>
+                <Link className="btn btn-primary" to="/">Volver a la pagina Principal</Link>
             </p>
         </div>
     </div>

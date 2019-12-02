@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import ContainerHeader from 'components/ContainerHeader/index';
 import IntlMessages from 'util/IntlMessages';
 
@@ -15,4 +16,4 @@ class Users extends Component {
     }
 }
 
-export default Users;
+export default withRouter(Users);

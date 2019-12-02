@@ -1,21 +1,22 @@
-import React, { Component } from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
+import React, { Component } from "react";
+import {withRouter} from 'react-router-dom';
+import ContainerHeader from "components/ContainerHeader/index";
+import FormProducto from './FormProducto';
 
 class RegistrarProducto extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  };
-    }
-    render() {
-        return (
-            <div className="app-wrapper">
-                <ContainerHeader match={this.props.match} title="Registrar productos"/>
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render() {
+    return (
+      <div className="app-wrapper">
+        <ContainerHeader match={this.props.match} title="Registrar productos" />
 
-                
-                    
-            </div>
-        );
-    }
+        <FormProducto/>
+      </div>
+    );
+  }
 }
 
-export default RegistrarProducto;
+export default withRouter(RegistrarProducto);

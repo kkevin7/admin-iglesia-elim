@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import ContainerHeader from 'components/ContainerHeader/index';
 
 class PaymentAdministration extends Component {
@@ -15,4 +16,4 @@ class PaymentAdministration extends Component {
     }
 }
 
-export default PaymentAdministration;
+export default withRouter(PaymentAdministration);

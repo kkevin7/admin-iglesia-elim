@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {withRouter} from 'react-router-dom';
 import ContainerHeader from 'components/ContainerHeader/index';
 
 class BookStore extends Component {
@@ -15,4 +16,4 @@ class BookStore extends Component {
     }
 }
 
-export default BookStore;
+export default withRouter(BookStore);
