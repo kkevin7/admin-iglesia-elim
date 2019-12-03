@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import labels from 'app/routes/todo/data/labels';
-import {DatePicker} from 'material-ui-pickers';
+import {DatePicker} from '@material-ui/pickers';
 import users from 'app/routes/todo/data/users'
 import Moment from 'moment';
 import ConversationCell from './ConversationCell';

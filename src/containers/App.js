@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
-import {MuiPickersUtilsProvider} from 'material-ui-pickers';
+import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl'
 import "assets/vendors/style"
 import defaultTheme from './themes/defaultTheme';
 import AppLocale from '../lngProvider';
-
 import MainApp from 'app/index';
 import RTL from 'util/RTL';
 import asyncComponent from 'util/asyncComponent';

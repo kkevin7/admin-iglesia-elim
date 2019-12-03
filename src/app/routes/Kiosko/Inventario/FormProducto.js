@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {withRouter} from 'react-router-dom';
-//Inputs 
+import { withRouter } from "react-router-dom";
+//Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -47,23 +47,22 @@ const FormProducto = () => {
           <div className="jr-card-body ">
             <form noValidate autoComplete="off">
               <div className="row">
-              <div className="col-md-3 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <Card>
-                          <CardActionArea>
-                            <CardMedia
-                              component="img"
-                              alt="Contemplative Reptile"
-                              height="210"
-                              image={require("assets/images/products/product1.png")}
-                              title="Contemplative Reptile"
-                            />
-                          </CardActionArea>
-                        </Card>
-                      </div>
-                    </div>
+                <div className="col-md-3 col-12">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <Card>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          alt="Contemplative Reptile"
+                          height="210"
+                          image={require("assets/images/products/product1.png")}
+                          title="Contemplative Reptile"
+                        />
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                </div>
                 <div className="col-md-9 col-12">
-                
                   <div className="row">
                     <div className="col-md-4 col-12">
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">

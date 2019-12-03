@@ -48,20 +48,28 @@ class App extends React.Component {
           <main className="app-main-content-wrapper">
             <div className="app-main-content">
               <Switch>
+                  {/* Payment Administration */}
                   <Route path={`${match.url}/home`}
                          component={asyncComponent(() => import('./routes/Home'))}/>
                   <Route path={`${match.url}/paymentAdministration`}
                          component={asyncComponent(() => import('./routes/Payment/Administration'))}/>
-
+                  
+                  {/* Bookstore o Kiosko */}
                   <Route path={`${match.url}/bookStore`}
                          component={asyncComponent(() => import('./routes/Kiosko/Inventario'))}/>
                   <Route path={`${match.url}/registrarProducto`}
                          component={asyncComponent(() => import('./routes/Kiosko/Inventario/RegistrarProducto'))}/>
 
+                  {/* Users */}
+                  <Route path={`${match.url}/users`}
+                         component={asyncComponent(() => import('./routes/Users/index'))}/>
+                  <Route path={`${match.url}/RegistrarUsuario`}
+                         component={asyncComponent(() => import('./routes/Users/RegistrarUsuario'))}/>
+
+                  {/* Profile */}
                   <Route path={`${match.url}/profile`}
                          component={asyncComponent(() => import('./routes/Profile'))}/>
-                         <Route path={`${match.url}/users`}
-                         component={asyncComponent(() => import('./routes/Users'))}/>
+                  
                 <Route component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>
             </div>

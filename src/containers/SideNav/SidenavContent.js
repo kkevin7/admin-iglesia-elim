@@ -237,7 +237,7 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/u2">
+                <NavLink to="/app/RegistrarUsuario">
                   <i className="zmdi zmdi-account-add zmdi-hc-fw" />
                   <span className="nav-text">Registrar nuevo usuario </span>
                 </NavLink>
