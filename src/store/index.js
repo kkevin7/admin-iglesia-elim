@@ -4,15 +4,16 @@ import {createBrowserHistory} from 'history'
 import {routerMiddleware} from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas/index';
+import thunk from 'redux-thunk';
 
-import {reactReduxFirebase, firebaseReducer} from 'react-redux-firebase';
-import {reduxFirestore, firestoreReducer} from 'redux-firestore';
+// import {reactReduxFirebase, firebaseReducer} from 'react-redux-firebase';
+// import {reduxFirestore, firestoreReducer} from 'redux-firestore';
 
 const history = createBrowserHistory();
 const routeMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware, routeMiddleware];
+const middlewares = [sagaMiddleware, routeMiddleware, thunk];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 

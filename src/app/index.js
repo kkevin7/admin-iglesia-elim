@@ -29,7 +29,7 @@ class App extends React.Component {
     else if (document.body.classList.contains('ios-mobile-view-height')) {
       document.body.classList.remove('ios-mobile-view-height')
     }
-    console.log(this.props);
+    
     return (
       <div className={`app-container ${drawerStyle}`}>
         {/* <Tour/> */}
@@ -56,7 +56,7 @@ class App extends React.Component {
                   
                   {/* Bookstore o Kiosko */}
                   <Route path={`${match.url}/bookStore`}
-                         component={asyncComponent(() => import('./routes/Kiosko/Inventario'))}/>
+                         component={asyncComponent(() => import('./routes/Kiosko/Inventario/Productos'))}/>
                   <Route path={`${match.url}/registrarProducto`}
                          component={asyncComponent(() => import('./routes/Kiosko/Inventario/RegistrarProducto'))}/>
 
