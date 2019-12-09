@@ -39,9 +39,9 @@ const FormProducto = () => {
     <div className="row mb-md-3">
       <div className="col-lg-12">
         <div className="jr-card">
-          <div class="jr-card-header ">
-            <h3 class="card-heading">
-              <h1>DATOS DEL PRODUCTO</h1>
+          <div className="jr-card-header ">
+            <h3 className="card-heading">
+              DATOS DEL PRODUCTO
             </h3>
           </div>
           <div className="jr-card-body ">

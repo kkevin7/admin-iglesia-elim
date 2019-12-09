@@ -7,11 +7,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+
 //calendar
 import { DatePicker, KeyboardDatePicker } from "@material-ui/pickers";
 
@@ -52,9 +49,9 @@ const FormUsuario = () => {
     <div className="row mb-md-3">
       <div className="col-lg-12">
         <div className="jr-card">
-          <div class="jr-card-header ">
-            <h3 class="card-heading">
-              <h1>DATOS DEL USUARIO</h1>
+          <div className="jr-card-header ">
+            <h3 className="card-heading">
+              DATOS DEL USUARIO
             </h3>
           </div>
           <div className="jr-card-body ">

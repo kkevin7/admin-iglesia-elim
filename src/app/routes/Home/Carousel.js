@@ -32,10 +32,10 @@ const CarouselImg = () => {
     <div className="row mb-md-3">
       <div className="col-lg-12">
         <div className="jr-card">
-          <h3 class="card-heading">
+          <h3 className="card-heading">
             <span>Bienvenido</span>
           </h3>
-          <div class="sub-heading">
+          <div className="sub-heading">
             <div>
               <span>Te presentamos el sistema administrativo</span>
             </div>
