@@ -34,6 +34,9 @@ class App extends Component {
     }
 
     const currentAppLocale = AppLocale[locale.locale];
+
+    console.log(this.props);
+
     return (
       <MuiThemeProvider theme={applyTheme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
