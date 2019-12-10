@@ -5,6 +5,10 @@ const initState = {
 };
 
 const productoReducer = (state = initState, action) => {
+    switch(action.type) {
+        case 'CREATE_PRODUCTO':
+            console.log('Producto action: ', action.producto)
+    }
     return state;
 }
 

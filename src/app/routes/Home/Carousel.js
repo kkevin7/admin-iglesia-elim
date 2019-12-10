@@ -2,6 +2,10 @@ import React, { Component, useState } from "react";
 import {Carousel,CarouselItem,CarouselControl,CarouselIndicators,CarouselCaption } from "reactstrap";
 import { UncontrolledCarousel } from 'reactstrap';
 
+// import image1 from '../../../assets/images/iglesia/foto1.jpg';
+// import image2 from '../../../assets/images/iglesia/foto2.jpg';
+// import image3 from '../../../assets/images/iglesia/foto3.jpg';
+
 const items = [
     {
       src: require('assets/images/iglesia/foto1.jpg'),
