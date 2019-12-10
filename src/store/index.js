@@ -5,15 +5,16 @@ import {routerMiddleware} from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas/index';
 import thunk from 'redux-thunk';
-
-// import {reactReduxFirebase, firebaseReducer} from 'react-redux-firebase';
-// import {reduxFirestore, firestoreReducer} from 'redux-firestore';
+// firebase 
+import { getFirebase} from 'react-redux-firebase'
+import { reduxFirestore ,getFirestore } from 'redux-firestore'
+import {fbConfig} from "../firebase/firebase";
 
 const history = createBrowserHistory();
 const routeMiddleware = routerMiddleware(history);
 const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware, routeMiddleware, thunk];
+const middlewares = [sagaMiddleware, routeMiddleware, thunk.withExtraArgument({ getFirebase, getFirestore })];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
@@ -21,7 +22,10 @@ export default function configureStore(initialState) {
   const store = createStore(
     reducers(history), 
     initialState,
-    composeEnhancers(applyMiddleware(...middlewares))
+    composeEnhancers(
+      applyMiddleware(...middlewares),
+      reduxFirestore(fbConfig) // redux bindings for firestore
+      )
     );
 
   sagaMiddleware.run(rootSaga);

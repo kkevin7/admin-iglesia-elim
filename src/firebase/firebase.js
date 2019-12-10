@@ -22,9 +22,10 @@ firebase.initializeApp(config);
 // const twitterAuthProvider = new firebase.auth.TwitterAuthProvider();
 const auth = firebase.auth();
 const database = firebase.database();
+const fbConfig = firebase;
 
 export {
-  firebase,
+  fbConfig,
   auth,
   database
   // googleAuthProvider,
