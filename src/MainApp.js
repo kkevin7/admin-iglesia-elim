@@ -34,16 +34,16 @@ function AuthIsLoaded({ children }) {
   return children
 }
 
-console.log(store);
 
 const MainApp = () =>
   <Provider store={store}>
-    <ReactReduxFirebaseProvider {...rrfProps}></ReactReduxFirebaseProvider>
+    <ReactReduxFirebaseProvider {...rrfProps}>
     <ConnectedRouter history={history}>
       <Switch>
         <Route path="/" component={App}/>
       </Switch>
     </ConnectedRouter>
+    </ReactReduxFirebaseProvider>
   </Provider>;
 
 
