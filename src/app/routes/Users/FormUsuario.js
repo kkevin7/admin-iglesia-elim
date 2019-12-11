@@ -10,7 +10,14 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 
 //calendar
-import { DatePicker, KeyboardDatePicker } from "@material-ui/pickers";
+// import 'date-fns';
+// import Grid from '@material-ui/core/Grid';
+// import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const currencies = [
   {
@@ -39,8 +46,8 @@ const FormUsuario = () => {
   };
 
   // Calendar
-  const [selectedDate, handleDateChange] = useState(new Date());
-  // const [selectedDate, setSelectedDate] = React.useState(new Date());
+  // const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
   // const handleDateChange = date => {
   //   setSelectedDate(date);
   // };
@@ -108,18 +115,20 @@ const FormUsuario = () => {
                     </div>
                     <div className="col-md-4 col-12">
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <Grid container justify="space-around">
                         <KeyboardDatePicker
                           margin="normal"
                           id="date-picker-dialog"
-                          label="Fecha de Nacimiento"
-                          format="dd/MM/yyyy"
-                          value={selectedDate}
-                          onChange={handleDateChange}
+                          label="Date picker dialog"
+                          format="MM/dd/yyyy"
+              
                           KeyboardButtonProps={{
-                            "aria-label": "Fecha de Nacimiento"
+                            'aria-label': 'change date',
                           }}
-                          helperText="Ingresa la Fecha de Nacimiento"
                         />
+                        </Grid>
+                        </MuiPickersUtilsProvider> */}
                       </div>
                     </div>
                     <div className="col-md-4 col-12">

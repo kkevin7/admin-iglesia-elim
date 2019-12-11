@@ -7,26 +7,21 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Icon from '@material-ui/core/Icon';
 import DefaultImgProducto from '../../../../assets/images/products/caja.png';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-const useStyles = makeStyles({
-  card: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
 
 const CardProducto = ({producto}) => {
-  const classes = useStyles();
 
   return (
-    <div className="col-lg-4 col-sm-6 col-12">
-    <Card className={classes.card}>
+    <div className="col-lg-3 col-sm-6 col-12">
+    <Card className="shadow border-0 card">
       <CardActionArea>
         <CardMedia
-          className={classes.media}
+          className="card-img-top"
+          component="img"
+          height="200"
           image={DefaultImgProducto}
           title={producto.nombre}
         />
@@ -37,14 +32,18 @@ const CardProducto = ({producto}) => {
           <Typography variant="body2" color="textSecondary" component="p">
             {producto.descripcion}
           </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Existencia: {producto.existencia}
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Share
+        <Button size="small" variant="contained" color="primary">
+          <i className="zmdi zmdi-eye zmdi-hc-fw mr-1"/>
+          Detalles
         </Button>
-        <Button size="small" color="primary">
-          Learn More
+        <Button size="small" variant="contained" color="secondary" startIcon={<DeleteIcon />}>
+          Eliminar
         </Button>
       </CardActions>
     </Card>

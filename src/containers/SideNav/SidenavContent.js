@@ -134,12 +134,12 @@ class SidenavContent extends Component {
                   <span className="nav-text">Inventario</span>
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink to="/app/b2">
                   <i className="zmdi zmdi-local-store zmdi-hc-fw" />
                   <span className="nav-text">Bodega</span>
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/app/registrarProducto">
                   <i className="zmdi zmdi-collection-add zmdi-hc-fw" />
