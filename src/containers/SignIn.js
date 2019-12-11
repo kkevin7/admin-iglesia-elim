@@ -16,13 +16,15 @@ import {
   userSignIn,
   userTwitterSignIn
 } from 'actions/Auth';
+//logo
+import logoElim from "../assets/images/elim.png";
 
 class SignIn extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: 'demo@example.com',
-      password: 'demo#123'
+      email: 'juan.perez@gmail.com',
+      password: '123456'
     }
   }
 
@@ -43,6 +45,9 @@ class SignIn extends React.Component {
       password
     } = this.state;
     const {showMessage, loader, alertMessage} = this.props;
+
+    console.log(this.props);
+
     return (
       <div
         className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
@@ -50,20 +55,20 @@ class SignIn extends React.Component {
 
           <div className="app-logo-content d-flex align-items-center justify-content-center">
             <Link className="logo-lg" to="/" title="Jambo">
-              <img src={require("assets/images/logo.png")} alt="jambo" title="jambo"/>
+              <img src={logoElim} alt="jambo" title="jambo"/>
             </Link>
           </div>
 
           <div className="app-login-content">
             <div className="app-login-header mb-4">
-              <h1><IntlMessages id="appModule.email"/></h1>
+              <h1>Iniciar Sesión</h1>
             </div>
 
             <div className="app-login-form">
               <form>
                 <fieldset>
                   <TextField
-                    label={<IntlMessages id="appModule.email"/>}
+                    label={`Correo Eléctronico`}
                     fullWidth
                     onChange={(event) => this.setState({email: event.target.value})}
                     defaultValue={email}
@@ -72,7 +77,7 @@ class SignIn extends React.Component {
                   />
                   <TextField
                     type="password"
-                    label={<IntlMessages id="appModule.password"/>}
+                    label={`Contraseña`}
                     fullWidth
                     onChange={(event) => this.setState({password: event.target.value})}
                     defaultValue={password}
@@ -85,15 +90,15 @@ class SignIn extends React.Component {
                       this.props.showAuthLoader();
                       this.props.userSignIn({email, password});
                     }} variant="contained" color="primary">
-                      <IntlMessages id="appModule.signIn"/>
+                      Iniciar Sesión
                     </Button>
 
-                    <Link to="/signup">
+                    {/* <Link to="/signup">
                       <IntlMessages id="signIn.signUp"/>
-                    </Link>
+                    </Link> */}
                   </div>
 
-                  <div className="app-social-block my-1 my-sm-3">
+                  {/* <div className="app-social-block my-1 my-sm-3">
                     <IntlMessages
                       id="signIn.connectWith"/>
                     <ul className="social-link">
@@ -138,7 +143,7 @@ class SignIn extends React.Component {
                         </IconButton>
                       </li>
                     </ul>
-                  </div>
+                  </div> */}
 
                 </fieldset>
               </form>

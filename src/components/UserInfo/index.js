@@ -2,12 +2,13 @@ import React, {Fragment} from 'react';
 import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import {connect} from 'react-redux'
 import IntlMessages from 'util/IntlMessages';
 import { withRouter } from "react-router-dom";
 // user image
 import avatarImg from '../../assets/images/users/user.png';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import {userSignOut} from 'actions/Auth';
 
 class UserInfo extends React.Component {
 
@@ -34,6 +35,11 @@ class UserInfo extends React.Component {
     history.push(`${match.url}/profile`);
   }
 
+  handleCloseSession = () => {
+    this.setState({showAlert: false});
+    this.props.userSignOut();
+  }
+
   render() {
     return (
       <Fragment>
@@ -45,7 +51,7 @@ class UserInfo extends React.Component {
                 onfirmBtnText="SALIR"
                 confirmBtnBsStyle="primary"
                 cancelBtnBsStyle="secondary"
-                onConfirm={() => this.setState({showAlert: false})}
+                onConfirm={this.handleCloseSession}
                 onCancel={() => this.setState({showAlert: false})}
                 focusCancelBtn
               >
@@ -96,6 +102,10 @@ class UserInfo extends React.Component {
   }
 }
 
-export default withRouter(UserInfo);
+const mapStateToProps = ({settings}) => {
+  const {locale} = settings;
+  return {locale}
+};
+export default withRouter(connect(mapStateToProps, {userSignOut})(UserInfo));
 
 

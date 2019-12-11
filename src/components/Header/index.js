@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import {connect} from 'react-redux'
+import {userSignOut} from 'actions/Auth';
 import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -100,6 +101,11 @@ class Header extends React.Component {
     this.setState({
       searchText: evt.target.value
     });
+  }
+
+  handleCloseSession = () => {
+    this.setState({showAlert: false});
+    this.props.userSignOut();
   }
 
   Apps = () => {
@@ -236,7 +242,7 @@ class Header extends React.Component {
                 onfirmBtnText="SALIR"
                 confirmBtnBsStyle="primary"
                 cancelBtnBsStyle="secondary"
-                onConfirm={() => this.setState({showAlert: false})}
+                onConfirm={this.handleCloseSession}
                 onCancel={() => this.setState({showAlert: false})}
                 focusCancelBtn
               >
@@ -390,19 +396,26 @@ class Header extends React.Component {
   }
 }
 
+// const mapStateToProps = ({settings}) => {
+//   const {locale} = settings;
+//   return {locale}
+// };
+// export default withRouter(connect(mapStateToProps, {userSignOut})(
+
 const mapStateToProps = ({ settings }) => {
   const {
     drawerType,
     locale,
     navigationStyle,
-    horizontalNavPosition
+    horizontalNavPosition,
+    locate
   } = settings;
-  return { drawerType, locale, navigationStyle, horizontalNavPosition };
+  return { drawerType, locale, navigationStyle, horizontalNavPosition, locate };
 };
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { toggleCollapsedNav, switchLanguage }
+    { toggleCollapsedNav, switchLanguage, userSignOut }
   )(Header)
 );
