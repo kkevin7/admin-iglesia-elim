@@ -1,14 +1,20 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IntlMessages from 'util/IntlMessages';
+import { withRouter } from "react-router-dom";
+// user image
+import avatarImg from '../../assets/images/users/user.png';
+import SweetAlert from 'react-bootstrap-sweetalert';
+
 
 class UserInfo extends React.Component {
 
   state = {
     anchorEl: null,
     open: false,
+    showAlert: false
   };
 
   handleClick = event => {
@@ -16,15 +22,39 @@ class UserInfo extends React.Component {
   };
 
   handleRequestClose = () => {
-    this.setState({open: false});
+    this.setState({
+      open: false,
+      showAlert: true
+     });
   };
+
+  handleProfile = () => {
+    // console.log(this.props);
+    const {history, match} = this.props;
+    history.push(`${match.url}/profile`);
+  }
 
   render() {
     return (
+      <Fragment>
+      <SweetAlert
+                show={this.state.showAlert}
+                warning
+                showCancel
+                title="¿Deseas salir de sistema?"
+                onfirmBtnText="SALIR"
+                confirmBtnBsStyle="primary"
+                cancelBtnBsStyle="secondary"
+                onConfirm={() => this.setState({showAlert: false})}
+                onCancel={() => this.setState({showAlert: false})}
+                focusCancelBtn
+              >
+                Ya no podras seguir utilizando las funciones del sistema
+              </SweetAlert>
       <div className="user-profile d-flex flex-row align-items-center">
         <Avatar
           alt='...'
-          src={require("assets/images/users/user.png")}
+          src={avatarImg}
           className="user-avatar "
         />
         <div className="user-detail">
@@ -44,27 +74,28 @@ class UserInfo extends React.Component {
                   paddingBottom: 0
                 }
               }}>
-          <MenuItem onClick={this.handleRequestClose}>
+          <MenuItem onClick={this.handleProfile}>
             <i className="zmdi zmdi-account zmdi-hc-fw mr-2"/>
-            <IntlMessages id="popup.profile"/>
+              Perfil
           </MenuItem>
           <MenuItem onClick={this.handleRequestClose}>
             <i className="zmdi zmdi-settings zmdi-hc-fw mr-2"/>
-            <IntlMessages id="popup.setting"/>
+            Contribuciones
           </MenuItem>
           <MenuItem onClick={() => {
             this.handleRequestClose();
           }}>
             <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-2"/>
-
-            <IntlMessages id="popup.logout"/>
+            Cerrar sesión
           </MenuItem>
+          
         </Menu>
       </div>
+      </Fragment>
     );
   }
 }
 
-export default UserInfo;
+export default withRouter(UserInfo);
 
 

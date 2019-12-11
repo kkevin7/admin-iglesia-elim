@@ -1,33 +1,21 @@
-# [Jumbo React - React Redux Material Admin Template (3.0)](https://themeforest.net/item/react-material-bootstrap-4-admin-template/20978545 "Jumbo React")
-Jumbo React is a react redux based admin template. 
+# SISTEMA DE ADMINISTRACIÓN DE LA IGLESIA MISIÓN CRISTIANA ELIM
+
+This is a system to help to the persons of church and give a tool to administrate the payment installments and buy some product of the kiosko
+
+The project was created for educational purposes and learn about React JS and Redux with Firesebase
+
+# Use the sysetem
+
+**See the system you can go to the URL [here](https://iglesiaelimsantaana.netlify.com/)**
 
 # Installation
 
-**Note: Jumbo React is using [yarn](https://yarnpkg.com/en/docs/install) instead npm**
+If you want to see the project in the local way to you can use:
 
-Installing all the dependencies of project, run following command:
+First use 
 
-``` $yarn ```
+**npm i**
 
-# Documentation
+And the
 
-it is well documented at [here](http://jumbo-react.g-axon.com/docs/material/ "Documentation") .
-
-## Branches
-| Branch                           | Description   |
-| -------------------------------- | ------------- |
-| `master`                         | This is the main production branch. You should pull from here to update your local repo. |
-| `starter-template`               | This branch is for you to kickstart your project with the starter template with auth (Firebase). This way you can start building your project from ground-up. |
-| `starter-template-without-auth`  | If you are looking to use a different authentication system, this is the right branch for you to start with. |
-
-## Issues
-##### We accept issues here on GitHub but please follow the rules defined below before raising an issue:
-
-* An issue must be related to coding. It should not be a general query. If you have any query, please ask that [here](https://themeforest.net/item/react-material-bootstrap-4-admin-template/20978545/support "Support for Jumbo React")
-* You can request a feature as an issue. We will make this open for voting for other users. So that they can vote and we can build what is in demand.
-* While posting an issue be descriptive with the process to replicate the issue.
-
-## Pull Requests
-We appreciate your collaboration. If you build something which you believe could help others in their project. You can make that as a pull request. But make sure that it should be in a genral uses rather then something which is built for a specific project.
-
-We merge only those features which we find useful for the community.
+**npm start**
