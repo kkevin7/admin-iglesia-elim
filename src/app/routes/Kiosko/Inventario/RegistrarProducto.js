@@ -27,12 +27,16 @@ class RegistrarProducto extends Component {
     });
   };
 
+  handleChangeNumber = (e) => {
+    this.setState({
+      [e.target.name]: Math.floor(Number(e.target.value))
+    });  
+};
+
   createProducto = e => {
     e.preventDefault();
-    const producto = this.state;
-    // console.log(producto);
-    // console.log(this.props);
-    this.props.createProducto(producto);
+    this.props.createProducto(this.state);
+    this.props.history.push(`/app/inventario`)
   };
 
   render() {
@@ -49,7 +53,7 @@ class RegistrarProducto extends Component {
               <div className="jr-card-body ">
                 <form
                   onSubmit={this.createProducto}
-                  noValidate
+                  // noValidate
                   autoComplete="off"
                 >
                   <div className="row">
@@ -79,6 +83,7 @@ class RegistrarProducto extends Component {
                               name="nombre"
                               label="Nombre"
                               variant="outlined"
+                              value={this.state.nombre}
                               onChange={this.handleChangeFilds}
                             />
                           </div>
@@ -90,10 +95,13 @@ class RegistrarProducto extends Component {
                               id="outlined-required"
                               type="number"
                               InputProps={{ inputProps: { min: 0, step: 1 } }}
+                              min="1" 
+                              step="1"
                               name="existencia"
                               label="Existencia"
                               variant="outlined"
-                              onChange={this.handleChangeFilds}
+                              value={this.state.existencia}
+                              onChange={this.handleChangeNumber}
                             />
                           </div>
                         </div>
@@ -104,9 +112,12 @@ class RegistrarProducto extends Component {
                               id="outlined-required"
                               type="number"
                               name="precio"
-                              InputProps={{ inputProps: { min: 0 } }}
+                              InputProps={{ inputProps: { min: 0, step: 1 } }}
+                              min="1" 
+                              step="1"
                               label="Precio"
                               variant="outlined"
+                              value={this.state.precio}
                               onChange={this.handleChangeFilds}
                             />
                           </div>
@@ -121,6 +132,7 @@ class RegistrarProducto extends Component {
                               rows="4"
                               defaultValue=""
                               variant="outlined"
+                              value={this.state.descripcion}
                               onChange={this.handleChangeFilds}
                             />
                           </div>

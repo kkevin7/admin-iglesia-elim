@@ -6,10 +6,11 @@ export const createProducto = (producto) => {
         const firestore = getFirestore();
         firestore.collection('productos').add({
             ...producto,
-            nombre: "Lapicero",
-            precio: "0.2",
-            existencia: 22,
-            descripcion: "Boligrafo para escribir"
+            nombre: producto.nombre,
+            precio: producto.precio,
+            existencia: producto.existencia,
+            descripcion: producto.descripcion,
+            fecha_creacion: new Date()
         }).then(() => {
             dispatch({
                 type: 'CREATE_PRODUCTO',

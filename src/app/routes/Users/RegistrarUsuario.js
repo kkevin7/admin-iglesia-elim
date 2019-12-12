@@ -38,6 +38,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import clsx from "clsx";
+import userImageDefault from '../../../assets/images/users/user.png';
 
 class RegistrarUsuario extends Component {
   state = {
@@ -55,8 +56,6 @@ class RegistrarUsuario extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
-    // console.log(this.props)
     this.props.registrarUsuario(this.state);
   };
 
@@ -166,7 +165,6 @@ class RegistrarUsuario extends Component {
           match={this.props.match}
           title="Registrar nuevo usuario"
         />
-
         <div className="row mb-md-3">
           <div className="col-lg-12">
             <div className="jr-card">
@@ -176,7 +174,7 @@ class RegistrarUsuario extends Component {
               <div className="jr-card-body ">
                 <form
                   onSubmit={this.handleSubmit}
-                  noValidate
+                  // noValidate
                   autoComplete="off"
                 >
                   <div className="row">
@@ -188,7 +186,7 @@ class RegistrarUsuario extends Component {
                               component="img"
                               alt="Contemplative Reptile"
                               height="210"
-                              image={require("assets/images/users/user.png")}
+                              image={userImageDefault}
                               title="Contemplative Reptile"
                             />
                           </CardActionArea>
@@ -226,7 +224,6 @@ class RegistrarUsuario extends Component {
                         <div className="col-md-4 col-12">
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
-                              required
                               name="telefono"
                               label="Télefono"
                               helperText="Ingresa la numero teléfonico"
@@ -273,10 +270,11 @@ class RegistrarUsuario extends Component {
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                               <Grid container justify="space-around">
                                 <KeyboardDatePicker
+                                  required
                                   margin="normal"
                                   name="fecha_nacimiento"
                                   label="Fecha de Nacimiento"
-                                  format="MM/dd/yyyy"
+                                  format="dd/MM/yyyy"
                                   KeyboardButtonProps={{
                                     "aria-label": "change date"
                                   }}
@@ -291,7 +289,6 @@ class RegistrarUsuario extends Component {
                         <div className="col-md-8 col-12">
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
-                              required
                               name="direccion"
                               label="Dirección"
                               helperText="Ingresa la direccion del domicilio"
