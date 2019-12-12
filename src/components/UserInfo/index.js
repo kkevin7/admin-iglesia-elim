@@ -3,12 +3,13 @@ import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {connect} from 'react-redux'
+import {userSignOut} from 'actions/Auth';
 import IntlMessages from 'util/IntlMessages';
 import { withRouter } from "react-router-dom";
 // user image
 import avatarImg from '../../assets/images/users/user.png';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import {userSignOut} from 'actions/Auth';
+
 
 class UserInfo extends React.Component {
 
@@ -41,6 +42,10 @@ class UserInfo extends React.Component {
   }
 
   render() {
+
+    const {profile} = this.props;
+
+    
     return (
       <Fragment>
       <SweetAlert
@@ -64,8 +69,9 @@ class UserInfo extends React.Component {
           className="user-avatar "
         />
         <div className="user-detail">
-          <h4 className="user-name" onClick={this.handleClick}>Nombre de Usuario <i
-            className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
+          <h4 className="user-name" onClick={this.handleClick}>
+            {profile.isEmpty ? 'Nombre de Usuario' : profile.nombre+" "+profile.apellido }
+            <i className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
           </h4>
         </div>
         <Menu className="user-info"
@@ -102,9 +108,10 @@ class UserInfo extends React.Component {
   }
 }
 
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({settings, firebase}) => {
+  const {profile} = firebase;
   const {locale} = settings;
-  return {locale}
+  return {locale, profile}
 };
 export default withRouter(connect(mapStateToProps, {userSignOut})(UserInfo));
 

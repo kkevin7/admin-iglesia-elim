@@ -60,7 +60,8 @@ class App extends Component {
       applyTheme.direction = 'ltr';
     }
 
-    const currentAppLocale = AppLocale[locale.locale];
+    // const currentAppLocale = AppLocale[locale.locale];
+    const currentAppLocale = AppLocale['es'];
     return (
       <MuiThemeProvider theme={applyTheme}>
         <MuiPickersUtilsProvider utils={MomentUtils}>

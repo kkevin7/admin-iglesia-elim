@@ -10,7 +10,7 @@ import productoReducer from './productoReducer';
 export default (history) => combineReducers({
   router: connectRouter(history),
   settings: Settings,
-  auth: authReducer,
+  authCustom: authReducer,
   auth: Auth,
   producto: productoReducer,
   firestore: firestoreReducer,

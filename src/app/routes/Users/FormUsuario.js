@@ -8,49 +8,60 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
 
 //calendar
-// import 'date-fns';
-// import Grid from '@material-ui/core/Grid';
-// import DateFnsUtils from '@date-io/date-fns';
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-const currencies = [
-  {
-    value: "1",
-    label: "PASTOR"
-  },
-  {
-    value: "2",
-    label: "ADMINISTRACIÓN DE PAGOS"
-  },
-  {
-    value: "3",
-    label: "KIOSKO"
-  },
-  {
-    value: "4",
-    label: "SOCIO"
-  }
-];
 
 const FormUsuario = () => {
   // SELECT
-  const [currency, setCurrency] = React.useState("4");
+  const roles = [
+    {
+      value: "1",
+      label: "PASTOR"
+    },
+    {
+      value: "2",
+      label: "ADMINISTRACIÓN DE PAGOS"
+    },
+    {
+      value: "3",
+      label: "KIOSKO"
+    },
+    {
+      value: "4",
+      label: "SOCIO"
+    }
+  ];
+  const [rol, setRol] = React.useState("4");
   const handleChange = event => {
-    setCurrency(event.target.value);
+    setRol(event.target.value);
   };
 
-  // Calendar
-  // const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  // DATEPICKER
+  let fecha = new Date();
+  fecha.setYear(fecha.getFullYear() - 15);
+  const [selectedFechaNacimiento, setselectedFechaNacimiento] = React.useState(fecha);
+  const handleDateChange = date => {
+    setselectedFechaNacimiento(date);
+  };
 
-  // const handleDateChange = date => {
-  //   setSelectedDate(date);
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const usuario = {
+      rol: rol,
+      fecha_nacimiento: selectedFechaNacimiento
+    }
+    console.log(usuario);
+  }
 
   return (
     <div className="row mb-md-3">
@@ -62,7 +73,7 @@ const FormUsuario = () => {
             </h3>
           </div>
           <div className="jr-card-body ">
-            <form noValidate autoComplete="off">
+            <form onSubmit={handleSubmit} noValidate autoComplete="off">
               <div className="row">
                 <div className="col-md-3 col-12">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
@@ -115,20 +126,21 @@ const FormUsuario = () => {
                     </div>
                     <div className="col-md-4 col-12">
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Grid container justify="space-around">
-                        <KeyboardDatePicker
-                          margin="normal"
-                          id="date-picker-dialog"
-                          label="Date picker dialog"
-                          format="MM/dd/yyyy"
-              
-                          KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                          }}
-                        />
-                        </Grid>
-                        </MuiPickersUtilsProvider> */}
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <Grid container justify="space-around">
+                            <KeyboardDatePicker
+                              margin="normal"
+                              id="date-picker-dialog"
+                              label="Date picker dialog"
+                              format="MM/dd/yyyy"
+                              value={selectedFechaNacimiento}
+                              onChange={handleDateChange}
+                              KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                              }}
+                            />
+                          </Grid>
+                        </MuiPickersUtilsProvider>
                       </div>
                     </div>
                     <div className="col-md-4 col-12">
@@ -145,15 +157,15 @@ const FormUsuario = () => {
                     <div className="col-md-4 col-12">
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
-                          id="outlined-select-currency"
+                          id="outlined-select-rol"
                           select
                           label="Tipo de usuario"
-                          value={currency}
+                          value={rol}
                           onChange={handleChange}
                           helperText="Selecciona el Tipo de Usuario"
                           variant="outlined"
                         >
-                          {currencies.map(option => (
+                          {roles.map(option => (
                             <MenuItem key={option.value} value={option.value}>
                               {option.label}
                             </MenuItem>
@@ -161,6 +173,15 @@ const FormUsuario = () => {
                         </TextField>
                       </div>
                     </div>
+                    <div className="col-12 mt-3">
+                          <Button 
+                          variant="contained" 
+                          color="primary"
+                          type="submit"
+                          >
+                            Guardar
+                          </Button>
+                        </div>
                   </div>
                 </div>
               </div>

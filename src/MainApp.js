@@ -16,7 +16,7 @@ import Spinner from './components/Spinner/Spinner';
 export const store = configureStore();
 
 const rrfConfig = {
-  userProfile: "users",
+  userProfile: "usuarios",
   useFirestoreForProfile: true,
   attachAuthIsReady: true
 }

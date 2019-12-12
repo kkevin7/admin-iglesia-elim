@@ -171,13 +171,14 @@ class Header extends React.Component {
       drawerType,
       locale,
       navigationStyle,
-      horizontalNavPosition
+      horizontalNavPosition, 
     } = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER)
       ? "d-block d-xl-none"
       : drawerType.includes(COLLAPSED_DRAWER)
       ? "d-block"
       : "d-none";
+      
 
     return (
       <AppBar
@@ -402,7 +403,7 @@ class Header extends React.Component {
 // };
 // export default withRouter(connect(mapStateToProps, {userSignOut})(
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ settings}) => {
   const {
     drawerType,
     locale,
@@ -410,7 +411,7 @@ const mapStateToProps = ({ settings }) => {
     horizontalNavPosition,
     locate
   } = settings;
-  return { drawerType, locale, navigationStyle, horizontalNavPosition, locate };
+  return { drawerType, locale, navigationStyle, horizontalNavPosition, locate};
 };
 
 export default withRouter(
