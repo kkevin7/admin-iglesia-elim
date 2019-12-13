@@ -56,7 +56,11 @@ class RegistrarUsuario extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    this.props.history.push('/app/users');
     this.props.registrarUsuario(this.state);
+    // const { authError } = this.props;
+    // console.log(authError);
+    // this.props.history.push('/app/users');
   };
 
   handleChange = e => {

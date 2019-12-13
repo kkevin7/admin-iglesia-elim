@@ -11,6 +11,7 @@ import App from './containers/App';
 import { ReactReduxFirebaseProvider, isLoaded, isEmpty } from 'react-redux-firebase';
 import { createFirestoreInstance,} from 'redux-firestore';
 import Spinner from './components/Spinner/Spinner';
+import 'moment/locale/es';
 
 
 export const store = configureStore();

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
-import {connect} from 'react-redux';
+import { firestoreConnect } from "react-redux-firebase";
 import imageDefault from "../../../../assets/images/products/product1.png";
 import {createProducto} from '../../../../actions/productosActions';
 //Inputs
@@ -33,10 +35,17 @@ class RegistrarProducto extends Component {
     });  
 };
 
-  createProducto = e => {
+  createProducto = (e) => {
     e.preventDefault();
-    this.props.createProducto(this.state);
-    this.props.history.push(`/app/inventario`)
+    // this.props.createProducto(this.state);
+    // this.props.history.push(`/app/inventario`)
+    const nuevoProducto = this.state;
+    const {firestore, history} = this.props;
+    console.log(firestore);
+    firestore
+      .add({ collection: "productos" }, nuevoProducto)
+      .then(() => history.push("/app/inventario"));
+    
   };
 
   render() {
@@ -130,7 +139,6 @@ class RegistrarProducto extends Component {
                               label="Descripción"
                               multiline
                               rows="4"
-                              defaultValue=""
                               variant="outlined"
                               value={this.state.descripcion}
                               onChange={this.handleChangeFilds}
@@ -159,10 +167,20 @@ class RegistrarProducto extends Component {
   }
 }
 
+const mapStateToProps = ({firestore}) => {
+  return{
+    firestore: firestore && firestore
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return{
     createProducto: (producto) => dispatch(createProducto(producto))
   }
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(RegistrarProducto));
+export default withRouter(
+  compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect())
+    (RegistrarProducto));
