@@ -10,8 +10,11 @@ import CardProducto from "./CardProducto";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class BookStore extends Component {
+
+
   render() {
-    const { productos } = this.props;
+    const { productos, firestore } = this.props;
+    
 
     if (!productos) return <Spinner />;
 
@@ -27,7 +30,7 @@ class BookStore extends Component {
           {productos &&
             productos.map(producto => {
               return (
-                <CardProducto key={producto.id} producto={producto} />
+                <CardProducto key={producto.id} producto={producto} firestore={firestore} />
               )
             })}
         </div>
