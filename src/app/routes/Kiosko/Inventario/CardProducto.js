@@ -22,6 +22,17 @@ const CardProducto = ({ producto, firestore }) => {
     return response;
   }
 
+  let classExistencia=`mt-2 badge text-uppercase text-white `;
+  if(producto.existencia >5){
+    classExistencia+="bg-success";
+  }
+  if (producto.existencia <=5 && producto.existencia >0 ){
+    classExistencia+="bg-warning";
+  }
+  if(producto.existencia <1){
+    classExistencia+="bg-danger";
+  }
+
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [alertOK, setAlertOK] = React.useState(false);
 
@@ -43,9 +54,11 @@ const CardProducto = ({ producto, firestore }) => {
             <Typography variant="body2" color="textSecondary" component="p">
               {producto.descripcion}
             </Typography>
+            <div className={classExistencia}>
             <Typography variant="body2" color="textSecondary" component="p">
               Existencia: {producto.existencia}
             </Typography>
+            </div>
           </CardContent>
         </CardActionArea>
         <CardActions>

@@ -37,15 +37,16 @@ class RegistrarProducto extends Component {
 
   createProducto = (e) => {
     e.preventDefault();
-    // this.props.createProducto(this.state);
-    // this.props.history.push(`/app/inventario`)
+    this.props.createProducto(this.state).then(() => {
+      console.log('hola')
+    });
+    this.props.history.push(`/app/inventario`)
     const nuevoProducto = this.state;
     const {firestore, history} = this.props;
     console.log(firestore);
     firestore
       .add({ collection: "productos" }, nuevoProducto)
       .then(() => history.push("/app/inventario"));
-    
   };
 
   render() {
