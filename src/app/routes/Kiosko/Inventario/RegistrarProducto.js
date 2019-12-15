@@ -37,13 +37,16 @@ class RegistrarProducto extends Component {
 
   createProducto = (e) => {
     e.preventDefault();
-    this.props.createProducto(this.state).then(() => {
-      console.log('hola')
-    });
-    this.props.history.push(`/app/inventario`)
-    const nuevoProducto = this.state;
+    // this.props.createProducto(this.state)
+    // this.props.history.push(`/app/inventario`)
+
     const {firestore, history} = this.props;
-    console.log(firestore);
+    const nuevoProducto = {
+      nombre: this.state.nombre,
+      precio: Number(this.state.precio),
+      existencia: Number(this.state.existencia),
+      descripcion: this.state.descripcion
+    }
     firestore
       .add({ collection: "productos" }, nuevoProducto)
       .then(() => history.push("/app/inventario"));
@@ -104,7 +107,7 @@ class RegistrarProducto extends Component {
                               required
                               id="outlined-required"
                               type="number"
-                              InputProps={{ inputProps: { min: 0, step: 1 } }}
+                              InputProps={{ inputProps: { min: 1, step: 1 } }}
                               min="1" 
                               step="1"
                               name="existencia"
@@ -122,9 +125,7 @@ class RegistrarProducto extends Component {
                               id="outlined-required"
                               type="number"
                               name="precio"
-                              InputProps={{ inputProps: { min: 0, step: 1 } }}
-                              min="1" 
-                              step="1"
+                              InputProps={{ inputProps: { min: 0, step: 0.01  } }}
                               label="Precio"
                               variant="outlined"
                               value={this.state.precio}

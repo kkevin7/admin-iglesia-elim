@@ -10,11 +10,17 @@ const initState = {
 };
 
 const productoReducer = (state = initState, action) => {
-    switch (action.type) {
+  switch (action.type) {
     case "CREATE_PRODUCTO":
       console.log("Producto action: ", action.producto);
       return state;
     case "CREATE_PRODUCTO_ERROR":
+      console.log("ERROR AL CREAR EL PRODUCTO", action.err);
+      return state;
+    case "PRODUCTO_HAY_EXISTENCIA":
+      console.log("Producto action: ", action.producto);
+      return state;
+    case "PRODUCTO_HAY_EXISTENCIA_ERROR":
       console.log("ERROR AL CREAR EL PRODUCTO", action.err);
       return state;
     default:

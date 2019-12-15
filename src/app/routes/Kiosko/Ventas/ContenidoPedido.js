@@ -8,6 +8,7 @@ import Spinner from 'components/Spinner/Spinner';
 import Select from 'react-select';
 import Animated from 'react-select/animated';
 import ResumenPedido from './ResumenPedido';
+import GenerarPedido from './GenerarPedido';
 
 class ContenidoPedido extends Component {
     state = {
@@ -16,7 +17,6 @@ class ContenidoPedido extends Component {
     }
 
     seleccionarProducto = (productos) => {
-        // console.log(`Algo paso con `, productos)
         this.setState({
             productos
         })
@@ -27,7 +27,6 @@ class ContenidoPedido extends Component {
         const productos = this.state.productos;
         // aregar la cantidad desde la interfaz
         productos[index].cantidad = cantidad;
-        // console.log(Number(cantidad));
         this.setState({
             productos,
         }, () => {
@@ -47,7 +46,7 @@ class ContenidoPedido extends Component {
         // realizar la opéracion de cantidad x precio
         productos.map(producto => nuevoTotal += (producto.cantidad * producto.precio));
         this.setState({
-            total: nuevoTotal
+            total: nuevoTotal.toFixed(2)
         });
     }
 
@@ -85,6 +84,10 @@ class ContenidoPedido extends Component {
                         $ {this.state.total}
                     </span>
                 </p>
+                <GenerarPedido
+                productos={this.state.productos}
+                total={this.state.total}
+                />
             </Fragment>
         );
     }

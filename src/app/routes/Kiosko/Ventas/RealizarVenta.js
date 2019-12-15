@@ -17,6 +17,7 @@ class RealizarVenta extends Component {
     render() {
         const {productos} = this.props;
         if (!productos) return <Spinner />;
+        // console.log(this.props)
 
         return (
             <div className="app-wrapper">
@@ -47,7 +48,10 @@ export default withRouter(
     compose(
         connect(mapStateToProps),
         firestoreConnect([
-            { collection: "productos" }
+            { 
+                collection: "productos",
+                where: [ "existencia", ">", 0 ]
+            }
         ])
     )(RealizarVenta)
 );
