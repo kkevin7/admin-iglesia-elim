@@ -87,6 +87,7 @@ class ContenidoPedido extends Component {
                 <GenerarPedido
                 productos={this.state.productos}
                 total={this.state.total}
+                vendedor={this.props.vendedor}
                 />
             </Fragment>
         );

@@ -15,8 +15,8 @@ import ContenidoPedido from './ContenidoPedido';
 class RealizarVenta extends Component {
     state = {}
     render() {
-        const {productos} = this.props;
-        if (!productos) return <Spinner />;
+        const {productos, vendedor} = this.props;
+        if (!productos && !vendedor) return <Spinner />;
         // console.log(this.props)
 
         return (
@@ -28,7 +28,10 @@ class RealizarVenta extends Component {
                     <div className="col-lg-12">
                         <div className="jr-card">
                         <h1 className="text-center">Seleccionar Artículos</h1>
-                        <ContenidoPedido productos={productos} />
+                        <ContenidoPedido 
+                        productos={productos} 
+                        vendedor={vendedor}
+                        />
                         </div>
                     </div>
                 </div>
@@ -40,7 +43,8 @@ class RealizarVenta extends Component {
 
 const mapStateToProps = state => {
     return {
-      productos: state.firestore.ordered.productos
+      productos: state.firestore.ordered.productos,
+      vendedor: state.firebase.auth
     };
   };
 

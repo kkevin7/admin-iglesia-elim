@@ -9,6 +9,7 @@ import ContainerHeader from 'components/ContainerHeader/index';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import OrderTableCell from '../../../../components/dashboard/eCommerce/OrderTable';
 import EnhancedTable from './EnhancedTable';
+import TableVentas from './TableVentas';
 
 class Ventas extends Component {
     state = {  }
@@ -17,7 +18,8 @@ class Ventas extends Component {
             <div className="app-wrapper">
             <ContainerHeader match={this.props.match} title="Ventas realizadas" />
             {/* <OrderTableCell/> */}
-            <EnhancedTable/>
+            {/* <EnhancedTable/> */}
+            <TableVentas/>
             </div>
         );
     }

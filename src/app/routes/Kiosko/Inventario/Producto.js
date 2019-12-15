@@ -17,7 +17,6 @@ class Producto extends Component {
                     <td className="align-middle">
                         <input 
                         required
-                        
                         type="number"
                         name="cantidad"
                         className="form-control"

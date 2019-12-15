@@ -1,11 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Producto from '../Inventario/Producto';
 
-
-const createPedido = (e) => {
-    e.preventDefault();
-}
-
 const ResumenPedido = (props) => {
     const productos = props.productos;
     if(!productos) return null;
@@ -13,7 +8,7 @@ const ResumenPedido = (props) => {
         return (
             <Fragment>
                 <h2 className="text-center my-5">Resumen y Cantidades</h2>
-                <form onSubmit={createPedido}
+                <form 
                   // noValidate
                   autoComplete="off">
                 <div className="table-responsive">

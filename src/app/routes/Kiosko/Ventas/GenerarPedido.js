@@ -1,33 +1,74 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 const validarPedido = props => {
-  let noValido = !props.productos || props.total <= 0 || props.total =="NaN";
+  let noValido = !props.productos || props.total <= 0 || props.total == "NaN";
   return noValido;
 };
 
+const createVenta = (props) => {
+  // console.log(props.productos);
+  const productosInput = props.productos.map((producto) => (
+    {
+      id: producto.id,
+      nombre: producto.nombre,
+      precio: Number(producto.precio),
+      cantidad: Number(producto.cantidad)
+    }));
+  const restaProducto = props.productos.map((producto) => (
+    {
+      id: producto.id,
+      nombre: producto.nombre,
+      precio: Number(producto.precio),
+      existencia: Number(producto.existencia - producto.cantidad),
+      descripcion: producto.descripcion
+    }));
+  console.log(restaProducto);
+  // console.log(productosInput);
+  const nuevoPedido = {
+    pedido: productosInput,
+    total: Number(props.total),
+    fecha_venta: new Date(),
+    id_vendedor: props.vendedor.uid,
+    estado: 'PENDIENTE'
+  };
+  console.log(restaProducto)
+
+  // console.log(nuevoPedido);
+  const { firestore, history } = props;
+  // console.log(firestore);
+  firestore
+    .add({ collection: "ventas" }, nuevoPedido)
+    .then((response) => {
+      // console.log(response);
+      return restaProducto && restaProducto.map((producto) => (
+        firestore.update({
+          collection: 'productos',
+          doc: producto.id
+        }, producto)
+      ));
+
+    })
+    .then(() => history.push("/app/ventas"));
+}
+
 const GenerarPedido = props => {
-//   console.log(props);
+  //   console.log(props);
   return (
     <button
       disabled={validarPedido(props)}
       type="button"
       className="btn btn-warning mt-2"
-      onClick={e => {
-        // console.log(props.productos);
-        const productosInput = props.productos.map(
-          ({ nombre, precio, existencia, ...objeto }) => objeto
-        );
-        console.log(productosInput);
-        const nuevoPedido = {
-          pedido: productosInput,
-          total: Number(props.total)
-        };
+      onClick={() => {
+        createVenta(props);
       }}
     >
-      GeneraPedido
+      Realizar Venta
     </button>
   );
 };
 
-export default withRouter(GenerarPedido);
+export default withRouter(firestoreConnect()(GenerarPedido));
