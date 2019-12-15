@@ -15,9 +15,16 @@ import ContenidoPedido from './ContenidoPedido';
 class RealizarVenta extends Component {
     state = {}
     render() {
-        const {productos, vendedor} = this.props;
-        if (!productos && !vendedor) return <Spinner />;
-        // console.log(this.props)
+        const {productos, id_vendedor, nombre_vendedor} = this.props;
+        
+        const vendedor = {
+            id: id_vendedor,
+            nombre: nombre_vendedor
+        }
+        
+        if (!productos || !id_vendedor || !nombre_vendedor) return <Spinner />;
+        // console.log(vendedor);
+        // // console.log(this.props)
 
         return (
             <div className="app-wrapper">
@@ -44,7 +51,8 @@ class RealizarVenta extends Component {
 const mapStateToProps = state => {
     return {
       productos: state.firestore.ordered.productos,
-      vendedor: state.firebase.auth
+      id_vendedor: state.firebase.auth.uid,
+      nombre_vendedor: state.firebase.profile.nombre+" "+state.firebase.profile.apellido
     };
   };
 

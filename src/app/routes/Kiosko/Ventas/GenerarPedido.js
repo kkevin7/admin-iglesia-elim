@@ -32,7 +32,7 @@ const createVenta = (props) => {
     pedido: productosInput,
     total: Number(props.total),
     fecha_venta: new Date(),
-    id_vendedor: props.vendedor.uid,
+    vendedor: props.vendedor,
     estado: 'PENDIENTE'
   };
   console.log(restaProducto)

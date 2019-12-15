@@ -68,6 +68,8 @@ const mapStateToProps = ({ firestore }) => {
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect([{ collection: "usuarios" }])
+    firestoreConnect([{ 
+      collection: "usuarios" 
+    }])
   )
     (Users));
