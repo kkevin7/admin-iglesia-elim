@@ -55,7 +55,7 @@ const CardProducto = ({ producto, firestore }) => {
               {producto.descripcion}
             </Typography>
             <div className={classExistencia}>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography className="text-white" variant="body2" color="textSecondary" component="p">
               Existencia: {producto.existencia}
             </Typography>
             </div>

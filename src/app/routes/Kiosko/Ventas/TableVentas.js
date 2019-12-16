@@ -15,7 +15,7 @@ const TableVentas = (props) => {
                   <th>Vendedor</th>
                   <th>Estado</th>
                   <th>Detalles</th>
-                  <th>Confirmacion</th>
+                  <th>Comprobante</th>
                 </tr>
               </thead>
               <tbody>

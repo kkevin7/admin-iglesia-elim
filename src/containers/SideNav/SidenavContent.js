@@ -159,7 +159,7 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/b5">
+                <NavLink to="/app/proveedores">
                   <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
                   <span className="nav-text">Proveedores</span>
                 </NavLink>
