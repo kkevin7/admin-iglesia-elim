@@ -21,7 +21,7 @@ const TableBodyVentas = ({ props }) => {
         </td>
         <td>
           <Button className="bg-cyan text-white" variant="contained" type="submit">
-            IMPRIMIR
+            GENERAR
           </Button>
         </td>
       </tr>

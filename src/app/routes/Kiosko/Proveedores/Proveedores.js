@@ -8,11 +8,17 @@ import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import TableProveedores from "./TableProvedores";
 import { Button } from "@material-ui/core";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 class Proveedores extends Component {
   state = {};
 
   render() {
+
+    const {proveedores} = this.props;
+    if(!proveedores) return <Spinner/>
+
     return (
       <div className="app-wrapper">
         <ContainerHeader
@@ -24,13 +30,13 @@ class Proveedores extends Component {
             <div className="jr-card">
               <NavLink
                 className="MuiButtonBase-root MuiButton-root MuiButton-contained my-4 MuiButton-containedPrimary text-white"
-                to="/app/proveedores"
+                to="/app/nuevoProveedor"
               >
-                <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
-                <span className="nav-text">Nuevo Proveedor</span>
+                <FontAwesomeIcon icon={faPlus} />{" "}
+              <span className="nav-text">Nuevo Proveedor</span>
               </NavLink>
 
-              <TableProveedores />
+              <TableProveedores proveedores={proveedores} />
             </div>
           </div>
         </div>
@@ -39,4 +45,15 @@ class Proveedores extends Component {
   }
 }
 
-export default withRouter(Proveedores);
+const mapStateToProps = state => {
+  return {
+    proveedores: state.firestore.ordered.proveedores
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(mapStateToProps),
+    firestoreConnect([{ collection: "proveedores" }])
+  )
+  (Proveedores));
