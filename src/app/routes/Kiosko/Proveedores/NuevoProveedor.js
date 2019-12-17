@@ -30,7 +30,7 @@ class NuevoProveedor extends Component {
         <div className="row mb-md-3">
           <div className="col-lg-12">
             <div className="jr-card">
-              <FormProveedor createProveedor={this.createProveedor} />
+              <FormProveedor actionProveedor={this.createProveedor} />
             </div>
           </div>
         </div>

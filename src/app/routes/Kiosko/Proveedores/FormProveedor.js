@@ -38,9 +38,9 @@ class FormProveedor extends Component {
 
     this.state = {
       nombre: !props.proveedor ? "" : props.proveedor.nombre,
-      apellido: "",
-      telefono: "",
-      empresa: "",
+      apellido: !props.proveedor ? "" : props.proveedor.apellido,
+      telefono: !props.proveedor ? "" : props.proveedor.telefono,
+      empresa: !props.proveedor ? "" : props.proveedor.empresa,
       estado: !props.proveedor ? true : props.proveedor.estado
     };
   }
@@ -53,7 +53,7 @@ class FormProveedor extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.createProveedor(this.state);
+    this.props.actionProveedor(this.state);
   };
 
   render() {

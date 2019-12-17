@@ -15,10 +15,12 @@ class Users extends Component {
   state = {};
   render() {
 
-    const { usuarios } = this.props;
+    const { usuarios, firebase } = this.props;
+    if (!usuarios || !firebase) return <Spinner />;
+    // console.log(usuarios);
+    console.log(firebase);
+    const usuariosAuth = firebase.firestore().collectionGroup('usuarios');
     console.log(usuarios);
-    if (!usuarios) return <Spinner />;
-
     return (
       <div className="app-wrapper">
         <ContainerHeader
@@ -58,10 +60,12 @@ class Users extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, firebase }) => {
   const { ordered } = firestore;
   return {
-    usuarios: ordered.usuarios
+    usuarios: ordered.usuarios,
+    
+    firebase: firebase
   };
 };
 
