@@ -10,9 +10,10 @@ import TableProveedores from "./TableProvedores";
 import { Button } from "@material-ui/core";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import SweetAlertEliminar from './SweetAlertEliminar';
 
 class Proveedores extends Component {
-  state = {};
+  state = { };
 
   render() {
 
@@ -37,6 +38,7 @@ class Proveedores extends Component {
               </NavLink>
 
               <TableProveedores proveedores={proveedores} />
+
             </div>
           </div>
         </div>

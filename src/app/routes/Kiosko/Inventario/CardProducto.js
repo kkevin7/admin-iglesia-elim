@@ -10,7 +10,6 @@ import Icon from '@material-ui/core/Icon';
 import DefaultImgProducto from '../../../../assets/images/products/caja.png';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SweetAlert from 'react-bootstrap-sweetalert';
-import swal from 'react-bootstrap-sweetalert';
 
 const CardProducto = ({ producto, firestore }) => {
 

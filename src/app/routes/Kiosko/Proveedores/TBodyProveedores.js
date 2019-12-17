@@ -1,12 +1,18 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+import SweetAlertEliminar from './SweetAlertEliminar';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 const TBodyProveedores = ({proveedores, history}) => {
 
     const handleRedirectEdit = (id) => {
       history.push(`editarProveedor/`+id);
     }
+
+    // const [alertConfirm, setAlertConfirm] = React.useState(false);
+    // const [alertOK, setAlertOK] = React.useState(false);
 
     return ( 
         proveedores && proveedores.map(proveedor => (
@@ -22,9 +28,7 @@ const TBodyProveedores = ({proveedores, history}) => {
                 </Button>
               </td>
               <td>
-              <Button className="bg-danger text-white" variant="contained"  type="submit">
-                  Eliminar
-                </Button>
+                <SweetAlertEliminar id={proveedor.id}/>
               </td>
             </tr>
         ))
