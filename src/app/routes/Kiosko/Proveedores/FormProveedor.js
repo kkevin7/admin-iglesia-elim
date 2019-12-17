@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from "react";
+import { withRouter, NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import MaskedInput from "react-text-mask";
 import NumberFormat from "react-number-format";
@@ -11,6 +12,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
+//Icons
+import SaveIcon from '@material-ui/icons/Save';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
@@ -56,6 +60,11 @@ class FormProveedor extends Component {
     this.props.actionProveedor(this.state);
   };
 
+  handleVolver = () => {
+    const {history} = this.props;
+    history.goBack();
+  }
+
   render() {
     let classSelectEstado = "col-md-4 col-12 ";
     if (!this.props.proveedor) {
@@ -64,8 +73,12 @@ class FormProveedor extends Component {
 
     return (
       <Fragment>
+        <Button className="mb-4 text-white bg-teal" variant="contained" onClick={this.handleVolver} startIcon={<ArrowBackIcon/>} type="submit">
+          Volver
+        </Button>
         <div className="jr-card-header ">
           <h3 className="card-heading">DATOS DEL PROVEEDOR</h3>
+          
         </div>
         <form autoComplete="off" onSubmit={this.handleSubmit}>
           <div className="col-12">
@@ -150,7 +163,7 @@ class FormProveedor extends Component {
                 </div>
               </div>
               <div className="col-12 my-4">
-                <Button variant="contained" color="primary" type="submit">
+                <Button variant="contained" color="primary" startIcon={<SaveIcon/>} type="submit">
                   Guardar
                 </Button>
               </div>
@@ -162,4 +175,4 @@ class FormProveedor extends Component {
   }
 }
 
-export default FormProveedor;
+export default withRouter(FormProveedor);

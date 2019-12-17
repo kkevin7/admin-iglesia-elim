@@ -2,8 +2,9 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import SweetAlertEliminar from './SweetAlertEliminar';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Save from '@material-ui/icons/Save';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import EditIcon from '@material-ui/icons/Edit';
 
 const TBodyProveedores = ({proveedores, history}) => {
 
@@ -23,7 +24,14 @@ const TBodyProveedores = ({proveedores, history}) => {
             <td>{proveedor.empresa}</td>
             <td>{proveedor.estado ? 'ACTIVO' : 'INACTIVO'}</td>
             <td>
-                <Button className="bg-warning text-white" onClick={() => handleRedirectEdit(proveedor.id)} variant="contained"  type="submit">
+                <Button 
+                
+                className="bg-warning text-white" 
+                onClick={() => handleRedirectEdit(proveedor.id)} 
+                startIcon={<EditIcon/>}
+                variant="contained"  
+                type="submit"
+                >
                   Editar
                 </Button>
               </td>
