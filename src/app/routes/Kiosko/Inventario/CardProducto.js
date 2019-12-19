@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withRouter } from "react-router-dom";
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,8 +11,9 @@ import Icon from '@material-ui/core/Icon';
 import DefaultImgProducto from '../../../../assets/images/products/caja.png';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import SweetAlertEliminar from './SweetAlertEliminar';
 
-const CardProducto = ({ producto, firestore }) => {
+const CardProducto = ({ producto, firestore, history }) => {
 
   const handleElminarProducto = async (id) => {
     const response = await firestore.delete({
@@ -20,6 +22,11 @@ const CardProducto = ({ producto, firestore }) => {
     })
     return response;
   }
+
+  const handleRedirectDetalle = (id) => {
+    history.push('detalleProducto/'+id);
+  }
+
 
   let classExistencia=`mt-2 badge text-uppercase text-white `;
   if(producto.existencia >5){
@@ -31,9 +38,6 @@ const CardProducto = ({ producto, firestore }) => {
   if(producto.existencia <1){
     classExistencia+="bg-danger";
   }
-
-  const [alertConfirm, setAlertConfirm] = React.useState(false);
-  const [alertOK, setAlertOK] = React.useState(false);
 
   return (
     <div className="col-lg-3 col-sm-6 col-12">
@@ -61,47 +65,15 @@ const CardProducto = ({ producto, firestore }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" variant="contained" color="primary">
+          <Button size="small" variant="contained" onClick={() => handleRedirectDetalle(producto.id)} color="primary">
             <i className="zmdi zmdi-eye zmdi-hc-fw mr-1" />
             Detalles
         </Button>
-          <Button size="small" variant="contained" color="secondary" onClick={() => setAlertConfirm(true)} startIcon={<DeleteIcon />}>
-            Eliminar
-        </Button>
-          <SweetAlert
-            show={alertConfirm}
-            warning
-            showCancel
-            confirmBtnText="Si, deseo eliminarlo!"
-            confirmBtnBsStyle="danger"
-            cancelBtnBsStyle="primary"
-            title="¿Está seguro de eliminar este registro?"
-            onConfirm={() => {
-              setAlertConfirm(false);
-              setAlertOK(true);
-            }}
-            onCancel={() => setAlertConfirm(false)}
-            focusCancelBtn
-          >
-            Esta acción es irreversible y no se podrá recuperar el registro
-          </SweetAlert>
-          <SweetAlert
-            show={alertOK}
-            success title="Acción realizda con éxito!"
-            onConfirm={() => {
-              handleElminarProducto(producto.id);
-              setAlertOK(false)
-            }}
-            onCancel={() => {
-              handleElminarProducto(producto.id);
-              setAlertOK(false)
-            }}>
-            OK!
-          </SweetAlert>
+        <SweetAlertEliminar id={producto.id}/>
         </CardActions>
       </Card>
     </div>
   );
 }
 
-export default CardProducto;
+export default withRouter( CardProducto);

@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 import Button from "@material-ui/core/Button";
+import PrintIcon from '@material-ui/icons/Print';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
 const TableBodyVentas = ({ props }) => {
   const { ventas } = props;
@@ -15,12 +17,16 @@ const TableBodyVentas = ({ props }) => {
         <td>{(!venta.vendedor)? '': venta.vendedor.nombre}</td>
         <td >{venta.estado}</td>
         <td>
-          <Button variant="contained" color="primary" type="submit">
+          <Button 
+          startIcon={<FormatListBulletedIcon/>}
+          variant="contained" color="primary" type="submit">
             DETALLES
           </Button>
         </td>
         <td>
-          <Button className="bg-cyan text-white" variant="contained" type="submit">
+          <Button 
+          startIcon={<PrintIcon/>}
+          className="bg-cyan text-white" variant="contained" type="submit">
             GENERAR
           </Button>
         </td>

@@ -22,7 +22,7 @@ const TBodyProveedores = ({proveedores, history}) => {
             <td>{proveedor.apellido}</td>
             <td>{proveedor.telefono}</td>
             <td>{proveedor.empresa}</td>
-            <td>{proveedor.estado ? 'ACTIVO' : 'INACTIVO'}</td>
+            <td><label className={`text-white p-1 ${proveedor.estado ? 'bg-success' : 'bg-danger'}`} >{proveedor.estado ? 'ACTIVO' : 'INACTIVO'}</label></td>
             <td>
                 <Button 
                 

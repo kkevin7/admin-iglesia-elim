@@ -8,9 +8,7 @@ const ResumenPedido = (props) => {
         return (
             <Fragment>
                 <h2 className="text-center my-5">Resumen y Cantidades</h2>
-                <form 
-                  // noValidate
-                  autoComplete="off">
+                
                 <div className="table-responsive">
                 <table className="table">
                     <thead className="bg-success text-white ">
@@ -36,7 +34,6 @@ const ResumenPedido = (props) => {
                     </tbody>
                 </table>
                 </div>
-                </form>
             </Fragment>
         );
 }

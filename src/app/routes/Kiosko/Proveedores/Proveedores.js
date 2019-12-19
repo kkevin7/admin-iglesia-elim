@@ -8,8 +8,9 @@ import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import TableProveedores from "./TableProvedores";
 import { Button } from "@material-ui/core";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@material-ui/icons/Add';
 import SweetAlertEliminar from './SweetAlertEliminar';
 
 class Proveedores extends Component {

@@ -4,16 +4,18 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
 import { firestoreConnect } from "react-redux-firebase";
-import imageDefault from "../../../../assets/images/products/product1.png";
+
 import {createProducto} from '../../../../actions/productosActions';
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 // cards
+import imageDefault from "../../../../assets/images/products/product1.png";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+import SaveIcon from '@material-ui/icons/Save'
 
 class RegistrarProducto extends Component {
   state = {
@@ -150,6 +152,7 @@ class RegistrarProducto extends Component {
                         <div className="col-12 mt-3">
                           <Button 
                           variant="contained" 
+                          startIcon={<SaveIcon/>}
                           color="primary"
                           type="submit"
                           >

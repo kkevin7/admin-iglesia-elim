@@ -74,21 +74,25 @@ class ContenidoPedido extends Component {
                     getOptionLabel={(options) => options.nombre}
                     value={this.state.productos}
                 />
+                <form 
+                // noValidate
+                autoComplete="off">
                 <ResumenPedido
                     productos={this.state.productos}
                     actualizarCantidad={this.actualizarCantidad}
                     eliminarProducto={this.eliminarProducto}
                 />
-                <p className="font-weight-bold text-right p-2">
+                <h4 className="font-weight-bold text-right p-2">
                     Total: <span className="font-weight-normal">
                         $ {this.state.total}
                     </span>
-                </p>
+                </h4>
                 <GenerarPedido
                 productos={this.state.productos}
                 total={this.state.total}
                 vendedor={this.props.vendedor}
                 />
+                </form>
             </Fragment>
         );
     }

@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import Button from '@material-ui/core/Button';
 
 const validarPedido = props => {
   let noValido = !props.productos || props.total <= 0 || props.total == "NaN";
@@ -60,7 +61,7 @@ const GenerarPedido = props => {
   return (
     <button
       disabled={validarPedido(props)}
-      type="button"
+      type="submit"
       className="btn btn-warning mt-2"
       onClick={() => {
         createVenta(props);
