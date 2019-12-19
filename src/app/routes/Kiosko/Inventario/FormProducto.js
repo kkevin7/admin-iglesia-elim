@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -13,144 +16,157 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import imageDefault from "../../../../assets/images/products/product1.png";
+import SaveIcon from "@material-ui/icons/Save";
+import Spinner from "components/Spinner/Spinner";
 
-const currencies = [
-  {
-    value: "1",
-    label: "GRANDE"
-  },
-  {
-    value: "2",
-    label: "MEDIANO"
-  },
-  {
-    value: "3",
-    label: "PEQUEÑO"
+class FormProducto extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nombre:
+        typeof props.producto !== "undefined" ? props.producto.nombre : "",
+      precio:
+        typeof props.producto !== "undefined" ? props.producto.precio : "",
+      existencia:
+        typeof props.producto !== "undefined" ? props.producto.existencia : "",
+      descripcion:
+        typeof props.producto !== "undefined" ? props.producto.descripcion : ""
+    };
   }
-];
-
-const FormProducto = () => {
-  const [currency, setCurrency] = React.useState("1");
-  const handleChange = event => {
-    setCurrency(event.target.value);
+  handleChangeFilds = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   };
 
-  return (
-    <div className="row mb-md-3">
-      <div className="col-lg-12">
-        <div className="jr-card">
-          <div className="jr-card-header ">
-            <h3 className="card-heading">
-              DATOS DEL PRODUCTO
-            </h3>
-          </div>
-          <div className="jr-card-body ">
-            <form noValidate autoComplete="off">
-              <div className="row">
-                <div className="col-md-3 col-12">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <Card>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          alt="Contemplative Reptile"
-                          height="210"
-                          image={require("assets/images/products/product1.png")}
-                          title="Contemplative Reptile"
-                        />
-                      </CardActionArea>
-                    </Card>
+  handleChangeNumber = e => {
+    this.setState({
+      [e.target.name]: Math.floor(Number(e.target.value))
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.actionSubmit(this.state);
+  };
+
+
+  render() {
+    return (
+      <div className="row mb-md-3">
+        <div className="col-lg-12">
+          <div className="jr-card">
+            <div className="jr-card-header ">
+              <h3 className="card-heading">DATOS DEL PRODUCTO</h3>
+            </div>
+            <div className="jr-card-body ">
+              <form
+                autoComplete="off"
+                onSubmit={this.handleSubmit}
+              >
+                <div className="row">
+                  <div className="col-md-3 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <Card>
+                        <CardActionArea>
+                          <CardMedia
+                            component="img"
+                            alt="Contemplative Reptile"
+                            height="210"
+                            image={imageDefault}
+                            title="Contemplative Reptile"
+                            onChange={this.handleChangeFilds}
+                          />
+                        </CardActionArea>
+                      </Card>
+                    </div>
                   </div>
-                </div>
-                <div className="col-md-9 col-12">
-                  <div className="row">
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          label="Nombre"
-                          variant="outlined"
-                        />
+                  <div className="col-md-9 col-12">
+                    <div className="row">
+                      <div className="col-md-4 col-12">
+                        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                          <TextField
+                            required
+                            id="outlined-required"
+                            name="nombre"
+                            label="Nombre"
+                            variant="outlined"
+                            value={this.state.nombre}
+                            onChange={this.handleChangeFilds}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          type="number"
-                          InputProps={{ inputProps: { min: 0 } }}
-                          label="Costo"
-                          variant="outlined"
-                        />
+                      <div className="col-md-4 col-12">
+                        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                          <TextField
+                            required
+                            id="outlined-required"
+                            type="number"
+                            InputProps={{ inputProps: { min: 1, step: 1 } }}
+                            min="1"
+                            step="1"
+                            name="existencia"
+                            label="Existencia"
+                            variant="outlined"
+                            value={this.state.existencia}
+                            onChange={this.handleChangeNumber}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          type="number"
-                          InputProps={{ inputProps: { min: 0 } }}
-                          label="Precio"
-                          variant="outlined"
-                        />
+                      <div className="col-md-4 col-12">
+                        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                          <TextField
+                            required
+                            id="outlined-required"
+                            type="number"
+                            name="precio"
+                            InputProps={{ inputProps: { min: 0, step: 0.01 } }}
+                            label="Precio"
+                            variant="outlined"
+                            value={this.state.precio}
+                            onChange={this.handleChangeFilds}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          type="number"
-                          InputProps={{ inputProps: { min: 0 } }}
-                          label="Descuento"
-                          defaultValue="0.0"
-                          variant="outlined"
-                        />
+                      <div className="col-md-8 col-12">
+                        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                          <TextField
+                            id="outlined-multiline-static"
+                            name="descripcion"
+                            label="Descripción"
+                            multiline
+                            rows="4"
+                            variant="outlined"
+                            value={this.state.descripcion}
+                            onChange={this.handleChangeFilds}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          id="outlined-select-currency"
-                          select
-                          label="Tipo de Producto"
-                          value={currency}
-                          onChange={handleChange}
-                          helperText="Selecciona el tipo de producto"
-                          variant="outlined"
+                      <div className="col-12 mt-3">
+                        <Button
+                          variant="contained"
+                          startIcon={<SaveIcon />}
+                          color="primary"
+                          type="submit"
                         >
-                          {currencies.map(option => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </div>
-                    <div className="col-md-8 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          id="outlined-multiline-static"
-                          label="Descripción"
-                          multiline
-                          rows="4"
-                          defaultValue=""
-                          variant="outlined"
-                        />
+                          Guardar
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
+
+const mapStateToProps = ({ firestore: { ordered } }) => ({
+  producto: ordered.producto && ordered.producto[0]
+});
 
 export default withRouter(FormProducto);

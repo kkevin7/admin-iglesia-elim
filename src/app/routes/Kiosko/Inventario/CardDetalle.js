@@ -18,8 +18,12 @@ import AddIcon from '@material-ui/icons/Add';
 import Spinner from "components/Spinner/Spinner";
 import SweetAlertEliminar from './SweetAlertEliminar';
 
-const CardDetalle = ({ producto }) => {
+const CardDetalle = ({ producto, history }) => {
   if (!producto) return <Spinner />;
+
+  const handleRedirectEdit = () => {
+    history.push(`/app/editarProducto/${producto.id}`);
+  }
 
   let classExistencia = `mt-2 badge text-uppercase text-white `;
   if (producto.existencia > 5) {
@@ -108,7 +112,12 @@ const CardDetalle = ({ producto }) => {
                 </div>
                 <div className="col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <Button startIcon={<EditIcon/>} className="btn-block bg-warning text-white" variant="contained" >Editar Producto</Button>
+                    <Button 
+                    startIcon={<EditIcon/>} 
+                    className="btn-block bg-warning text-white" 
+                    variant="contained" 
+                    onClick={handleRedirectEdit}
+                    >Editar Producto</Button>
                   </div>
                 </div>
                 <div className="col-12 my-2">
