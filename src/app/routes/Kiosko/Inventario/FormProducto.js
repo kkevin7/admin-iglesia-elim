@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import imageDefault from "../../../../assets/images/products/product1.png";
 import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "components/Spinner/Spinner";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 class FormProducto extends Component {
   constructor(props) {
@@ -51,14 +52,23 @@ class FormProducto extends Component {
     this.props.actionSubmit(this.state);
   };
 
+  handleVolver = () => {
+    const {history} = this.props;
+    history.goBack();
+  }
 
   render() {
     return (
+      <Fragment>
+        
       <div className="row mb-md-3">
         <div className="col-lg-12">
           <div className="jr-card">
+          <Button className="mb-4 text-white bg-teal" variant="contained" onClick={this.handleVolver} startIcon={<ArrowBackIcon/>} type="submit">
+          Volver
+        </Button>
             <div className="jr-card-header ">
-              <h3 className="card-heading">DATOS DEL PRODUCTO</h3>
+              <h3 className="card-heading font-weight-bold text-center">DATOS DEL PRODUCTO</h3>
             </div>
             <div className="jr-card-body ">
               <form
@@ -161,6 +171,7 @@ class FormProducto extends Component {
           </div>
         </div>
       </div>
+      </Fragment>
     );
   }
 }

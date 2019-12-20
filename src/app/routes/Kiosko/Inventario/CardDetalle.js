@@ -17,6 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import Spinner from "components/Spinner/Spinner";
 import SweetAlertEliminar from './SweetAlertEliminar';
+import DialogAddExistencia from './DialogAddExistencia';
 
 const CardDetalle = ({ producto, history }) => {
   if (!producto) return <Spinner />;
@@ -107,8 +108,9 @@ const CardDetalle = ({ producto, history }) => {
               <div className="row  my-2">
                 <div className="col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <Button startIcon={<AddIcon/>} className="btn-block bg-cyan text-white" variant="contained" >Agregar Existencia</Button>
-                  </div>
+                    {/* <Button startIcon={<AddIcon/>} className="btn-block bg-cyan text-white" variant="contained" >sddAgregar Existencia</Button> */}
+                    <DialogAddExistencia producto={producto}/>
+                  </div> 
                 </div>
                 <div className="col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
