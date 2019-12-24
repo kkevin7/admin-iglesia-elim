@@ -44,16 +44,19 @@ const createVenta = (props) => {
   firestore
     .add({ collection: "ventas" }, nuevoPedido)
     .then((response) => {
-      // console.log(response);
-      return restaProducto && restaProducto.map((producto) => (
+      restaProducto && restaProducto.map((producto) => (
         firestore.update({
           collection: 'productos',
           doc: producto.id
         }, producto)
       ));
-
+      // return response;
     })
-    .then(() => history.push("/app/ventas"));
+    .then((response) => {
+      console.log("SOY EL RESPONSE")
+      console.log(response);
+      // history.push("/app/ventas")
+    });
 }
 
 const GenerarPedido = props => {
@@ -63,7 +66,8 @@ const GenerarPedido = props => {
       disabled={validarPedido(props)}
       type="submit"
       className="btn btn-warning mt-2"
-      onClick={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         createVenta(props);
       }}
     >

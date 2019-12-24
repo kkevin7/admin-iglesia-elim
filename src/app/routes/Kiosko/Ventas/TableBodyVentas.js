@@ -1,12 +1,17 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import moment from "moment";
 import Button from "@material-ui/core/Button";
 import PrintIcon from '@material-ui/icons/Print';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 
-const TableBodyVentas = ({ props }) => {
+const TableBodyVentas = ({ props, history }) => {
   const { ventas } = props;
-  console.log(ventas);
+
+  const btnRedirectDetalle = (id) => {
+    history.push(`/app/detalleVenta/${id}`)    
+  }
+  
   return (
     ventas &&
     ventas.map(venta => (
@@ -19,14 +24,20 @@ const TableBodyVentas = ({ props }) => {
         <td>
           <Button 
           startIcon={<FormatListBulletedIcon/>}
-          variant="contained" color="primary" type="submit">
+          onClick={() => btnRedirectDetalle(venta.id)}
+          value={venta.id}
+          variant="contained" 
+          color="primary" 
+          >
             DETALLES
           </Button>
         </td>
         <td>
           <Button 
           startIcon={<PrintIcon/>}
-          className="bg-cyan text-white" variant="contained" type="submit">
+          className="bg-cyan text-white" 
+          variant="contained" 
+          >
             GENERAR
           </Button>
         </td>
@@ -35,4 +46,4 @@ const TableBodyVentas = ({ props }) => {
   );
 };
 
-export default TableBodyVentas;
+export default withRouter(TableBodyVentas);

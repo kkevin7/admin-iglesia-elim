@@ -25,13 +25,16 @@ class RegistrarProducto extends Component {
     // this.props.createProducto(this.state)
     // this.props.history.push(`/app/inventario`)
 
-    const {firestore, history} = this.props;
+    const {firestore, history, firebase} = this.props;
     const nuevoProducto = {
       nombre: producto.nombre,
       precio: Number(producto.precio),
       existencia: Number(producto.existencia),
       descripcion: producto.descripcion
     }
+
+    // firebase.
+
     firestore
       .add({ collection: "productos" }, nuevoProducto)
       .then(() => history.push("/app/inventario"));
@@ -49,9 +52,10 @@ class RegistrarProducto extends Component {
   }
 }
 
-const mapStateToProps = ({firestore}) => {
+const mapStateToProps = ({firestore, firebase}) => {
   return{
-    firestore: firestore && firestore
+    firestore: firestore && firestore,
+    firebase: firebase && firebase 
   }
 }
 
