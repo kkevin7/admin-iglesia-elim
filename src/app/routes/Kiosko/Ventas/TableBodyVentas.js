@@ -9,7 +9,11 @@ const TableBodyVentas = ({ props, history }) => {
   const { ventas } = props;
 
   const btnRedirectDetalle = (id) => {
-    history.push(`/app/detalleVenta/${id}`)    
+    history.push(`/app/detalleVenta/${id}`);    
+  }
+
+  const btnRedirectComprobante = (id) => {
+    history.push(`/app/comprobanteVenta/${id}`);
   }
   
   return (
@@ -37,6 +41,7 @@ const TableBodyVentas = ({ props, history }) => {
           startIcon={<PrintIcon/>}
           className="bg-cyan text-white" 
           variant="contained" 
+          onClick={() => btnRedirectComprobante(venta.id)}
           >
             GENERAR
           </Button>

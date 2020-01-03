@@ -6,31 +6,29 @@ import { compose } from "redux";
 //components
 import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
-import FormProveedor from "./FormProveedor";
+import FormCategoriaProducto from "./FormCategoriaProducto";
 
-class NuevoProveedor extends Component {
+class NuevoCategoriaProducto extends Component {
   state = {};
 
   createProveedor = nuevoProveedor => {
     const { firestore, history } = this.props;
     firestore.add(
       {
-        collection: "proveedores"
+        collection: "categoria_producto"
       },
-      nuevoProveedor).then(() => history.push("/app/proveedores"));
+      nuevoProveedor).then(() => history.push("/app/categoriaProductos"));
   };
 
   render() {
-    // if(!firestore) return <Spinner/>
-    // console.log(firestore);
 
     return (
       <div className="app-wrapper">
-        <ContainerHeader match={this.props.match} title="Nuevo Proveedor" />
+        <ContainerHeader match={this.props.match} title="Nuevos Proveedor" />
         <div className="row mb-md-3">
           <div className="col-lg-12">
             <div className="jr-card">
-              <FormProveedor actionProveedor={this.createProveedor} />
+              <FormCategoriaProducto actionProveedor={this.createProveedor} />
             </div>
           </div>
         </div>
@@ -39,4 +37,4 @@ class NuevoProveedor extends Component {
   }
 }
 
-export default withRouter(firestoreConnect()(NuevoProveedor));
+export default withRouter(firestoreConnect()(NuevoCategoriaProducto));
