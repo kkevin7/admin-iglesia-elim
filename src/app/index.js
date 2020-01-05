@@ -83,7 +83,6 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Kiosko/Proveedores/NuevoProveedor'))}/>
                   <Route path={`${match.url}/editarProveedor/:id`}
                          component={asyncComponent(() => import('./routes/Kiosko/Proveedores/EditarProveedor'))}/>
-                         
 
                      {/* Categoria Productos */}
                   <Route path={`${match.url}/categoriaProductos`}
@@ -92,6 +91,12 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Kiosko/CategoriaProducto/NuevoCategoriaProducto'))}/>
                   <Route path={`${match.url}/editarCategoriaProducto/:id`}
                          component={asyncComponent(() => import('./routes/Kiosko/CategoriaProducto/EditarCategoriaProducto'))}/>
+
+              {/* --------------------------------------- PAGOS DE CUOTAS ------------------------------------- */}
+
+                      {/* Asociacion de Usuarios */}
+                     <Route path={`${match.url}/asociacion`}
+                         component={asyncComponent(() => import('./routes/Payment/Asociacion/Asociacion'))}/>
 
                   {/* Users */}
                   <Route path={`${match.url}/users`}

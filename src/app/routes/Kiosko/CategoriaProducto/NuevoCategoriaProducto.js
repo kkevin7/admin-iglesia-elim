@@ -28,7 +28,7 @@ class NuevoCategoriaProducto extends Component {
         <div className="row mb-md-3">
           <div className="col-lg-12">
             <div className="jr-card">
-              <FormCategoriaProducto actionProveedor={this.createProveedor} />
+              <FormCategoriaProducto actionForm={this.createProveedor} />
             </div>
           </div>
         </div>

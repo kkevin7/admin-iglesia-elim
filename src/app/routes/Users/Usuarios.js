@@ -38,6 +38,7 @@ class Users extends Component {
                 <div className="description">
                   <h5>{usuario.nombre} {usuario.apellido}</h5>
                   {/* <h6>Android Developer</h6> */}
+                  <p className="text-muted">ID: {usuario.id}</p>
                   <p className="text-muted">Dirección: {usuario.direccion}</p>
                   <p className="text-muted">Teléfono: {usuario.telefono}</p>
                   <p className="text-muted">Socio desde: {moment(usuario.fecha_socio.toDate()).calendar()}</p>
