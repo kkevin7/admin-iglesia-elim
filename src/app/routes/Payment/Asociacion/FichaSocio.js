@@ -18,7 +18,7 @@ const FichaSocio = ({ socio }) => {
               <span className="font-weight-normal">{socio.nombre}</span>
             </p>
             <p className="font-weight-bold">
-              Carrera: {""}
+              Apellido: {""}
               <span className="font-weight-normal">{socio.apellido}</span>
             </p>
             <p className="font-weight-bold">

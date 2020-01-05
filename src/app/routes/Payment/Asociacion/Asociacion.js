@@ -3,7 +3,7 @@ import React, { Component } from "react";
 //components
 import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
-import FormAsociacion from './FormAsociacion';
+import StepperAsociacion from './StepperAsociacion';
 //Stepper
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
@@ -19,19 +19,8 @@ class Asociacion extends Component {
     
     return (
       <div className="app-wrapper">
-        {/* <ContainerHeader
-          match={this.props.match}
-          title="Asociacion de Usuarios"
-        /> */}
-        {/* <div className="row mb-md-3">
-          <div className="col-lg-12">
-            <div className="jr-card"> */}
+              <StepperAsociacion/>
 
-              <FormAsociacion/>
-                
-            {/* </div>
-          </div>
-        </div> */}
       </div>
     );
   }

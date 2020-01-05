@@ -13,7 +13,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 //components
 import BusquedaSocio from './BusquedaSocio';
+import EspeficarCuota from './EspeficarCuota';
 import Spinner from "components/Spinner/Spinner";
+
 
 const useStyles = theme => ({
   root: {
@@ -28,18 +30,55 @@ const useStyles = theme => ({
   }
 });
 
-class FormAsociacion extends Component {
+class StepperAsociacion extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeStep: 0,
-      socio: {}
+      socio: {},
+      disableNext: true
     };
   }
 
-  render() {
-    const { classes, firestore } = this.props;
+  setUpSocio = (socio) => {
+    this.setState({
+      socio: socio
+    })
+  }
+
+  disableNext = (valor) => {
+    this.setState({
+      disableNext: valor
+    })
+  }
+
+  getStepContent = (stepIndex) =>{
+    const {firestore } = this.props;
     if(!firestore) return <Spinner/>
+    switch (stepIndex) {
+      case 0:
+        return (
+          <BusquedaSocio
+          firestore={firestore}
+          setUpSocio={this.setUpSocio}
+          disableNext={this.disableNext}
+          />
+          // <EspeficarCuota/>
+        );
+      case 1:
+        return (
+          <EspeficarCuota/>
+        );
+      case 2:
+        return "This is the bit I really care about!";
+      default:
+        return "Unknown stepIndex";
+    }
+  }
+
+  render() {
+    const { classes} = this.props;
+    const steps = getSteps();
 
     function getSteps() {
       return [
@@ -49,35 +88,18 @@ class FormAsociacion extends Component {
       ];
     }
 
-    function getStepContent(stepIndex) {
-      switch (stepIndex) {
-        case 0:
-          return (
-            <BusquedaSocio
-            firestore={firestore}
-            />
-          );
-        case 1:
-          return "What is an ad group anyways?";
-        case 2:
-          return "This is the bit I really care about!";
-        default:
-          return "Unknown stepIndex";
-      }
-    }
-
-
-    const steps = getSteps();
-
     const handleNext = () => {
+      console.log(this.state);
       this.setState({
-        activeStep: this.state.activeStep + 1
+        activeStep: this.state.activeStep + 1,
+        disableNext: true
       });
     };
 
     const handleBack = () => {
       this.setState({
-        activeStep: this.state.activeStep - 1
+        activeStep: this.state.activeStep - 1,
+        disableNext: true
       });
     };
 
@@ -121,8 +143,7 @@ class FormAsociacion extends Component {
               <div className="col-lg-12">
                 <div className="jr-card">
                   <div>
-                    {getStepContent(this.state.activeStep)}
-
+                    {this.getStepContent(this.state.activeStep)}
                     <div>
                       <Button
                         disabled={this.state.activeStep === 0}
@@ -133,7 +154,7 @@ class FormAsociacion extends Component {
                         ATRÁS
                       </Button>
                       <Button
-                        disabled={false}
+                        disabled={this.state.disableNext}
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
@@ -162,4 +183,4 @@ withRouter(
       withStyles(useStyles)
   )
   
-(FormAsociacion));
+(StepperAsociacion));

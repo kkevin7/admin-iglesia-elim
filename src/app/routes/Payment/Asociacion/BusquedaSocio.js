@@ -29,7 +29,7 @@ class BusquedaSocio extends Component {
   buscarSocio = e => {
     e.preventDefault();
     const { busqueda } = this.state;
-    const { firestore } = this.props;
+    const { firestore, setUpSocio, disableNext } = this.props;
     const usuariosRef = firestore.collection("usuarios").doc(busqueda);
     // const consulta = coleccion.where('uid', "==", busqueda).get();
     const consulta = usuariosRef.get();
@@ -37,11 +37,14 @@ class BusquedaSocio extends Component {
       //   console.log(resultado.data())
       if (!resultado.exists) {
         console.log("NO SE ENCONTRO");
+        disableNext(true);
         this.setState({
           noResultados: true
         });
       } else {
         console.log("SOCIO ENCONTRADO");
+        setUpSocio(resultado.data());
+        disableNext(false);
         this.setState({
           noResultados: false,
           socio: resultado.data()
