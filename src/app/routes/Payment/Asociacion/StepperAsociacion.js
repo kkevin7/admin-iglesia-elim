@@ -11,12 +11,12 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import SweetAlert from "react-bootstrap-sweetalert";
 //components
-import BusquedaSocio from './BusquedaSocio';
-import EspeficarCuota from './EspeficarCuota';
-import Confirmacion from './Confirmacion';
+import BusquedaSocio from "./BusquedaSocio";
+import EspeficarCuota from "./EspeficarCuota";
+import Confirmacion from "./Confirmacion";
 import Spinner from "components/Spinner/Spinner";
-
 
 const useStyles = theme => ({
   root: {
@@ -38,62 +38,84 @@ class StepperAsociacion extends Component {
       activeStep: 0,
       socio: {},
       disableNext: true,
-      pago: {}
+      pago: {},
+      showAlert: true
     };
   }
 
-  setUpSocio = (socio) => {
+  setUpSocio = socio => {
     this.setState({
       socio: socio
-    })
-  }
+    });
+  };
 
-  setUpPago = (pago) => {
+  setUpPago = pago => {
     this.setState({
       pago: pago
-    })
-  }
+    });
+  };
 
-  disableNext = (valor) => {
+  disableNext = valor => {
     this.setState({
       disableNext: valor
-    })
-  }
+    });
+  };
 
-  getStepContent = (stepIndex) =>{
-    const {firestore } = this.props;
-    if(!firestore) return <Spinner/>
+  handleAlertClick = () => {
+    this.setState({
+      showAlert: false
+    });
+  };
+
+  handleAgregarPago = () => {
+    const { firestore, history } = this.props;
+    const nuevaContribucion = {
+      id_usuario: this.state.socio.id,
+      valor_cuota: this.state.pago.valor_cuota,
+      cantidad_cuota: this.state.pago.cantidad_cuota,
+      fecha_inicio: this.state.pago.fecha_inicio,
+      fecha_fin: this.state.pago.fecha_fin,
+      fecha_ultimo_pago: null,
+      saldo: 0,
+      estado: true,
+      observaciones: this.state.pago.observaciones
+    };
+    firestore.add(
+      {
+        collection: "contribuciones"
+      },
+      nuevaContribucion
+    );
+  };
+
+  getStepContent = stepIndex => {
+    const { firestore } = this.props;
+    if (!firestore) return <Spinner />;
     switch (stepIndex) {
       case 0:
         return (
           <BusquedaSocio
-          firestore={firestore}
-          setUpSocio={this.setUpSocio}
-          disableNext={this.disableNext}
+            firestore={firestore}
+            setUpSocio={this.setUpSocio}
+            disableNext={this.disableNext}
           />
-          // <EspeficarCuota/>
         );
       case 1:
         return (
           <EspeficarCuota
-          setUpPago={this.setUpPago}
-          disableNext={this.disableNext}
+            setUpPago={this.setUpPago}
+            disableNext={this.disableNext}
           />
         );
       case 2:
-        return (
-          <Confirmacion
-          socio={this.state.socio}
-          pago={this.state.pago}
-          />
-        );
+        return <Confirmacion socio={this.state.socio} pago={this.state.pago} />;
       default:
         return "Unknown stepIndex";
     }
-  }
+  };
 
   render() {
-    const { classes} = this.props;
+    const { classes } = this.props;
     const steps = getSteps();
 
     function getSteps() {
@@ -105,11 +127,16 @@ class StepperAsociacion extends Component {
     }
 
     const handleNext = () => {
-      // console.log(this.state);
-      this.setState({
-        activeStep: this.state.activeStep + 1,
-        disableNext: true
-      });
+      if (this.state.activeStep === steps.length - 2) {
+        this.setState({
+          activeStep: this.state.activeStep + 1
+        });
+      } else {
+        this.setState({
+          activeStep: this.state.activeStep + 1,
+          disableNext: true
+        });
+      }
     };
 
     const handleBack = () => {
@@ -121,7 +148,8 @@ class StepperAsociacion extends Component {
 
     const handleReset = () => {
       this.setState({
-        activeStep: 0
+        activeStep: 0,
+        showAlert: true
       });
     };
 
@@ -146,16 +174,37 @@ class StepperAsociacion extends Component {
               <div className="col-lg-12">
                 <div className="jr-card">
                   <div>
-                    <Typography className={classes.instructions}>
-                      Todos los pasos han sido completados
-                    </Typography>
-                    <Button onClick={handleReset}>Reset</Button>
+                    <div className="col-12">
+                      <Typography
+                        variant="h4"
+                        gutterBottom
+                        className={`text-center ${classes.instructions}`}
+                      >
+                        Todos los pasos han sido completados
+                      </Typography>
+                    </div>
+                    <SweetAlert
+                      success
+                      show={this.state.showAlert}
+                      title="Nuevo socio agregado"
+                      onConfirm={this.handleAlertClick}
+                      onCancel={this.handleAlertClick}
+                    >
+                      Ahora podras ver sus aportaciones en su perfil
+                    </SweetAlert>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </Button>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="row mb-md-3">
+            <div className="row ">
               <div className="col-lg-12">
                 <div className="jr-card">
                   <div>
@@ -173,10 +222,15 @@ class StepperAsociacion extends Component {
                         disabled={this.state.disableNext}
                         variant="contained"
                         color="primary"
-                        onClick={handleNext}
+                        onClick={() => {
+                          handleNext();
+                          if (this.state.activeStep === steps.length - 1) {
+                            this.handleAgregarPago();
+                          }
+                        }}
                       >
                         {this.state.activeStep === steps.length - 1
-                          ? "TERMINAR"
+                          ? "CONFIRMAR"
                           : "SIGUIENTE"}
                       </Button>
                     </div>
@@ -191,12 +245,10 @@ class StepperAsociacion extends Component {
   }
 }
 
-export default 
-withRouter(
+export default withRouter(
   compose(
-      connect(),
-      firestoreConnect(),
-      withStyles(useStyles)
-  )
-  
-(StepperAsociacion));
+    connect(),
+    firestoreConnect(),
+    withStyles(useStyles)
+  )(StepperAsociacion)
+);
