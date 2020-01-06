@@ -10,6 +10,7 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+import Button from "@material-ui/core/Button";
 
 class EspeficarCuota extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class EspeficarCuota extends Component {
       fecha_fin: null,
       observaciones: "",
       valor_cuota_error: false,
-      cantidad_cuota_error: false
+      cantidad_cuota_error: false,
+      showMessage: ""
     };
   }
 
@@ -82,7 +84,42 @@ class EspeficarCuota extends Component {
     });
   };
 
+  handleVerificarFields = e => {
+    e.preventDefault();
+    const {disableNext, setUpPago} = this.props;
+    if (this.state.cantidad_cuota_error === false && this.state.valor_cuota_error === false) {
+      this.setState({
+        showMessage: true
+      });
+      disableNext(false);
+      setUpPago({
+        valor_cuota: this.state.valor_cuota,
+        cantidad_cuota: this.state.cantidad_cuota,
+        fecha_inicio: this.state.fecha_inicio,
+        fecha_fin: this.state.fecha_fin,
+        observaciones: this.state.observaciones,
+      })
+    } else {
+      this.setState({
+        showMessage: false
+      });
+      disableNext(true);
+    }
+  };
+
   render() {
+
+    const BadMessage = <div className="col-12">
+    <div className="alert alert-danger text-center font-weight-bold text-uppercase">
+      Existe un error en los campos
+    </div>
+  </div>;
+  const OKMessage = <div className="col-12">
+  <div className="alert alert-success text-center font-weight-bold text-uppercase">
+    Todo esta correcto
+  </div>
+</div>;
+
     return (
       <div className="col-md-12 col-12 p-4">
         <div className="col-12">
@@ -90,6 +127,7 @@ class EspeficarCuota extends Component {
             Información de la Couta a Recibir
           </h2>
         </div>
+        <form onSubmit={this.handleVerificarFields}>
         <div className="row">
           <div className="col-md-6 col-12">
             <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
@@ -184,7 +222,14 @@ class EspeficarCuota extends Component {
               />
             </div>
           </div>
+          <div className="col-12 my-4">
+            <Button variant="contained" color="primary" type="submit">
+              VERIFICAR
+            </Button>
+          </div>
+          {this.state.showMessage ? OKMessage : null }
         </div>
+        </form>
       </div>
     );
   }

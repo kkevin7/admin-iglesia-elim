@@ -10,9 +10,9 @@ const FichaSocio = ({ socio }) => {
         <CardContent>
           <h3 className="card-header bg-primary text-white">Datos del Socio</h3>
           <div className="card-body">
-            {/* <p className="font-weight-bold">ID: {''}
+            <p className="font-weight-bold">ID: {''}
                 <span className="font-weight-normal">{socio.id}</span>
-            </p> */}
+            </p>
             <p className="font-weight-bold">
               Nombre: {""}
               <span className="font-weight-normal">{socio.nombre}</span>

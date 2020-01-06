@@ -16,7 +16,8 @@ class BusquedaSocio extends Component {
     this.state = {
       busqueda: "",
       noResultados: false,
-      socio: {}
+      socio: {}, 
+      pago: {}
     };
   }
 
@@ -34,20 +35,21 @@ class BusquedaSocio extends Component {
     // const consulta = coleccion.where('uid', "==", busqueda).get();
     const consulta = usuariosRef.get();
     consulta.then(resultado => {
-      //   console.log(resultado.data())
       if (!resultado.exists) {
-        console.log("NO SE ENCONTRO");
+        // console.log("NO SE ENCONTRO");
         disableNext(true);
         this.setState({
-          noResultados: true
+          noResultados: true,
+          socio: {}
         });
       } else {
-        console.log("SOCIO ENCONTRADO");
-        setUpSocio(resultado.data());
+        // console.log("SOCIO ENCONTRADO");
+        // console.log({...resultado.data(), id: busqueda})
+        setUpSocio({...resultado.data(), id: busqueda});
         disableNext(false);
         this.setState({
           noResultados: false,
-          socio: resultado.data()
+          socio: {...resultado.data(), id: busqueda}
         });
       }
     });

@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 //components
 import BusquedaSocio from './BusquedaSocio';
 import EspeficarCuota from './EspeficarCuota';
+import Confirmacion from './Confirmacion';
 import Spinner from "components/Spinner/Spinner";
 
 
@@ -36,13 +37,20 @@ class StepperAsociacion extends Component {
     this.state = {
       activeStep: 0,
       socio: {},
-      disableNext: true
+      disableNext: true,
+      pago: {}
     };
   }
 
   setUpSocio = (socio) => {
     this.setState({
       socio: socio
+    })
+  }
+
+  setUpPago = (pago) => {
+    this.setState({
+      pago: pago
     })
   }
 
@@ -67,10 +75,18 @@ class StepperAsociacion extends Component {
         );
       case 1:
         return (
-          <EspeficarCuota/>
+          <EspeficarCuota
+          setUpPago={this.setUpPago}
+          disableNext={this.disableNext}
+          />
         );
       case 2:
-        return "This is the bit I really care about!";
+        return (
+          <Confirmacion
+          socio={this.state.socio}
+          pago={this.state.pago}
+          />
+        );
       default:
         return "Unknown stepIndex";
     }
@@ -89,7 +105,7 @@ class StepperAsociacion extends Component {
     }
 
     const handleNext = () => {
-      console.log(this.state);
+      // console.log(this.state);
       this.setState({
         activeStep: this.state.activeStep + 1,
         disableNext: true
