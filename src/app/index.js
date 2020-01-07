@@ -73,7 +73,7 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Kiosko/Ventas/ConfirmarVenta'))}/>
                      <Route path={`${match.url}/detalleVenta/:id`}
                          component={asyncComponent(() => import('./routes/Kiosko/Ventas/DetalleVenta'))}/>}
-                     <Route path={`${match.url}/comprobanteVenta`}
+                     <Route path={`${match.url}/comprobanteVenta/:id`}
                          component={asyncComponent(() => import('./routes/Kiosko/Ventas/ComprobanteVenta/ComprobanteVenta'))}/>}
 
                   {/* Proveedores */}

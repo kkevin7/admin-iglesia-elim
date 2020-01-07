@@ -11,15 +11,14 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 
 //calendar
-import 'date-fns';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
+import "date-fns";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 const FormUsuario = () => {
   // SELECT
@@ -49,28 +48,28 @@ const FormUsuario = () => {
   // DATEPICKER
   let fecha = new Date();
   fecha.setYear(fecha.getFullYear() - 15);
-  const [selectedFechaNacimiento, setselectedFechaNacimiento] = React.useState(fecha);
+  const [selectedFechaNacimiento, setselectedFechaNacimiento] = React.useState(
+    fecha
+  );
   const handleDateChange = date => {
     setselectedFechaNacimiento(date);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     const usuario = {
       rol: rol,
       fecha_nacimiento: selectedFechaNacimiento
-    }
+    };
     console.log(usuario);
-  }
+  };
 
   return (
     <div className="row mb-md-3">
       <div className="col-lg-12">
         <div className="jr-card">
           <div className="jr-card-header ">
-            <h3 className="card-heading">
-              DATOS DEL USUARIO
-            </h3>
+            <h3 className="card-heading">DATOS DEL USUARIO</h3>
           </div>
           <div className="jr-card-body ">
             <form onSubmit={handleSubmit} noValidate autoComplete="off">
@@ -136,7 +135,7 @@ const FormUsuario = () => {
                               value={selectedFechaNacimiento}
                               onChange={handleDateChange}
                               KeyboardButtonProps={{
-                                'aria-label': 'change date',
+                                "aria-label": "change date"
                               }}
                             />
                           </Grid>
@@ -157,7 +156,7 @@ const FormUsuario = () => {
                     <div className="col-md-4 col-12">
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
-                          id="outlined-select-rol"
+                          id="select-tipo-usuario"
                           select
                           label="Tipo de usuario"
                           value={rol}
@@ -174,14 +173,10 @@ const FormUsuario = () => {
                       </div>
                     </div>
                     <div className="col-12 mt-3">
-                          <Button 
-                          variant="contained" 
-                          color="primary"
-                          type="submit"
-                          >
-                            Guardar
-                          </Button>
-                        </div>
+                      <Button variant="contained" color="primary" type="submit">
+                        Guardar
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

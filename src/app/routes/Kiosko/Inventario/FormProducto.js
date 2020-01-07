@@ -33,6 +33,8 @@ class FormProducto extends Component {
         typeof props.producto !== "undefined" ? props.producto.existencia : "",
       descripcion:
         typeof props.producto !== "undefined" ? props.producto.descripcion : "",
+      proveedor: null,
+      categoria_producto: null,
       file: null,
       urlImage: "",
       uploadValue: 0
@@ -77,7 +79,6 @@ class FormProducto extends Component {
     //     })
     //   })
     // }
-
   };
 
   handleVolver = () => {
@@ -89,16 +90,20 @@ class FormProducto extends Component {
     this.inputElement.click();
   };
 
-  handleSelectImage= (e) => {
-    if(e.target.files.length > 0){
+  handleSelectImage = e => {
+    if (e.target.files.length > 0) {
       this.setState({
         file: e.target.files[0],
         urlImage: URL.createObjectURL(e.target.files[0])
-      })
+      });
     }
-  }
+  };
 
   render() {
+    const { proveedores, categoria_producto } = this.props;
+    if (!proveedores || !categoria_producto) return <Spinner />;
+    // console.log(proveedores)
+
     return (
       <Fragment>
         <div className="row mb-md-3">
@@ -129,7 +134,11 @@ class FormProducto extends Component {
                               component="img"
                               alt="Contemplative Reptile"
                               height="210"
-                              image={this.state.urlImage ? this.state.urlImage : imageDefault}
+                              image={
+                                this.state.urlImage
+                                  ? this.state.urlImage
+                                  : imageDefault
+                              }
                               title="Contemplative Reptile"
                             />
                             {/* <Button 
@@ -199,7 +208,7 @@ class FormProducto extends Component {
                             />
                           </div>
                         </div>
-                        <div className="col-md-8 col-12">
+                        <div className="col-md-12 col-12">
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
                               id="outlined-multiline-static"
@@ -211,6 +220,54 @@ class FormProducto extends Component {
                               value={this.state.descripcion}
                               onChange={this.handleChangeFilds}
                             />
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                            <TextField
+                              required
+                              id="select-proveedor"
+                              name="proveedor"
+                              select
+                              label="Proveedor"
+                              value={this.state.proveedor}
+                              onChange={this.handleChangeFilds}
+                              helperText="Selecciona el proveedor"
+                              variant="outlined"
+                            >
+                              {proveedores.map(proveedor => (
+                                <MenuItem
+                                  key={proveedor.id}
+                                  value={proveedor.id}
+                                >
+                                  {proveedor.nombre}
+                                </MenuItem>
+                              ))}
+                            </TextField>
+                          </div>
+                        </div>
+                        <div className="col-md-6 col-12">
+                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                            <TextField
+                              required
+                              id="select-categoria-producto"
+                              name="categoria_producto"
+                              select
+                              label="Categoria Producto"
+                              value={this.state.categoria_producto}
+                              onChange={this.handleChangeFilds}
+                              helperText="Selecciona la Categoria del Prodcuto"
+                              variant="outlined"
+                            >
+                              {categoria_producto.map(categoria => (
+                                <MenuItem
+                                  key={categoria.id}
+                                  value={categoria.id}
+                                >
+                                  {categoria.nombre}
+                                </MenuItem>
+                              ))}
+                            </TextField>
                           </div>
                         </div>
                         <div className="col-12 mt-3">
@@ -236,4 +293,23 @@ class FormProducto extends Component {
   }
 }
 
-export default withRouter((firestoreConnect())(FormProducto));
+const mapStateToProps = ({ firestore }) => {
+  return {
+    proveedores: firestore.ordered.proveedores,
+    categoria_producto: firestore.ordered.categoria_producto
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+      {
+        collection: "categoria_producto"
+      },
+      {
+        collection: "proveedores"
+      }
+    ])
+  )(FormProducto)
+);

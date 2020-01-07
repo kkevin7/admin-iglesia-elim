@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
+import Typography from '@material-ui/core/Typography';
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -81,9 +82,7 @@ class FormCategoriaProducto extends Component {
           Volver
         </Button>
         <div className="jr-card-header ">
-          <h3 className="card-heading  font-weight-bold">
-            DATOS DE LA CATEGORÍA DE PRODUCTOS
-          </h3>
+        <Typography variant="h5" className="text-center font-weight-bold">CATEGORÍA DE PRODUCTOS</Typography>
         </div>
         <form autoComplete="off" onSubmit={this.handleSubmit}>
           <div className="col-12">

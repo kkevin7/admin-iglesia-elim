@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 class Producto extends Component {
     state = { 
@@ -31,11 +33,12 @@ class Producto extends Component {
                         }}
                     /></td>
                     <td className="align-middle">
-                        <button 
+                        <Button 
                         type="button" 
-                        className="btn btn-danger font-weight-bold" 
+                        className="bg-red text-white " 
+                        variant="contained"
                         onClick={e => this.props.eliminarProducto(producto.id)}
-                        >&times; Eliminar</button>
+                        >&times; Eliminar</Button>
                     </td>
                 </tr>
             </Fragment>

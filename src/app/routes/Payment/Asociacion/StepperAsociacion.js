@@ -88,6 +88,11 @@ class StepperAsociacion extends Component {
     );
   };
 
+  handleRedirect = () => {
+    const { history } = this.props;
+    history.push('/app/contribuciones');
+  }
+
   getStepContent = stepIndex => {
     const { firestore } = this.props;
     if (!firestore) return <Spinner />;
@@ -187,7 +192,11 @@ class StepperAsociacion extends Component {
                       success
                       show={this.state.showAlert}
                       title="Nuevo socio agregado"
-                      onConfirm={this.handleAlertClick}
+                      onConfirm={() => {
+                        this.handleAlertClick();
+                        this.handleRedirect();
+                      }
+                      }
                       onCancel={this.handleAlertClick}
                     >
                       Ahora podras ver sus aportaciones en su perfil

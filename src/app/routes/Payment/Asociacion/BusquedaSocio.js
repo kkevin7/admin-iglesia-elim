@@ -6,7 +6,9 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+
 //Components
 import FichaSocio from "./FichaSocio";
 
@@ -16,7 +18,7 @@ class BusquedaSocio extends Component {
     this.state = {
       busqueda: "",
       noResultados: false,
-      socio: {}, 
+      socio: {},
       pago: {}
     };
   }
@@ -45,11 +47,11 @@ class BusquedaSocio extends Component {
       } else {
         // console.log("SOCIO ENCONTRADO");
         // console.log({...resultado.data(), id: busqueda})
-        setUpSocio({...resultado.data(), id: busqueda});
+        setUpSocio({ ...resultado.data(), id: busqueda });
         disableNext(false);
         this.setState({
           noResultados: false,
-          socio: {...resultado.data(), id: busqueda}
+          socio: { ...resultado.data(), id: busqueda }
         });
       }
     });
@@ -81,20 +83,32 @@ class BusquedaSocio extends Component {
         <div className="row justify-content-center">
           <div className="col-md-8 ">
             <form className="mb-4" onSubmit={this.buscarSocio}>
-              <legend>Ingresar el Código del Socio</legend>
+              <Typography
+                variant="h5"
+                gutterBottom
+                className="text-uppercase text-center"
+              >
+                Ingresar el Código del Socio
+              </Typography>
               <div className="form-group">
-                <input
+                <TextField
                   type="text"
+                  id="busqueda"
                   name="busqueda"
-                  className="form-control"
+                  label="Código"
+                  variant="outlined"
+                  fullWidth
                   onChange={this.handleChange}
                 />
               </div>
-              <input
+              <Button
                 type="submit"
-                value="Buscar Alumno"
-                className="btn btn-success btn-block"
-              />
+                fullWidth
+                variant="contained"
+                className="bg-green text-white"
+              >
+                Buscar Alumno
+              </Button>
             </form>
             {fichaSocio}
             {mensajeResultado}

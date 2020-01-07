@@ -9,6 +9,8 @@ import Select from "react-select";
 import Animated from "react-select/animated";
 import ResumenPedido from "./ResumenPedido";
 import GenerarPedido from "./GenerarPedido";
+import Button from "@material-ui/core/Button";
+import Typography from '@material-ui/core/Typography';
 
 class ContenidoPedido extends Component {
   state = {
@@ -117,9 +119,8 @@ class ContenidoPedido extends Component {
         return responseVenta;
       })
       .then(response => {
-        // console.log("SOY EL RESPONSE");
         // console.log(response);
-        history.push("/app/ventas")
+        history.push(`/app/comprobanteVenta/${response.id}`);
       });
   };
 
@@ -151,13 +152,14 @@ class ContenidoPedido extends Component {
             Total:{" "}
             <span className="font-weight-normal">$ {this.state.total}</span>
           </h4>
-          <button
+          <Button
             disabled={this.validarPedido(this.state)}
             type="submit"
-            className="btn btn-warning mt-2"
+            className={` ${!this.validarPedido(this.state) ? "bg-amber" : ""}`}
+            variant="contained"
           >
             Realizar Venta
-          </button>
+          </Button>
         </form>
       </Fragment>
     );

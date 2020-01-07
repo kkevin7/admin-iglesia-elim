@@ -15,7 +15,9 @@ class ComprobanteVenta extends Component {
   render() {
     const venta = this.props.venta;
     if (!venta) return <Spinner />;
+    console.log("LA VENTA");
     console.log(venta);
+    console.log(this.props)
 
     const mostrarReporte = () => {
       window.print();

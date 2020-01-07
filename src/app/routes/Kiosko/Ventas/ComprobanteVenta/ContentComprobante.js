@@ -33,7 +33,7 @@ class ContentComprobante extends Component {
               <tr>
                 <td className="">Vendedor</td>
                 <td className="font-weight-bold">
-                  {this.props.venta.id_vendedor.nombre_vendedor}
+                  {this.props.venta.vendedor.nombre_vendedor}
                 </td>
               </tr>
             </tbody>
