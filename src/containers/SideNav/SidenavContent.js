@@ -207,6 +207,12 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/app/contribuciones">
+                  <i className="zmdi zmdi-favorite zmdi-hc-fw" />
+                  <span className="nav-text">Contribuciones</span>
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/app/p2">
                   <i className="zmdi zmdi-money zmdi-hc-fw" />
                   <span className="nav-text">Realizar un pago </span>
