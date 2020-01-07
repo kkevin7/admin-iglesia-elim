@@ -14,6 +14,8 @@ class Contribuciones extends Component {
     const { contribuciones } = this.props;
     if(!contribuciones) return <Spinner/>
 
+    console.log(contribuciones);
+
     return (
       <div className="app-wrapper">
         <TableMBContribuciones contribuciones={contribuciones} />
