@@ -12,6 +12,9 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SweetAlert from "react-bootstrap-sweetalert";
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 //components
 import BusquedaSocio from "./BusquedaSocio";
 import EspeficarCuota from "./EspeficarCuota";
@@ -215,7 +218,8 @@ class StepperAsociacion extends Component {
           ) : (
             <div className="row ">
               <div className="col-lg-12">
-                <div className="jr-card">
+              <Card className="py-3">
+                <CardContent>
                   <div>
                     {this.getStepContent(this.state.activeStep)}
                     <div>
@@ -244,7 +248,8 @@ class StepperAsociacion extends Component {
                       </Button>
                     </div>
                   </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           )}

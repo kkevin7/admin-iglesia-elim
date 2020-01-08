@@ -6,12 +6,14 @@ import Auth from './Auth';
 import Settings from './SettingsReducer';
 import authReducer from './authReducer';
 import productoReducer from './productoReducer';
+import realizarPagoReducer from './realizarPagoReducer';
 
 export default (history) => combineReducers({
   router: connectRouter(history),
   settings: Settings,
   authCustom: authReducer,
   auth: Auth,
+  realizarPago: realizarPagoReducer,
   producto: productoReducer,
   firestore: firestoreReducer,
   firebase: firebaseReducer
