@@ -1,5 +1,5 @@
 import React from "react";
-import moment from 'moment';
+import moment from "moment";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -8,10 +8,10 @@ const FichaPago = ({ pago }) => {
   return (
     <div className="card my-3">
       <Card>
+        <h3 className="card-header bg-success text-white">
+          Datos de la Contribución
+        </h3>
         <CardContent>
-          <h3 className="card-header bg-success text-white">
-            Datos de la Contribución
-          </h3>
           <div className="card-body">
             <p className="font-weight-bold">
               Valor de la Cuota: {""}
@@ -23,11 +23,15 @@ const FichaPago = ({ pago }) => {
             </p>
             <p className="font-weight-bold">
               Fecha Inicio: {""}
-              <span className="font-weight-normal">{moment(pago.fecha_inicio).format("lll")}</span>
+              <span className="font-weight-normal">
+                {moment(pago.fecha_inicio).format("lll")}
+              </span>
             </p>
             <p className="font-weight-bold">
               Fecha Fin: {""}
-              <span className="font-weight-normal">{moment(pago.fecha_fin).format("lll")}</span>
+              <span className="font-weight-normal">
+                {moment(pago.fecha_fin).format("lll")}
+              </span>
             </p>
             <p className="font-weight-bold">
               Observaciones: {""}

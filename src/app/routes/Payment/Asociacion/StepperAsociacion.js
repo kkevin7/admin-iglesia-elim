@@ -226,7 +226,7 @@ class StepperAsociacion extends Component {
                       <Button
                         disabled={this.state.activeStep === 0}
                         onClick={handleBack}
-                        className={classes.backButton}
+                        className={`${classes.backButton}`}
                         variant="contained"
                       >
                         ATRÁS
@@ -235,6 +235,7 @@ class StepperAsociacion extends Component {
                         disabled={this.state.disableNext}
                         variant="contained"
                         color="primary"
+                        // className={`mx-auto`}
                         onClick={() => {
                           handleNext();
                           if (this.state.activeStep === steps.length - 1) {

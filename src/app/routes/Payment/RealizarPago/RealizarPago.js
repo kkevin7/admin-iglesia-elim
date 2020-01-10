@@ -18,6 +18,12 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 class RealizarPago extends Component {
   state = {};
+
+  redirectContribucion = () => {
+    const {history, socio} = this.props;
+    history.push(`/app/contribucionesSocio/${socio.id}`)
+  }
+
   render() {
     const { socio } = this.props;
 
@@ -27,7 +33,7 @@ class RealizarPago extends Component {
           <BuscarSocioPago />
           <CardActions>
             <div className="col-12 text-center">
-              <Button
+              {/* <Button
                 disabled={socio.nombre ? false : true}
                 className={`${
                   socio.nombre ? " bg-blue-grey" : ""
@@ -36,12 +42,13 @@ class RealizarPago extends Component {
                 startIcon={<ArrowBackIcon />}
               >
                 Atrás
-              </Button>
+              </Button> */}
               <Button
                 disabled={socio.nombre ? false : true}
                 className={`${socio.nombre ? " bg-cyan" : ""} text-white m-1`}
                 variant="contained"
                 startIcon={<ArrowForwardIcon />}
+                onClick={this.redirectContribucion}
               >
                 Continuar
               </Button>

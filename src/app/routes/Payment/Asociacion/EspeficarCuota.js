@@ -86,8 +86,11 @@ class EspeficarCuota extends Component {
 
   handleVerificarFields = e => {
     e.preventDefault();
-    const {disableNext, setUpPago} = this.props;
-    if (this.state.cantidad_cuota_error === false && this.state.valor_cuota_error === false) {
+    const { disableNext, setUpPago } = this.props;
+    if (
+      this.state.cantidad_cuota_error === false &&
+      this.state.valor_cuota_error === false
+    ) {
       this.setState({
         showMessage: true
       });
@@ -97,8 +100,8 @@ class EspeficarCuota extends Component {
         cantidad_cuota: this.state.cantidad_cuota,
         fecha_inicio: this.state.fecha_inicio,
         fecha_fin: this.state.fecha_fin,
-        observaciones: this.state.observaciones,
-      })
+        observaciones: this.state.observaciones
+      });
     } else {
       this.setState({
         showMessage: false
@@ -108,17 +111,20 @@ class EspeficarCuota extends Component {
   };
 
   render() {
-
-    const BadMessage = <div className="col-12">
-    <div className="alert alert-danger text-center font-weight-bold text-uppercase">
-      Existe un error en los campos
-    </div>
-  </div>;
-  const OKMessage = <div className="col-12">
-  <div className="alert alert-success text-center font-weight-bold text-uppercase">
-    Todo esta correcto
-  </div>
-</div>;
+    const BadMessage = (
+      <div className="col-12">
+        <div className="alert alert-danger text-center font-weight-bold text-uppercase">
+          Existe un error en los campos
+        </div>
+      </div>
+    );
+    const OKMessage = (
+      <div className="col-12">
+        <div className="alert alert-success text-center font-weight-bold text-uppercase">
+          Todo esta correcto
+        </div>
+      </div>
+    );
 
     return (
       <div className="col-md-12 col-12 p-4">
@@ -128,107 +134,107 @@ class EspeficarCuota extends Component {
           </h2>
         </div>
         <form onSubmit={this.handleVerificarFields}>
-        <div className="row">
-          <div className="col-md-6 col-12">
-            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-              <TextField
-                required
-                error={this.state.valor_cuota_error}
-                id="valorCuota"
-                label="Valor de Aportacion"
-                type="number"
-                name="valor_cuota"
-                value={this.state.valor_cuota}
-                onChange={this.handleChange}
-                InputProps={{
-                  inputProps: { min: 0, step: 0.01 }
-                }}
-              />
+          <div className="row">
+            <div className="col-md-6 col-12">
+              <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <TextField
+                  required
+                  error={this.state.valor_cuota_error}
+                  id="valorCuota"
+                  label="Valor de Aportacion"
+                  type="number"
+                  name="valor_cuota"
+                  value={this.state.valor_cuota}
+                  onChange={this.handleChange}
+                  InputProps={{
+                    inputProps: { min: 0, step: 0.01 }
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-              <TextField
-                required
-                error={this.state.cantidad_cuota_error}
-                id="cantidadCuota"
-                label="Cantidad de Cuotas"
-                type="number"
-                name="cantidad_cuota"
-                value={this.state.cantidad_cuota}
-                onChange={this.handleCantidadCouta}
-                InputProps={{
-                  inputProps: { min: 1, step: 1 }
-                }}
-              />
+            <div className="col-md-6 col-12">
+              <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <TextField
+                  required
+                  error={this.state.cantidad_cuota_error}
+                  id="cantidadCuota"
+                  label="Cantidad de Cuotas"
+                  type="number"
+                  name="cantidad_cuota"
+                  value={this.state.cantidad_cuota}
+                  onChange={this.handleCantidadCouta}
+                  InputProps={{
+                    inputProps: { min: 1, step: 1 }
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    required
-                    margin="normal"
-                    fullWidth
-                    readOnly
-                    id="date-picker-dialog"
-                    label="Fecha Inicio"
-                    format="dd/MM/yyyy"
-                    minDate={new Date()}
-                    value={this.state.fecha_inicio}
-                    onChange={this.handleFechaInicio}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date"
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
+            <div className="col-md-6 col-12">
+              <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around">
+                    <KeyboardDatePicker
+                      required
+                      margin="normal"
+                      fullWidth
+                      readOnly
+                      id="date-picker-dialog"
+                      label="Fecha Inicio"
+                      format="dd/MM/yyyy"
+                      minDate={new Date()}
+                      value={this.state.fecha_inicio}
+                      onChange={this.handleFechaInicio}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </div>
             </div>
-          </div>
-          <div className="col-md-6 col-12">
-            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around">
-                  <KeyboardDatePicker
-                    required
-                    margin="normal"
-                    fullWidth
-                    readOnly
-                    id="date-picker-dialog"
-                    label="Fecha Fin"
-                    format="dd/MM/yyyy"
-                    minDate={new Date()}
-                    value={this.state.fecha_fin}
-                    onChange={this.handleFechaInicio}
-                    KeyboardButtonProps={{
-                      "aria-label": "change date"
-                    }}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
+            <div className="col-md-6 col-12">
+              <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container justify="space-around">
+                    <KeyboardDatePicker
+                      required
+                      margin="normal"
+                      fullWidth
+                      readOnly
+                      id="date-picker-dialog"
+                      label="Fecha Fin"
+                      format="dd/MM/yyyy"
+                      minDate={new Date()}
+                      value={this.state.fecha_fin}
+                      onChange={this.handleFechaInicio}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </div>
             </div>
-          </div>
-          <div className="col-md-12 col-12">
-            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-              <TextField
-                id="observaciones"
-                name="observaciones"
-                label="Observaciones"
-                multiline
-                rows="4"
-                value={this.state.observaciones}
-                onChange={this.handleChangeFilds}
-              />
+            <div className="col-md-12 col-12">
+              <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <TextField
+                  id="observaciones"
+                  name="observaciones"
+                  label="Observaciones"
+                  multiline
+                  rows="4"
+                  value={this.state.observaciones}
+                  onChange={this.handleChangeFilds}
+                />
+              </div>
             </div>
+            <div className="col-12 my-4">
+              <Button variant="contained" color="primary" type="submit">
+                VERIFICAR
+              </Button>
+            </div>
+            {this.state.showMessage ? OKMessage : null}
           </div>
-          <div className="col-12 my-4">
-            <Button variant="contained" color="primary" type="submit">
-              VERIFICAR
-            </Button>
-          </div>
-          {this.state.showMessage ? OKMessage : null }
-        </div>
         </form>
       </div>
     );
