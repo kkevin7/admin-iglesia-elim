@@ -72,7 +72,7 @@ class BuscarSocioPago extends Component {
           <div className="col-md-8 col-12">
             <form className="mb-4" onSubmit={this.buscarSocio}>
               <Typography
-                variant="h5"
+                variant="h6"
                 gutterBottom
                 className="text-uppercase text-center"
               >

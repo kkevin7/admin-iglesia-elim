@@ -12,7 +12,7 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 const FichaContribucion = ({ contribucion, history }) => {
 
   const redirectCuota = (id) => {
-    history.push(`/app/tableCuotas/${id}`);
+    history.push(`/app/cuotas/${id}`);
   }
 
   return (

@@ -12,9 +12,9 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SweetAlert from "react-bootstrap-sweetalert";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 //components
 import BusquedaSocio from "./BusquedaSocio";
 import EspeficarCuota from "./EspeficarCuota";
@@ -83,18 +83,46 @@ class StepperAsociacion extends Component {
       estado: true,
       observaciones: this.state.pago.observaciones
     };
-    firestore.add(
-      {
-        collection: "contribuciones"
-      },
-      nuevaContribucion
-    );
+    firestore
+      .add(
+        {
+          collection: "contribuciones"
+        },
+        nuevaContribucion
+      )
+      .then(contribucion => {
+        let fecha_correspondiente = nuevaContribucion.fecha_fin;
+        fecha_correspondiente.setMonth(
+          fecha_correspondiente.getMonth() - nuevaContribucion.cantidad_cuota
+        );
+        fecha_correspondiente.setDate(1);
+
+        for (let i = 0; i < nuevaContribucion.cantidad_cuota; i++) {
+          const cuota = {
+            id_contribucion: contribucion.id,
+            rubro: `Cuota Mensual ${i+1}`,
+            valor: nuevaContribucion.valor_cuota,
+            fecha_inicio: fecha_correspondiente.setMonth(fecha_correspondiente.getMonth() + 1),
+            saldo_anterior: 0,
+            saldo_actualizado: 0,
+            fecha_pago: null,
+            observaciones: "",
+            estado: "VIGENTE"
+          };
+          firestore.add(
+            {
+              collection: "cuotas"
+            },
+            cuota
+          );
+        }
+      });
   };
 
   handleRedirect = () => {
     const { history } = this.props;
-    history.push('/app/contribuciones');
-  }
+    history.push("/app/contribuciones");
+  };
 
   getStepContent = stepIndex => {
     const { firestore } = this.props;
@@ -198,8 +226,7 @@ class StepperAsociacion extends Component {
                       onConfirm={() => {
                         this.handleAlertClick();
                         this.handleRedirect();
-                      }
-                      }
+                      }}
                       onCancel={this.handleAlertClick}
                     >
                       Ahora podras ver sus aportaciones en su perfil
@@ -218,37 +245,37 @@ class StepperAsociacion extends Component {
           ) : (
             <div className="row ">
               <div className="col-lg-12">
-              <Card className="py-3">
-                <CardContent>
-                  <div>
-                    {this.getStepContent(this.state.activeStep)}
+                <Card className="py-3">
+                  <CardContent>
                     <div>
-                      <Button
-                        disabled={this.state.activeStep === 0}
-                        onClick={handleBack}
-                        className={`${classes.backButton}`}
-                        variant="contained"
-                      >
-                        ATRÁS
-                      </Button>
-                      <Button
-                        disabled={this.state.disableNext}
-                        variant="contained"
-                        color="primary"
-                        // className={`mx-auto`}
-                        onClick={() => {
-                          handleNext();
-                          if (this.state.activeStep === steps.length - 1) {
-                            this.handleAgregarPago();
-                          }
-                        }}
-                      >
-                        {this.state.activeStep === steps.length - 1
-                          ? "CONFIRMAR"
-                          : "SIGUIENTE"}
-                      </Button>
+                      {this.getStepContent(this.state.activeStep)}
+                      <div>
+                        <Button
+                          disabled={this.state.activeStep === 0}
+                          onClick={handleBack}
+                          className={`${classes.backButton}`}
+                          variant="contained"
+                        >
+                          ATRÁS
+                        </Button>
+                        <Button
+                          disabled={this.state.disableNext}
+                          variant="contained"
+                          color="primary"
+                          // className={`mx-auto`}
+                          onClick={() => {
+                            handleNext();
+                            if (this.state.activeStep === steps.length - 1) {
+                              this.handleAgregarPago();
+                            }
+                          }}
+                        >
+                          {this.state.activeStep === steps.length - 1
+                            ? "CONFIRMAR"
+                            : "SIGUIENTE"}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
                   </CardContent>
                 </Card>
               </div>

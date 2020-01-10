@@ -37,7 +37,6 @@ class ContribucionesSocio extends Component {
 
     return (
       <div className="app-wrapper">
-        <div className="col-lg-12 col-12">
           <Card>
             <Typography
               variant="h5"
@@ -63,7 +62,6 @@ class ContribucionesSocio extends Component {
                 ))}
             </div>
           </Card>
-        </div>
       </div>
     );
   }
