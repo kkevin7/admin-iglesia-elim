@@ -18,7 +18,7 @@ import FormControl from "@material-ui/core/FormControl";
 class ContribucionesSocio extends Component {
   state = {};
 
-  componentWillMount () {
+  componentWillMount() {
     const { firestore } = this.props;
     // console.log(firestore)
     // console.log( this.props.match.params.id_usuario);
@@ -28,7 +28,6 @@ class ContribucionesSocio extends Component {
     // .orderBy('fecha_inicio', 'desc')
     // .get('contribuciones')
     // .get();
-   
   }
 
   render() {
@@ -37,31 +36,31 @@ class ContribucionesSocio extends Component {
 
     return (
       <div className="app-wrapper">
-          <Card>
-            <Typography
-              variant="h5"
-              className="text-center text-uppercase font-weight-bold my-4"
-            >
-              Contribuciones en curso
-            </Typography>
-            {/* <CardHeader
+        <Card>
+          <Typography
+            variant="h5"
+            className="text-center text-uppercase font-weight-bold my-4"
+          >
+            Contribuciones en curso
+          </Typography>
+          {/* <CardHeader
               className="text-center text-uppercase font-weight-bold"
               title="Contribuciones en curso"
             /> */}
-            <div className="row p-3">
-              {contribuciones &&
-                contribuciones.map(contribucion => (
-                  <div
-                    key={contribucion.id}
-                    className="col-sm-6 col-md-4 col-12 mb-3 mx-auto"
-                  >
-                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      <FichaContribucion contribucion={contribucion} />
-                    </div>
+          <div className="row p-3">
+            {contribuciones &&
+              contribuciones.map(contribucion => (
+                <div
+                  key={contribucion.id}
+                  className="col-sm-6 col-md-4 col-12 mb-3 mx-auto"
+                >
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <FichaContribucion contribucion={contribucion} />
                   </div>
-                ))}
-            </div>
-          </Card>
+                </div>
+              ))}
+          </div>
+        </Card>
       </div>
     );
   }
@@ -74,24 +73,18 @@ const mapStateToProps = state => {
   };
 };
 
-
-
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect( 
-      ( props ) => ( [
+    firestoreConnect(props => [
       {
         collection: "contribuciones",
-        // orderBy: [
-        //   [ "fecha_inicio", "asc" ],
-        // ],
         where: [
-          [ "id_usuario", "==", props.match.params.id_usuario],
-          [ "estado", "==", true],
+          ["id_usuario", "==", props.match.params.id_usuario],
+          ["estado", "==", true]
         ],
-      },
+        orderBy: [["fecha_inicio", "desc"]]
+      }
     ])
-    )
   )(ContribucionesSocio)
 );

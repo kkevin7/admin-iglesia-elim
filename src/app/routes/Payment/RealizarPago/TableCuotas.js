@@ -17,6 +17,7 @@ class TableCuotas extends Component {
     super(props);
     this.state = {};
   }
+
   render() {
     const { cuotas } = this.props;
     if (!cuotas) return <Spinner />;
@@ -39,8 +40,8 @@ class TableCuotas extends Component {
             {cuotas.map((cuota, index) => (
               <tr key={cuota.id}>
                 <td>{cuota.rubro}</td>
-                <td>{moment(cuota.fecha_inicio).format("LL")}</td>
-                <td>{cuota.valor}</td>
+                <td>{moment(cuota.fecha_inicio.toDate()).format("LL")}</td>
+                <td>$ {cuota.valor}</td>
                 <td>{cuota.id}</td>
                 <td>
                   {cuota.fecha_pago
@@ -70,6 +71,7 @@ class TableCuotas extends Component {
   }
 }
 
+
 const mapStateToProps = state => {
   return {
     cuotas: state.firestore.ordered.cuotas
@@ -78,12 +80,14 @@ const mapStateToProps = state => {
 
 export default withRouter(
   compose(
-    firestoreConnect(props => [
-      {
+    firestoreConnect(props => {
+
+        return [{
         collection: "cuotas",
-        where: [["id_contribucion", "==", props.match.params.id_contribucion]]
-      }
-    ]),
+        where: [['id_contribucion', '==', props.match.params.id_contribucion]],
+        orderBy: [ "fecha_inicio", "asc" ],
+      }]
+}),
     connect(mapStateToProps)
   )(TableCuotas)
 );

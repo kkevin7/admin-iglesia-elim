@@ -74,10 +74,10 @@ class StepperAsociacion extends Component {
     const { firestore, history } = this.props;
     const nuevaContribucion = {
       id_usuario: this.state.socio.id,
-      valor_cuota: this.state.pago.valor_cuota,
-      cantidad_cuota: this.state.pago.cantidad_cuota,
-      fecha_inicio: this.state.pago.fecha_inicio,
-      fecha_fin: this.state.pago.fecha_fin,
+      valor_cuota: Number(this.state.pago.valor_cuota),
+      cantidad_cuota: Number(this.state.pago.cantidad_cuota),
+      fecha_inicio: new Date(this.state.pago.fecha_inicio),
+      fecha_fin: new Date(this.state.pago.fecha_fin),
       fecha_ultimo_pago: null,
       saldo: 0,
       estado: true,
@@ -91,18 +91,29 @@ class StepperAsociacion extends Component {
         nuevaContribucion
       )
       .then(contribucion => {
-        let fecha_correspondiente = nuevaContribucion.fecha_fin;
-        fecha_correspondiente.setMonth(
-          fecha_correspondiente.getMonth() - nuevaContribucion.cantidad_cuota
+        let fecha_cuota = nuevaContribucion.fecha_fin;
+        fecha_cuota.setMonth(
+          fecha_cuota.getMonth() - nuevaContribucion.cantidad_cuota
         );
-        fecha_correspondiente.setDate(1);
 
-        for (let i = 0; i < nuevaContribucion.cantidad_cuota; i++) {
+        for (let i = 1; i <= nuevaContribucion.cantidad_cuota; i++) {
+          const first_date = new Date(
+            fecha_cuota.getFullYear(),
+            fecha_cuota.getMonth() + i,
+            1
+          );
+          const last_date = new Date(
+            fecha_cuota.getFullYear(),
+            fecha_cuota.getMonth() + 1 + i,
+            0
+          );
+
           const cuota = {
             id_contribucion: contribucion.id,
-            rubro: `Cuota Mensual ${i+1}`,
+            rubro: `Cuota Mensual ${i}`,
             valor: nuevaContribucion.valor_cuota,
-            fecha_inicio: fecha_correspondiente.setMonth(fecha_correspondiente.getMonth() + 1),
+            fecha_inicio: first_date,
+            fecha_fin: last_date,
             saldo_anterior: 0,
             saldo_actualizado: 0,
             fecha_pago: null,
