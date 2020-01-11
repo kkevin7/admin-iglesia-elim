@@ -54,7 +54,6 @@ class BuscarSocioPago extends Component {
     }
 
     //Mostrar mensaje de error
-    const {  } = this.state;
     let mensajeResultado = "";
     if (noResultados) {
       mensajeResultado = (

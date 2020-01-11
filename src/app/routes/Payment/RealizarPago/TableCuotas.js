@@ -11,6 +11,7 @@ import Card from "@material-ui/core/Card";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 //components
 import Spinner from "components/Spinner/Spinner";
+import DialogPago from './DialogPago';
 
 class TableCuotas extends Component {
   constructor(props) {
@@ -19,8 +20,8 @@ class TableCuotas extends Component {
   }
 
   render() {
-    const { cuotas } = this.props;
-    if (!cuotas) return <Spinner />;
+    const { cuotas, firestore } = this.props;
+    if (!cuotas || !firestore) return <Spinner />;
 
     return (
       <div className="table-responsive">
@@ -51,13 +52,7 @@ class TableCuotas extends Component {
                 <td>{cuota.estado}</td>
                 <td>
                   {cuota.estado === "VIGENTE" ? (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      startIcon={<AttachMoneyIcon />}
-                    >
-                      Pagar
-                    </Button>
+                    <DialogPago cuota={cuota} firestore={firestore}/>
                   ) : (
                     ""
                   )}
