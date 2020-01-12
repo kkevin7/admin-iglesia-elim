@@ -51,8 +51,7 @@ class App extends React.Component {
                   {/* Payment Administration */}
                   <Route path={`${match.url}/home`}
                          component={asyncComponent(() => import('./routes/Home'))}/>
-                  <Route path={`${match.url}/paymentAdministration`}
-                         component={asyncComponent(() => import('./routes/Payment/Administration'))}/>
+                  
                   
                   {/* Productos */}
                   <Route path={`${match.url}/inventario`}
@@ -94,6 +93,9 @@ class App extends React.Component {
 
               {/* --------------------------------------- PAGOS DE CUOTAS ------------------------------------- */}
 
+                     <Route path={`${match.url}/paymentAdministration`}
+                         component={asyncComponent(() => import('./routes/Payment/Administration'))}/>
+
                       {/* Asociacion de Usuarios */}
                      <Route path={`${match.url}/asociacion`}
                          component={asyncComponent(() => import('./routes/Payment/Asociacion/Asociacion'))}/>
@@ -101,6 +103,8 @@ class App extends React.Component {
                      {/* Contribuidores */}
                      <Route path={`${match.url}/contribuciones`}
                          component={asyncComponent(() => import('./routes/Payment/Contribuciones/Contribuciones'))}/>
+                     <Route path={`${match.url}/detalleContribucion/:id_contribucion`}
+                         component={asyncComponent(() => import('./routes/Payment/Contribuciones/DetalleContribucion'))}/>
 
                      {/* Realizar un pago */}
                      <Route path={`${match.url}/realizarPago`}
@@ -111,6 +115,8 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Payment/RealizarPago/Cuotas'))}/>
                      <Route path={`${match.url}/comprobanteCuota/:id`}
                          component={asyncComponent(() => import('./routes/Payment/RealizarPago/ComprobanteCuota'))}/>
+              
+              {/* ----------------------------------------- USUARIOS --------------------------------------------- */}
 
                   {/* Users */}
                   <Route path={`${match.url}/users`}

@@ -52,7 +52,7 @@ class ContribucionesSocio extends Component {
               contribuciones.map(contribucion => (
                 <div
                   key={contribucion.id}
-                  className="col-sm-6 col-md-6 col-12 mb-3 mx-auto"
+                  className="col-sm-6 col-md-5 col-lg-5 col-xl-4 col-12 mb-3 mx-auto"
                 >
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <FichaContribucion contribucion={contribucion} />

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import moment from 'moment';
+import { withRouter } from "react-router-dom";
+import moment from "moment";
 
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 // import 'bootstrap-css-only/css/bootstrap.min.css';
@@ -10,40 +11,45 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import PrintIcon from '@material-ui/icons/Print';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import PrintIcon from "@material-ui/icons/Print";
+import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
 
-const newFormat = (contribuciones) => {
-  console.log(contribuciones);
- 
-  var tbody = contribuciones.map(contribucion => {
-    console.log(moment(contribuciones.fecha_fin).format('LLL'))
-    return {
-      cantidad_cuota: contribucion.cantidad_cuota,
-      estado: contribucion.estado ? 'ACTIVO' : 'INACTIVO',
-      fecha_fin: moment(contribucion.fecha_fin.toDate()).format('LLL'),
-      fecha_inicio: moment(contribucion.fecha_inicio.toDate()).format('LLL'),
-      fecha_ultimo_pago: moment(null).format('LLL'),
-      id: contribucion.id,
-      id_usuario: contribucion.id_usuario,
-      observaciones: contribucion.observaciones,
-      saldo: contribucion.saldo,
-      valor_cuota: contribucion.valor_cuota,
-      detalle: <Button 
-      startIcon={<FormatListBulletedIcon/>}
-      variant="contained" 
-      color="primary" 
-      >
-        DETALLES
-      </Button>
-    };
-  })
-  return tbody;
-}
-
-const TableMBContribuciones = ({ contribuciones }) => {
+const TableMBContribuciones = ({ contribuciones, history }) => {
   
-  const newRows= newFormat(contribuciones);
+  const redirectDetalleContribucion = id_contribucion => {
+    history.push(`/app/detalleContribucion/${id_contribucion}`);
+  };
+
+  const newFormat = contribuciones => {
+    let tbody = contribuciones.map(contribucion => {
+      console.log(moment(contribuciones.fecha_fin).format("LLL"));
+      return {
+        cantidad_cuota: contribucion.cantidad_cuota,
+        estado: contribucion.estado ? "ACTIVO" : "INACTIVO",
+        fecha_fin: moment(contribucion.fecha_fin.toDate()).format("LLL"),
+        fecha_inicio: moment(contribucion.fecha_inicio.toDate()).format("LLL"),
+        fecha_ultimo_pago: moment(null).format("LLL"),
+        id: contribucion.id,
+        id_usuario: contribucion.id_usuario,
+        observaciones: contribucion.observaciones,
+        saldo: contribucion.saldo,
+        valor_cuota: contribucion.valor_cuota,
+        detalle: (
+          <Button
+            startIcon={<FormatListBulletedIcon />}
+            variant="contained"
+            color="primary"
+            onClick={() => redirectDetalleContribucion(contribucion.id)}
+          >
+            DETALLES
+          </Button>
+        )
+      };
+    });
+    return tbody;
+  };
+
+  const newRows = newFormat(contribuciones);
 
   const data = {
     columns: [
@@ -106,4 +112,4 @@ const TableMBContribuciones = ({ contribuciones }) => {
   );
 };
 
-export default TableMBContribuciones;
+export default withRouter(TableMBContribuciones);

@@ -24,7 +24,8 @@ class ComprobanteCuota extends Component {
 
   redirectToCuotas = id_contribucion => {
     const { history } = this.props;
-    history.push(`/app/cuotas/${id_contribucion}`);
+    // history.push(`/app/cuotas/${id_contribucion}`);
+    history.goBack();
   };
 
   render() {
@@ -57,7 +58,7 @@ class ComprobanteCuota extends Component {
             startIcon={<ArrowBackIcon />}
             onClick={() => this.redirectToCuotas(cuota.id_contribucion)}
           >
-            VOLVER A CUOTAS
+            VOLVER
           </Button>
         </div>
         <Card>
