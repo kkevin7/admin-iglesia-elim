@@ -16,7 +16,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-const DialogPago = ({ cuota, firestore }) => {
+const DialogPago = ({ cuota, firestore, history }) => {
   const [open, setOpen] = React.useState(false);
   const [valorCuota, setValorCuota] = React.useState("");
   const [error, setError] = React.useState(false);
@@ -44,10 +44,11 @@ const DialogPago = ({ cuota, firestore }) => {
 
   const handlePagoCuota = e => {
     e.preventDefault();
-    if (valorCuota == cuota.valor) {
+    if (valorCuota == cuota.valor && cuota.estado === "VIGENTE") {
       const editCuota = {
         saldo_anterior: cuota.saldo_actualizado,
         saldo_actualizado: valorCuota,
+        fecha_pago: new Date(),
         estado: "PAGADA"
       };
 
@@ -59,7 +60,7 @@ const DialogPago = ({ cuota, firestore }) => {
           },
           editCuota
         )
-        .then(() => {
+        .then(pago => {
           const editContribucion = {
             fecha_ultimo_pago: new Date()
           };
@@ -70,9 +71,15 @@ const DialogPago = ({ cuota, firestore }) => {
             },
             editContribucion
           );
-
-          setOpen(false);
-          setValorCuota("");
+          return pago;
+        })
+        // .then(pago => {
+        //   // setOpen(false);
+        //   // setValorCuota("");
+        //   // return pago
+        // })
+        .then(() => {
+          history.push(`/app/comprobanteCuota/${cuota.id}`);
         });
     } else {
       handleError(true);
@@ -125,7 +132,7 @@ const DialogPago = ({ cuota, firestore }) => {
             Cancelar
           </Button>
           <Button
-            onClick={handlePagoCuota}
+            onClick={e => handlePagoCuota(e)}
             disabled={error}
             color="primary"
             variant="contained"
@@ -138,4 +145,4 @@ const DialogPago = ({ cuota, firestore }) => {
   );
 };
 
-export default withRouter(DialogPago);
+export default withRouter(firestoreConnect()(DialogPago));

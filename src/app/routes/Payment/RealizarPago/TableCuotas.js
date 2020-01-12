@@ -8,6 +8,8 @@ import moment from "moment";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
+//Icons
+import PrintIcon from '@material-ui/icons/Print';
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 //components
 import Spinner from "components/Spinner/Spinner";
@@ -17,6 +19,11 @@ class TableCuotas extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  btnRedirectComprobante = (id) => {
+    const {history} = this.props;
+    history.push(`/app/comprobanteCuota/${id}`);
   }
 
   render() {
@@ -34,7 +41,8 @@ class TableCuotas extends Component {
               <th>Código</th>
               <th>Fecha de Pago</th>
               <th>Estado</th>
-              <th>Acciones</th>
+              <th className="text-center">Acciones</th>
+              <th className="text-center">Comprobante</th>
             </tr>
           </thead>
           <tbody>
@@ -52,7 +60,24 @@ class TableCuotas extends Component {
                 <td>{cuota.estado}</td>
                 <td>
                   {cuota.estado === "VIGENTE" ? (
-                    <DialogPago cuota={cuota} firestore={firestore}/>
+                    <DialogPago 
+                    cuota={cuota} 
+                    firestore={firestore}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </td>
+                <td>
+                {cuota.estado === "PAGADA" ? (
+                    <Button 
+                    startIcon={<PrintIcon/>}
+                    className="bg-cyan text-white" 
+                    variant="contained" 
+                    onClick={() => this.btnRedirectComprobante(cuota.id)}
+                    >
+                      GENERAR
+                    </Button>
                   ) : (
                     ""
                   )}
