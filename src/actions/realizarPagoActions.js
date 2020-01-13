@@ -3,9 +3,7 @@ export const buscarSocio = busqueda => {
     const firestore = getFirestore();
     const usuariosRef = firestore.collection("usuarios").doc(busqueda);
     // const consulta = coleccion.where('uid', "==", busqueda).get();
-    const consulta = usuariosRef.get();
-    consulta
-      .then(resultado => {
+    usuariosRef.get().then(resultado => {
         if (resultado.exists) {
           dispatch({
             type: "BUSCAR_SOCIO",

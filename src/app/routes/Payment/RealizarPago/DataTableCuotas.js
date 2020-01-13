@@ -257,7 +257,7 @@ const DataTableCuotas = ({ cuotas, history }) => {
                       // role="checkbox"
                       // aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       // selected={isItemSelected}
                     >
                       <TableCell align="left" >{row.rubro}</TableCell>
