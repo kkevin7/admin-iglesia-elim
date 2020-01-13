@@ -25,7 +25,7 @@ const TableMBContribuciones = ({ contribuciones, history }) => {
       console.log(moment(contribuciones.fecha_fin).format("LLL"));
       return {
         cantidad_cuota: contribucion.cantidad_cuota,
-        estado: contribucion.estado ? "ACTIVO" : "INACTIVO",
+        estado: contribucion.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>,
         fecha_fin: moment(contribucion.fecha_fin.toDate()).format("LLL"),
         fecha_inicio: moment(contribucion.fecha_inicio.toDate()).format("LLL"),
         fecha_ultimo_pago: moment(null).format("LLL"),

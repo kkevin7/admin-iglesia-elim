@@ -3,32 +3,35 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import moment from "moment";
+// Card
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 //components
 import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import OrderTableCell from "../../../../components/dashboard/eCommerce/OrderTable";
-import EnhancedTable from "./EnhancedTable";
 import TableVentas from "./TableVentas";
+import DataTableVentas from "./DataTableVentas";
 
 class Ventas extends Component {
   state = {};
   render() {
     const { ventas, firestore } = this.props;
     if (!ventas) return <Spinner />;
-    console.log(firestore);
+
     return (
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title="Ventas realizadas" />
-        {/* <OrderTableCell/> */}
-        {/* <EnhancedTable/> */}
-        <div className="row mb-md-3">
-          <div className="col-lg-12">
-            <div className="jr-card">
+        {/* <Card>
+          <CardContent>
             <TableVentas ventas={ventas} />
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>     */}
+        <DataTableVentas ventas={ventas} />
       </div>
     );
   }

@@ -4,15 +4,15 @@ import TBodyProveedores from './TBodyProveedores';
 const TableProveedores = ({proveedores}) => {
     return ( 
         <div className="table-responsive">
-            <table className="table table-striped table-inverse">
+            <table className="table table-bordered table-striped table-inverse">
               <thead className="thead-inverse">
                 <tr>
                   <th>Nombre</th>
                   <th>Apellido</th>
                   <th>Teléfono</th>
                   <th>Empresa</th>
-                  <th>Estado</th>
-                  <th colSpan="2">Acciones</th>
+                  <th className="text-center" >Estado</th>
+                  <th colSpan="2" className="text-center">Acciones</th>
                 </tr>
               </thead>
               <tbody>

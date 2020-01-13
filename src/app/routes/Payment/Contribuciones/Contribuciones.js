@@ -36,7 +36,8 @@ export default withRouter(
     connect(mapStateToProps),
     firestoreConnect([
       {
-        collection: "contribuciones"
+        collection: "contribuciones",
+        orderBy: ["fecha_inicio", "desc"]
       }
     ])
   )(Contribuciones)

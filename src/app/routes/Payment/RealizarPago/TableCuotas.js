@@ -19,7 +19,7 @@ const TableCuotas = ({ cuotas, history }) => {
 
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-inverse">
+      <table className="table table-bordered table-striped table-inverse">
         <thead className="thead-inverse">
           <tr>
             <th>Rubro</th>

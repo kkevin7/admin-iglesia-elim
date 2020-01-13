@@ -22,10 +22,9 @@ const TBodyProveedores = ({proveedores, history}) => {
             <td>{proveedor.apellido}</td>
             <td>{proveedor.telefono}</td>
             <td>{proveedor.empresa}</td>
-            <td><label className={`text-white p-1 ${proveedor.estado ? 'bg-success' : 'bg-danger'}`} >{proveedor.estado ? 'ACTIVO' : 'INACTIVO'}</label></td>
-            <td>
+            <td className="text-center"><label className={`text-white p-1 ${proveedor.estado ? 'bg-success' : 'bg-danger'}`} >{proveedor.estado ? 'ACTIVO' : 'INACTIVO'}</label></td>
+            <td className="text-center">
                 <Button 
-                
                 className="bg-warning text-white" 
                 onClick={() => handleRedirectEdit(proveedor.id)} 
                 startIcon={<EditIcon/>}
@@ -35,7 +34,7 @@ const TBodyProveedores = ({proveedores, history}) => {
                   Editar
                 </Button>
               </td>
-              <td>
+              <td className="text-center">
                 <SweetAlertEliminar id={proveedor.id}/>
               </td>
             </tr>

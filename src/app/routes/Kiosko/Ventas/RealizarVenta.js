@@ -8,7 +8,6 @@ import Spinner from 'components/Spinner/Spinner';
 import ContainerHeader from 'components/ContainerHeader/index';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import OrderTableCell from '../../../../components/dashboard/eCommerce/OrderTable';
-import EnhancedTable from './EnhancedTable';
 import Select from 'react-select';
 import ContenidoPedido from './ContenidoPedido';
 

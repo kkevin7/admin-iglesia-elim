@@ -26,17 +26,17 @@ class DetalleContribucion extends Component {
     return (
       <div className="app-wrapper">
         <div className="row">
-          <div className="col-lg-6 col-lg-6 col-sm-6 col-12">
+          <div className="col-lg-6 col-lg-6 col-sm-6 col-12 my-2">
             <CardSocio
                 socio={null}
             />
           </div>
-          <div className="col-lg-6 col-lg-6 col-sm-6 col-12">
+          <div className="col-lg-6 col-lg-6 col-sm-6 col-12 my-2">
             <CardContribucion 
                 contribucion={contribucion}
             />
           </div>
-          <div className="col-lg-12 col-lg-12 col-sm-12 col-12 mt-3">
+          <div className="col-lg-12 col-lg-12 col-sm-12 col-12 my-2">
             <CardCuotas
                 cuotas={cuotas}
             />
