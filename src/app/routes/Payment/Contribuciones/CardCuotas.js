@@ -13,7 +13,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 //Components
 import Spinner from "components/Spinner/Spinner";
-import TableCuotas from 'app/routes/Payment/RealizarPago/TableCuotas'
+import TableCuotas from "app/routes/Payment/RealizarPago/TableCuotas";
+import DataTableCuotas from "app/routes/Payment/RealizarPago/DataTableCuotas";
 
 const CardCuotas = ({ cuotas }) => {
   if (!cuotas)
@@ -41,7 +42,7 @@ const CardCuotas = ({ cuotas }) => {
         </h3>
       </div>
       <CardContent>
-        <TableCuotas 
+        <DataTableCuotas 
             cuotas={cuotas}
         />
       </CardContent>

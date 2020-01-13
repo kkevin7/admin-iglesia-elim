@@ -15,6 +15,7 @@ import Badge from "@material-ui/core/Badge";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 //Components
 import TableCuotas from "./TableCuotas";
+import DataTableCuotas from "./DataTableCuotas";
 import Spinner from "components/Spinner/Spinner";
 
 class Cuotas extends Component {
@@ -25,11 +26,12 @@ class Cuotas extends Component {
 
     return (
       <div className="app-wrapper">
-        <Card>
+        {/* <Card>
           <TableCuotas
             cuotas={cuotas}
           />
-        </Card>
+        </Card> */}
+        <DataTableCuotas cuotas={cuotas}/>
       </div>
     );
   }

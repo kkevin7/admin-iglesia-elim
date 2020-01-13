@@ -28,8 +28,12 @@ import Button from "@material-ui/core/Button";
 //Icons
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import PrintIcon from "@material-ui/icons/Print";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import PrintIcon from "@material-ui/icons/Print";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+//components
+import Spinner from "components/Spinner/Spinner";
+import DialogPago from "app/routes/Payment/RealizarPago/DialogPago";
 
 // function createData(name, calories, fat, carbs, protein) {
 //     return { name, calories, fat, carbs, protein };
@@ -62,17 +66,13 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: "id", numeric: false, disablePadding: false, label: "ID" },
-  {
-    id: "fecha_venta",
-    numeric: false,
-    disablePadding: true,
-    label: "Fecha Venta"
-  },
-  { id: "total", numeric: true, disablePadding: false, label: "Total" },
-  { id: "vendedor", numeric: false, disablePadding: false, label: "Vendedor" },
+  { id: "rubro", numeric: true, disablePadding: false, label: "Rubro" },
+  { id: "fecha_inicio", numeric: false, disablePadding: false, label: "Fecha Incio" },
+  { id: "valor", numeric: true, disablePadding: false, label: "Monto" },
+  { id: "id", numeric: false, disablePadding: false, label: "Código" },
+  { id: "fecha_pago", numeric: false, disablePadding: false, label: "Fecha Pago" },
   { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
-  { id: "detalle", numeric: false, disablePadding: false, label: "Acciones" },
+  { id: "acciones", numeric: false, disablePadding: false, label: "Acciones" },
   { id: "comprobante", numeric: false, disablePadding: false, label: "Comprobante" },
 ];
 
@@ -157,14 +157,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTableVenta = ({ ventas, history }) => {
+const DataTableCuotas = ({ cuotas, history }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(12);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -174,7 +174,7 @@ const DataTableVenta = ({ ventas, history }) => {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = ventas.map(n => n.name);
+      const newSelecteds = cuotas.map(n => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -216,15 +216,11 @@ const DataTableVenta = ({ ventas, history }) => {
 
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, ventas.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, cuotas.length - page * rowsPerPage);
 
-  const btnRedirectDetalle = id => {
-    history.push(`/app/detalleVenta/${id}`);
-  };
-
-  const btnRedirectComprobante = id => {
-    history.push(`/app/comprobanteVenta/${id}`);
-  };
+    const btnRedirectComprobante = id => {
+        history.push(`/app/comprobanteCuota/${id}`);
+      };
 
   return (
       <Paper className={classes.paper}>
@@ -245,10 +241,10 @@ const DataTableVenta = ({ ventas, history }) => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={ventas.length}
+              rowCount={cuotas.length}
             />
             <TableBody>
-              {stableSort(ventas, getSorting(order, orderBy))
+              {stableSort(cuotas, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
@@ -264,36 +260,38 @@ const DataTableVenta = ({ ventas, history }) => {
                       key={row.name}
                       // selected={isItemSelected}
                     >
-                      <TableCell>{row.id}</TableCell>
+                      <TableCell align="left" >{row.rubro}</TableCell>
                       <TableCell align="left">
-                        {moment(row.fecha_venta.toDate()).format("lll")}
+                        {moment(row.fecha_inicio.toDate()).format("ll")}
                       </TableCell>
                       <TableCell align="left">
-                        $ {row.total.toFixed(2)}
+                        $ {row.valor.toFixed(2)}
                       </TableCell>
                       <TableCell align="left">
-                        {!row.vendedor ? "" : row.vendedor.nombre}
+                        {row.id}
+                      </TableCell>
+                      <TableCell align="left" >
+                      {row.fecha_pago
+                  ? moment(row.fecha_pago.toDate()).format("lll")
+                  : ""}
                       </TableCell>
                       <TableCell align="left">{row.estado}</TableCell>
                       <TableCell>
-                        <Button
-                          startIcon={<FormatListBulletedIcon />}
-                          onClick={() => btnRedirectDetalle(row.id)}
-                          variant="contained"
-                          color="primary"
-                        >
-                          DETALLES
-                        </Button>
+                        {row.estado === "VIGENTE" ? <DialogPago cuota={row} /> : ""}
                       </TableCell>
                       <TableCell>
-                        <Button
-                          startIcon={<PrintIcon />}
-                          className="bg-cyan text-white"
-                          variant="contained"
-                          onClick={() => btnRedirectComprobante(row.id)}
-                        >
-                          GENERAR
-                        </Button>
+                      {row.estado === "PAGADA" ? (
+                  <Button
+                    startIcon={<PrintIcon />}
+                    className="bg-cyan text-white"
+                    variant="contained"
+                    onClick={() => btnRedirectComprobante(row.id)}
+                  >
+                    GENERAR
+                  </Button>
+                ) : (
+                  ""
+                )}
                       </TableCell>
                     </TableRow>
                   );
@@ -307,9 +305,9 @@ const DataTableVenta = ({ ventas, history }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[12, 24, 36]}
           component="div"
-          count={ventas.length}
+          count={cuotas.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
@@ -319,4 +317,4 @@ const DataTableVenta = ({ ventas, history }) => {
   );
 };
 
-export default withRouter(DataTableVenta);
+export default withRouter(DataTableCuotas);
