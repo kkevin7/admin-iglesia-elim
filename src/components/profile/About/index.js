@@ -1,48 +1,52 @@
 import React from "react";
+import moment from "moment";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Widget from "components/Widget/index";
-// import {aboutList} from '../../../app/routes/socialApps/routes/Profile/data'
 import AboutItem from "./AboutItem";
 
 class About extends React.Component {
 
-  state = {
-  aboutList: [
-      {
-        title: "Dirección",
-        icon: "zmdi zmdi-home jr-fs-xlxl text-orange",
-        desc: "Barrio San Antonio, el cactus",
-        userList: null
-      },
-      {
-        title: "Cumpleaños",
-        icon: "zmdi zmdi-cake jr-fs-xlxl text-orange",
-        desc: "Noviembre 12, 1995",
-        userList: null
-      },
-      {
-        title: "Departamento",
-        icon: "zmdi zmdi-city-alt jr-fs-xlxl text-orange",
-        desc: "Santa Ana",
-        userList: null
-      },
-      {
-        title: "Té uniste",
-        icon: "zmdi zmdi-check-square jr-fs-xlxl text-orange",
-        desc: "Junio 30, 2017",
-        userList: null
-      }
-    ],
-    value: 0,
-  };
+  constructor(props) {
+    super(props);
+    console.log(props)
+    this.state = {
+      aboutList: [
+        {
+          title: "Dirección",
+          icon: "zmdi zmdi-home jr-fs-xlxl text-orange",
+          desc: props.profile.direccion ? props.profile.direccion : "",
+          userList: null
+        },
+        {
+          title: "Cumpleaños",
+          icon: "zmdi zmdi-cake jr-fs-xlxl text-orange",
+          desc: props.profile.fecha_nacimiento ? moment(props.profile.fecha_nacimiento).format("LL"): "",
+          userList: null
+        },
+        {
+          title: "Departamento",
+          icon: "zmdi zmdi-city-alt jr-fs-xlxl text-orange",
+          desc: props.profile.departamento ? props.profile.departamento : "",
+          userList: null
+        },
+        {
+          title: "Té uniste",
+          icon: "zmdi zmdi-check-square jr-fs-xlxl text-orange",
+          desc: props.profile.fecha_socio ? moment(props.profile.fecha_socio.toDate()).format("LL"): "",
+          userList: null
+        }
+      ],
+      value: 0,
+    };
+  }
 
   handleChange = (event, value) => {
-    this.setState({value});
+    this.setState({ value });
   };
 
   render() {
-    const {value, aboutList} = this.state;
+    const { value, aboutList } = this.state;
     return (
       <Widget styleName="jr-card-full jr-card-tabs-right jr-card-profile">
         <div className="card-header">
@@ -56,12 +60,12 @@ class About extends React.Component {
           </Tabs> */}
           <div className="jr-tabs-content jr-task-list">
             <div className="row">
-              {value === 0 && aboutList.map((about, index) => <div
-                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about}/></div>)}
-              {value === 1 && aboutList.map((about, index) => <div
-                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about}/></div>)}
-              {value === 2 && aboutList.map((about, index) => <div
-                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about}/></div>)}
+              {value === 0 && aboutList.map((about, index) => <div key={index}
+                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about} /></div>)}
+              {value === 1 && aboutList.map((about, index) => <div key={index}
+                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about} /></div>)}
+              {value === 2 && aboutList.map((about, index) => <div key={index}
+                className="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12"><AboutItem data={about} /></div>)}
             </div>
           </div>
         </div>

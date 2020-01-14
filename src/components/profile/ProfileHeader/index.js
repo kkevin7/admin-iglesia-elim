@@ -1,18 +1,24 @@
 import React from "react";
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from "@material-ui/core/Avatar";
 
-const ProfileHeader = () => {
+const ProfileHeader = ({ profile }) => {
   return (
     <div className="jr-profile-banner">
       <div className="jr-profile-container">
         <div className="jr-profile-banner-top">
           <div className="jr-profile-banner-top-left">
             <div className="jr-profile-banner-avatar">
-              <Avatar className="size-90" alt="..." src={require("assets/images/users/user.png")}/>
+              <Avatar
+                className="size-90"
+                alt="..."
+                src={require("assets/images/users/user.png")}
+              />
             </div>
             <div className="jr-profile-banner-avatar-info">
-              <h2 className="mb-2 jr-mb-sm-3 jr-fs-xxl jr-font-weight-light">Jorge Pérez</h2>
-              <p className="mb-0 jr-fs-lg">Santa Ana, El Salvador</p>
+              <h2 className="mb-2 jr-mb-sm-3 jr-fs-xxl jr-font-weight-light">{`${profile.nombre} ${profile.apellido}`}</h2>
+              <p className="mb-0 jr-fs-lg">
+                {`${profile.departamento}`}, El Salvador
+              </p>
             </div>
           </div>
           {/* <div className="jr-profile-banner-top-right">
@@ -51,8 +57,7 @@ const ProfileHeader = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ProfileHeader;
-

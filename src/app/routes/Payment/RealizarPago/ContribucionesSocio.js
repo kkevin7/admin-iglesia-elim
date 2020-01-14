@@ -18,7 +18,7 @@ import FormControl from "@material-ui/core/FormControl";
 class ContribucionesSocio extends Component {
   state = {};
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.props;
     // console.log(firestore)
     // console.log( this.props.match.params.id_usuario);

@@ -12,6 +12,7 @@ import Biography from "components/profile/Biography/index";
 import About from "components/profile/About/index";
 import Contact from "components/profile/Contact/index";
 // import ProfileCard from 'components/ProfileCard/index';
+import Spinner from "components/Spinner/Spinner";
 
 class Profile extends Component {
   constructor(props) {
@@ -20,24 +21,25 @@ class Profile extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props);
+      console.log("DidMount ", this.props)
   }
 
   render() {
-    
+    const {usuario, profile} = this.props;
+    if(!usuario || profile.isEmpty) return <Spinner/>
 
     return (
       <div className="app-wrapper">
-        <ProfileHeader />
+        <ProfileHeader profile={profile} />
         {/* <Biography/> */}
 
         <div className="jr-profile-content">
           <div className="row">
             <div className="col-xl-8 col-lg-8 col-md-7 col-12">
-              <About aboutList={this.state.userData} />
+              <About usuario={usuario} profile={profile} />
             </div>
             <div className="col-xl-4 col-lg-4 col-md-5 col-12">
-              <Contact />
+              <Contact usuario={usuario} profile={profile} />
             </div>
           </div>
         </div>
@@ -46,20 +48,17 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
+const mapStateToProps = ({firebase}) => {
+    console.log(firebase)
   return {
-    // cuotas: state.firestore.ordered.cuotas
+    usuario: firebase.auth,
+    profile: firebase.profile
   };
 };
 
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect(props => [
-      {
-        collection: "usuarios"
-      }
-    ])
+    firestoreConnect()
   )(Profile)
 );

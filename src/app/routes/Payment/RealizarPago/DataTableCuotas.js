@@ -262,7 +262,7 @@ const DataTableCuotas = ({ cuotas, history }) => {
                     >
                       <TableCell align="left" >{row.rubro}</TableCell>
                       <TableCell align="left">
-                        {moment(row.fecha_inicio.toDate()).format("ll")}
+                        {moment(row.fecha_inicio.toDate()).format("LL")}
                       </TableCell>
                       <TableCell align="left">
                         $ {row.valor.toFixed(2)}
@@ -272,7 +272,7 @@ const DataTableCuotas = ({ cuotas, history }) => {
                       </TableCell>
                       <TableCell align="left" >
                       {row.fecha_pago
-                  ? moment(row.fecha_pago.toDate()).format("lll")
+                  ? moment(row.fecha_pago.toDate()).format("LLL")
                   : ""}
                       </TableCell>
                       <TableCell align="left">{row.estado}</TableCell>

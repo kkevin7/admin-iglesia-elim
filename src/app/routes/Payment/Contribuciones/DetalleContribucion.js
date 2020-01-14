@@ -63,15 +63,8 @@ class DetalleContribucion extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { contribucion, cuotas, socio } = this.props;
-    console.log(contribucion);
-    console.log(cuotas);
-    console.log(socio);
     if (!contribucion || !cuotas || !socio) return <Spinner />;
-    console.log(contribucion);
-    console.log(cuotas);
-    console.log(socio);
 
     return (
       <div className="app-wrapper">

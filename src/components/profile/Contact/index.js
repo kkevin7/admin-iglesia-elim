@@ -3,18 +3,18 @@ import Widget from "components/Widget";
 // import {contactList} from '../../../app/routes/socialApps/routes/Profile/data'
 
 
-const Contact = () => {
+const Contact = ({usuario, profile}) => {
 
   const contactList = [
     {
       icon: "zmdi zmdi-email jr-fs-xxl text-grey",
       title: "Email",
-      desc: "Jorge.perez@gmail.com"
+      desc: `${usuario.email}`
     },
     {
       icon: "zmdi zmdi-phone jr-fs-xxl text-greyy",
       title: "Teléfono",
-      desc: "+503 7412-4598"
+      desc: `+503 ${profile.telefono}`
     }
 
   ];

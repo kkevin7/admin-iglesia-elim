@@ -35,6 +35,11 @@ function AuthIsLoaded({ children }) {
   return children
 }
 
+function ProfileIsLoaded({ children }) {
+  const auth = useSelector(state => state.firebase.profile)
+  if (!isLoaded(auth)) return <Spinner/>;
+  return children
+}
 
 const MainApp = () =>
   <Provider store={store}>

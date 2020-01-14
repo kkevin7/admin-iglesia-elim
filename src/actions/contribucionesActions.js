@@ -15,7 +15,6 @@ export const buscarContribucionAndSocio = busqueda => {
             }
             return contribucion;
         }).then((contribucion) => {
-            // console.log(contribucion)
             return firestore.collection("usuarios").doc(contribucion.data().id_usuario).get().then(usuario => {
                 if (usuario.exists) {
                     dispatch({
