@@ -56,13 +56,13 @@ const CardContribucion = ({ contribucion }) => {
           <p className="font-weight-bold">
             Fecha Inicio: {""}
             <span className="font-weight-normal">
-              {moment(contribucion.fecha_inicio.toDate()).format("lll")}
+              {contribucion.fecha_inicio ? moment(contribucion.fecha_inicio.toDate()).format("lll") : ""}
             </span>
           </p>
           <p className="font-weight-bold">
             Fecha Fin: {""}
             <span className="font-weight-normal">
-              {moment(contribucion.fecha_fin.toDate()).format("lll")}
+              {contribucion.fecha_fin ? moment(contribucion.fecha_fin.toDate()).format("lll") : ""}
             </span>
           </p>
           <p className="font-weight-bold">

@@ -1,7 +1,7 @@
 const initState = {
   contribuciones: [{}],
-  contribucion: [{}],
-  socio: [{}]
+  contribucion: {},
+  socio: {}
 };
 
 const contribucionReducer = (state = initState, action) => {

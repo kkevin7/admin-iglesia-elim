@@ -1,8 +1,7 @@
 export const buscarContribucionAndSocio = busqueda => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        const contribucionesRef = firestore.collection("contribuciones").doc(busqueda);
-        contribucionesRef.get().then(contribucion => {
+        return await firestore.collection("contribuciones").doc(busqueda).get().then(contribucion => {
             if (contribucion.exists) {
                 dispatch({
                     type: "BUSCAR_CONTRIBUCION",
@@ -15,9 +14,9 @@ export const buscarContribucionAndSocio = busqueda => {
                 });
             }
             return contribucion;
-        }).then(contribucion => {
-            const usuariosRef = firestore.collection("usuarios").doc(contribucion.data().id_usuario);
-            usuariosRef.get().then(usuario => {
+        }).then((contribucion) => {
+            // console.log(contribucion)
+            return firestore.collection("usuarios").doc(contribucion.data().id_usuario).get().then(usuario => {
                 if (usuario.exists) {
                     dispatch({
                         type: "BUSCAR_SOCIO",
@@ -29,6 +28,7 @@ export const buscarContribucionAndSocio = busqueda => {
                         contribucion: {},
                     });
                 }
+                return usuario;
             })
         }).catch(err => {
             dispatch({

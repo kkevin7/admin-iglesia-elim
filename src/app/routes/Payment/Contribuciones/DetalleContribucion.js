@@ -59,12 +59,19 @@ class DetalleContribucion extends Component {
     // });
     const {buscarContribucionAndSocio} = this.props;
     buscarContribucionAndSocio(this.props.match.params.id_contribucion)
+  
   }
 
   render() {
+    console.log(this.props);
     const { contribucion, cuotas, socio } = this.props;
+    console.log(contribucion);
+    console.log(cuotas);
+    console.log(socio);
     if (!contribucion || !cuotas || !socio) return <Spinner />;
-    // console.log(this.props);
+    console.log(contribucion);
+    console.log(cuotas);
+    console.log(socio);
 
     return (
       <div className="app-wrapper">
@@ -85,17 +92,17 @@ class DetalleContribucion extends Component {
 }
 
 const mapStateToProps = ({ firestore, contribucion }) => {
-  console.log(contribucion.contribucion);
+  // console.log(contribucion.contribucion);
   return {
     socio: contribucion.socio,
-    contribucion: contribucion.contribucion,
+    contribucion: contribucion.contribucion && contribucion.contribucion,
     cuotas: firestore.ordered.cuotas
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    buscarContribucionAndSocio: busqueda => dispatch(buscarContribucionAndSocio(busqueda))
+    buscarContribucionAndSocio: async (busqueda) => dispatch(buscarContribucionAndSocio(busqueda))
   };
 };
 
