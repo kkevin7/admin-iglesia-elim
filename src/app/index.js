@@ -128,6 +128,8 @@ class App extends React.Component {
                   {/* Profile */}
                   <Route path={`${match.url}/profile`}
                          component={asyncComponent(() => import('./routes/Profile/Profile'))}/>
+                  <Route path={`${match.url}/profileContribucion/:year?`}
+                         component={asyncComponent(() => import('./routes/Profile/ProfileContribucion'))}/>
                   
                 <Route component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>

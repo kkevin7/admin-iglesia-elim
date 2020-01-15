@@ -50,7 +50,7 @@ class About extends React.Component {
     return (
       <Widget styleName="jr-card-full jr-card-tabs-right jr-card-profile">
         <div className="card-header">
-          <h4 className="card-title mb-0">Acerca de Mí</h4>
+    <h4 className="card-title mb-0 text-uppercase">{`${this.props.title ? this.props.title : '' }`}</h4>
         </div>
         <div className="jr-tabs-classic">
           {/* <Tabs className="jr-tabs-up" value={value} onChange={this.handleChange}>

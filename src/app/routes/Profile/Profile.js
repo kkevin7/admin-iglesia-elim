@@ -20,23 +20,18 @@ class Profile extends Component {
     this.state = {};
   }
 
-  componentDidMount(){
-      console.log("DidMount ", this.props)
-  }
-
   render() {
-    const {usuario, profile} = this.props;
-    if(!usuario || profile.isEmpty) return <Spinner/>
+    const {usuario, profile, contribuciones} = this.props;
+    if(!usuario || profile.isEmpty || !contribuciones) return <Spinner/>
 
     return (
       <div className="app-wrapper">
-        <ProfileHeader profile={profile} />
-        {/* <Biography/> */}
+        <ProfileHeader usuario={usuario} profile={profile} contribuciones={contribuciones} />
 
         <div className="jr-profile-content">
           <div className="row">
             <div className="col-xl-8 col-lg-8 col-md-7 col-12">
-              <About usuario={usuario} profile={profile} />
+              <About title={`Acerca de Mí`} usuario={usuario} profile={profile} />
             </div>
             <div className="col-xl-4 col-lg-4 col-md-5 col-12">
               <Contact usuario={usuario} profile={profile} />
@@ -48,17 +43,25 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = ({firebase}) => {
-    console.log(firebase)
+const mapStateToProps = ({firebase, firestore}) => {
   return {
     usuario: firebase.auth,
-    profile: firebase.profile
+    profile: firebase.profile,
+    contribuciones: firestore.ordered.contribuciones
   };
 };
 
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect()
+    firestoreConnect(props => {
+      if (!props.usuario.uid) return [];
+      return [
+        {
+          collection: "contribuciones",
+          where: [["id_usuario", "==", props.usuario.uid]]
+        }
+      ];
+    })
   )(Profile)
 );
