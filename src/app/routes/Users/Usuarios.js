@@ -15,22 +15,7 @@ import DataTableUsuarios from "./DataTableUsuarios";
 class Users extends Component {
   state = {};
 
-  componentDidMount(){
-    const { usuarios, firebase, firestore } = this.props;
-    const resultado = firestore.collection('usuarios').orderBy('carnet').startAt(("P").toUpperCase()).get();
-    resultado.then(snapshot => {
-      console.log((snapshot.size+1).toString().padStart(3, "0"));
-      console.log((1000).toString().padStart(3, "0"));
-      snapshot.forEach(element => {
-          console.log(element.data())
-      });
-    })
-    console.log(resultado);
-
-  }
-
   render() {
-
     const { usuarios, firebase } = this.props;
     if (!usuarios || !firebase) return <Spinner />;
 

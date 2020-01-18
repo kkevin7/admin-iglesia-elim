@@ -1,15 +1,22 @@
-import React, { Fragment, useState } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 //Inputs
-import { Input } from "@material-ui/core";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputMask from "react-input-mask";
 import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
+import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-
 //calendar
 import "date-fns";
 import Grid from "@material-ui/core/Grid";
@@ -19,173 +26,333 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+//Others components
+import { Alert } from "reactstrap";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import FilledInput from "@material-ui/core/FilledInput";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import clsx from "clsx";
+import userImageDefault from "../../../assets/images/users/user.png";
+import { CardContent } from "@material-ui/core";
 
-const FormUsuario = () => {
-  // SELECT
-  const roles = [
-    {
-      value: "1",
-      label: "PASTOR"
-    },
-    {
-      value: "2",
-      label: "ADMINISTRACIÓN DE PAGOS"
-    },
-    {
-      value: "3",
-      label: "KIOSKO"
-    },
-    {
-      value: "4",
-      label: "SOCIO"
-    }
-  ];
-  const [rol, setRol] = React.useState("4");
-  const handleChange = event => {
-    setRol(event.target.value);
-  };
-
-  // DATEPICKER
-  let fecha = new Date();
-  fecha.setYear(fecha.getFullYear() - 15);
-  const [selectedFechaNacimiento, setselectedFechaNacimiento] = React.useState(
-    fecha
-  );
-  const handleDateChange = date => {
-    setselectedFechaNacimiento(date);
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    const usuario = {
-      rol: rol,
-      fecha_nacimiento: selectedFechaNacimiento
-    };
-    console.log(usuario);
-  };
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
 
   return (
-    <div className="row mb-md-3">
-      <div className="col-lg-12">
-        <div className="jr-card">
-          <div className="jr-card-header ">
-            <h3 className="card-heading">DATOS DEL USUARIO</h3>
-          </div>
-          <div className="jr-card-body ">
-            <form onSubmit={handleSubmit} noValidate autoComplete="off">
-              <div className="row">
-                <div className="col-md-3 col-12">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <Card>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          alt="Contemplative Reptile"
-                          height="210"
-                          image={require("assets/images/users/user.png")}
-                          title="Contemplative Reptile"
-                        />
-                      </CardActionArea>
-                    </Card>
-                  </div>
+    <MaskedInput
+      {...other}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+      placeholderChar={"\u2000"}
+      showMask
+    />
+  );
+}
+
+class FormUsuario extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      direccion: "",
+      departamento: "Santa Ana",
+      fecha_nacimiento: new Date().setFullYear(new Date().getFullYear() - 15),
+      fecha_socio: new Date(),
+      email: "",
+      password: "",
+      showPassword: false
+    };
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const { actionComponent } = this.props;
+    actionComponent(this.state);
+  };
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleFechaNacimiento = e => {
+    this.setState({
+      fecha_nacimiento: e
+    });
+  };
+
+  handleClickShowPassword = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
+  render() {
+    const { authError } = this.props;
+
+    const departments = [
+      {
+        value: "Ahuachapán"
+      },
+      {
+        value: "Cabañas"
+      },
+      {
+        value: "Chalatenango"
+      },
+      {
+        value: "Cuscatlán"
+      },
+      {
+        value: "La Libertad"
+      },
+      {
+        value: "La Paz"
+      },
+      {
+        value: "La Unión"
+      },
+      {
+        value: "Morazán"
+      },
+      {
+        value: "San Miguel"
+      },
+      {
+        value: "San Salvador"
+      },
+      {
+        value: "San Vicente"
+      },
+      {
+        value: "Santa Ana"
+      },
+      {
+        value: "Sonsonate"
+      },
+      {
+        value: "Usulután"
+      }
+    ];
+
+    const classes = makeStyles(theme => ({
+      root: {
+        display: "flex",
+        flexWrap: "wrap"
+      },
+      margin: {
+        margin: theme.spacing(1)
+      },
+      withoutLabel: {
+        marginTop: theme.spacing(3)
+      },
+      textField: {
+        width: 200
+      }
+    }));
+
+    return (
+      <Card>
+        <CardContent>
+          <form onSubmit={this.handleSubmit} autoComplete="off">
+            <div className="row">
+              <div className="col-md-3 col-12">
+                <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                  <Card>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        alt="Contemplative Reptile"
+                        height="210"
+                        image={userImageDefault}
+                        title="Contemplative Reptile"
+                      />
+                    </CardActionArea>
+                  </Card>
                 </div>
-                <div className="col-md-9 col-12">
-                  <div className="row">
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
+              </div>
+              <div className="col-md-9 col-12">
+                <div className="row">
+                  <div className="col-md-4 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <TextField
+                        required
+                        name="nombre"
+                        label="Nombres"
+                        variant="outlined"
+                        helperText="Ingresa los Nombres"
+                        value={this.state.nombre}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <TextField
+                        required
+                        name="apellido"
+                        label="Apellidos"
+                        helperText="Ingresa los Apellidos"
+                        variant="outlined"
+                        value={this.state.apellido}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <FormControl>
+                        <InputLabel htmlFor="telefono">
+                          Número de Teléfono
+                        </InputLabel>
+                        <Input
                           required
-                          id="outlined-required"
-                          label="Nombres"
-                          variant="outlined"
+                          value={this.state.telefono}
+                          onChange={this.handleChange}
+                          id="telefono"
+                          name="telefono"
+                          // defaultValue={""}
+                          inputComponent={TextMaskCustom}
                         />
-                      </div>
+                      </FormControl>
                     </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <TextField
+                        id="outlined-select-currency"
+                        name="departamento"
+                        select
+                        label="Departamento"
+                        value={this.state.departamento}
+                        onChange={this.handleChange}
+                        helperText="Selecciona el departamento"
+                        variant="outlined"
+                      >
+                        {departments.map(department => (
+                          <MenuItem
+                            key={department.value}
+                            value={department.value}
+                          >
+                            {department.value}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </div>
+                  </div>
+                  <div className="col-md-4 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Grid container justify="space-around">
+                          <KeyboardDatePicker
+                            required
+                            margin="normal"
+                            name="fecha_nacimiento"
+                            label="Fecha de Nacimiento"
+                            format="dd/MM/yyyy"
+                            KeyboardButtonProps={{
+                              "aria-label": "change date"
+                            }}
+                            value={this.state.fecha_nacimiento}
+                            onChange={this.handleFechaNacimiento}
+                            helperText="Ingresa la fecha de nacimiento"
+                          />
+                        </Grid>
+                      </MuiPickersUtilsProvider>
+                    </div>
+                  </div>
+                  <div className="col-md-8 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <TextField
+                        name="direccion"
+                        label="Dirección"
+                        helperText="Ingresa la direccion del domicilio"
+                        variant="outlined"
+                        value={this.state.direccion}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>
+                  {this.props.correo ? (<div className="col-md-6 col-12" >
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <TextField
+                        required
+                        name="email"
+                        type="email"
+                        label="Correo Eléctronico"
+                        helperText="Ingresa el correo eléctronico"
+                        variant="outlined"
+                        value={this.state.email}
+                        onChange={this.handleChange}
+                      />
+                    </div>
+                  </div>) : ""}
+                  {this.props.correo ? (<div className="col-md-6 col-12">
+                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                      <FormControl
+                        className={clsx(classes.margin, classes.textField)}
+                        variant="outlined"
+                      >
+                        <InputLabel htmlFor="outlined-adornment-password">
+                          Contraseña
+                        </InputLabel>
+                        <OutlinedInput
+                          id="outlined-adornment-password"
                           required
-                          id="outlined-required"
-                          label="Apellidos"
-                          helperText="Ingresa los Apellidos"
-                          variant="outlined"
+                          name="password"
+                          type={this.state.showPassword ? "text" : "password"}
+                          label="Contraseña"
+                          // helperText="Ingresa la contraseña"
+                          value={this.state.password}
+                          onChange={this.handleChange}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={this.handleClickShowPassword}
+                                onMouseDown={this.handleMouseDownPassword}
+                                edge="end"
+                              >
+                                {this.state.showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                    <VisibilityOff />
+                                  )}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          labelWidth={85}
                         />
-                      </div>
+                      </FormControl>
                     </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          label="Telefono"
-                          helperText="Ingresa la numero teléfonico"
-                          variant="outlined"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <Grid container justify="space-around">
-                            <KeyboardDatePicker
-                              margin="normal"
-                              id="date-picker-dialog"
-                              label="Date picker dialog"
-                              format="MM/dd/yyyy"
-                              value={selectedFechaNacimiento}
-                              onChange={handleDateChange}
-                              KeyboardButtonProps={{
-                                "aria-label": "change date"
-                              }}
-                            />
-                          </Grid>
-                        </MuiPickersUtilsProvider>
-                      </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          required
-                          id="outlined-required"
-                          label="Correo Eléctronico"
-                          helperText="Ingresa el correo eléctronico"
-                          variant="outlined"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-4 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <TextField
-                          id="select-tipo-usuario"
-                          select
-                          label="Tipo de usuario"
-                          value={rol}
-                          onChange={handleChange}
-                          helperText="Selecciona el Tipo de Usuario"
-                          variant="outlined"
-                        >
-                          {roles.map(option => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </div>
-                    <div className="col-12 mt-3">
-                      <Button variant="contained" color="primary" type="submit">
-                        Guardar
-                      </Button>
-                    </div>
+                  </div>) : ""}
+                  <div className="col-12 mt-3">
+                    <Button variant="contained" color="primary" type="submit">
+                      Guardar
+                    </Button>
+                  </div>
+                  <div className="col-12 mt-3">
+                    <Alert
+                      color="danger"
+                      isOpen={authError != null ? true : false}
+                    >
+                      {authError}
+                    </Alert>
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    );
+  }
+}
 
-export default FormUsuario;
+export default withRouter(FormUsuario);
