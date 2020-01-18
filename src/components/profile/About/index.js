@@ -13,6 +13,12 @@ class About extends React.Component {
     this.state = {
       aboutList: [
         {
+          title: "Carnet",
+          icon: "zmdi zmdi-account-box-mail jr-fs-xlxl text-orange",
+          desc: props.profile.carnet ? props.profile.carnet : "",
+          userList: null
+        },
+        {
           title: "Dirección",
           icon: "zmdi zmdi-home jr-fs-xlxl text-orange",
           desc: props.profile.direccion ? props.profile.direccion : "",
@@ -34,6 +40,12 @@ class About extends React.Component {
           title: "Té uniste",
           icon: "zmdi zmdi-check-square jr-fs-xlxl text-orange",
           desc: props.profile.fecha_socio ? moment(props.profile.fecha_socio.toDate()).format("LL"): "",
+          userList: null
+        },
+        {
+          title: "Tipo de Usuario",
+          icon: "zmdi zmdi-star jr-fs-xlxl text-orange",
+          desc: props.profile.rol ? props.profile.rol : "",
           userList: null
         }
       ],

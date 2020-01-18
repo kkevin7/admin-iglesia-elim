@@ -62,7 +62,7 @@ class RegistrarUsuarioSinCorreo extends Component {
           match={this.props.match}
           title="Registrar nuevo usuario"
         />
-        <FormUsuario actionComponent={this.actionComponent} />
+        <FormUsuario actionComponent={this.actionComponent} correo={false} />
       </div>
     );
   }

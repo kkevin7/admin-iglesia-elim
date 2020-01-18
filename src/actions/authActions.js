@@ -47,10 +47,12 @@ export const registrarUsuario = (newUser) => {
                         apellido: newUser.apellido,
                         telefono: newUser.telefono,
                         direccion: newUser.direccion,
-                        fecha_nacimiento: newUser.fecha_nacimiento,
+                        fecha_nacimiento: new Date(newUser.fecha_nacimiento),
                         departamento: newUser.departamento,
-                        fecha_socio: newUser.fecha_socio,
+                        fecha_socio: new Date(newUser.fecha_socio),
+                        email: newUser.email,
                         estado: true,
+                        rol: 'Socio'
                     })
                 })
         }).then(() => {
@@ -82,10 +84,12 @@ export const registrarUsuarioSinCorreo = (newUser) => {
                     apellido: newUser.apellido,
                     telefono: newUser.telefono,
                     direccion: newUser.direccion,
-                    fecha_nacimiento: newUser.fecha_nacimiento,
+                    fecha_nacimiento: new Date(newUser.fecha_nacimiento),
                     departamento: newUser.departamento,
-                    fecha_socio: newUser.fecha_socio,
+                    fecha_socio: new Date(newUser.fecha_socio),
+                    email: newUser.email,
                     estado: true,
+                    rol: 'Socio'
                 })
             }).then(() => {
                 dispatch({

@@ -6,15 +6,17 @@ import { compose } from "redux";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-// cards
+//Card
 import imageDefault from "../../../../assets/images/products/product1.png";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+//Icons
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
+//Components
 import Spinner from "components/Spinner/Spinner";
 import SweetAlertEliminar from './SweetAlertEliminar';
 import DialogAddExistencia from './DialogAddExistencia';
@@ -79,7 +81,7 @@ const CardDetalle = ({ producto, history }) => {
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
                       <span className="font-weight-bold">Precio:</span> {"$ "}
-                      {producto.precio}
+                      {producto.precio.toFixed(2)}
                     </h4>
                   </div>
                 </div>

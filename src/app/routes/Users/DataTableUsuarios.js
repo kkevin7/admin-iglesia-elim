@@ -68,15 +68,15 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: "carnet", numeric: true, disablePadding: false, label: "Carnet" },
+  { id: "carnet", numeric: false, disablePadding: false, label: "Carnet" },
   { id: "nombre", numeric: false, disablePadding: false, label: "Nombre" },
-  { id: "apellido", numeric: true, disablePadding: false, label: "Apellido" },
+  { id: "apellido", numeric: false, disablePadding: false, label: "Apellido" },
   { id: "telefono", numeric: false, disablePadding: false, label: "Teléfono" },
   {
-    id: "direccion",
+    id: "rol",
     numeric: false,
     disablePadding: false,
-    label: "Direccion"
+    label: "Rol"
   },
   { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
   { id: "acciones", numeric: false, disablePadding: false, label: "Detalles" }
@@ -170,7 +170,7 @@ const DataTableUsuarios = ({ usuarios, history }) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(20);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -224,8 +224,8 @@ const DataTableUsuarios = ({ usuarios, history }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, usuarios.length - page * rowsPerPage);
 
-  const btnRedirectComprobante = id => {
-    history.push(`/app/comprobanteCuota/${id}`);
+  const btnRedirectDetalle = id => {
+    history.push(`/app/detalleUsuario/${id}`);
   };
 
   return (
@@ -275,14 +275,14 @@ const DataTableUsuarios = ({ usuarios, history }) => {
                     </TableCell>
                     <TableCell align="left">{row.apellido}</TableCell>
                     <TableCell align="left">{row.telefono}</TableCell>
-                    <TableCell align="left">{row.direccion}</TableCell>
+                    <TableCell align="left">{row.rol}</TableCell>
                     <TableCell align="left">
                       {row.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>}
                     </TableCell>
                     <TableCell>
                       <Button
                         startIcon={<FormatListBulletedIcon />}
-                        //   onClick={() => btnRedirectDetalle(row.id)}
+                          onClick={() => btnRedirectDetalle(row.id)}
                         variant="contained"
                         color="primary"
                       >
@@ -301,7 +301,7 @@ const DataTableUsuarios = ({ usuarios, history }) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[20, 40, 60]}
+        rowsPerPageOptions={[10, 20, 30, 40, 60]}
         component="div"
         count={usuarios.length}
         rowsPerPage={rowsPerPage}

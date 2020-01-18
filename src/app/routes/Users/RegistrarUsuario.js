@@ -33,6 +33,7 @@ import {
 import { registrarUsuario, signOut } from "actions/authActions";
 import { userSignOut } from "actions/Auth";
 //Others components
+import clsx from "clsx";
 import { Alert } from "reactstrap";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -40,7 +41,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import clsx from "clsx";
+//Image
 import userImageDefault from "../../../assets/images/users/user.png";
 
 class RegistrarUsuario extends Component {
