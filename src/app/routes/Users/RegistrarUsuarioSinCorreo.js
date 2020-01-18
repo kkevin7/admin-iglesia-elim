@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
@@ -19,6 +19,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+
 //calendar
 import "date-fns";
 import Grid from "@material-ui/core/Grid";
@@ -28,10 +29,8 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-//reducers
-import { registrarUsuario, signOut } from "actions/authActions";
-import {userSignOut} from 'actions/Auth';
-//Others components
+//reducer
+import { registrarUsuarioSinCorreo } from "actions/authActions";
 import { Alert } from "reactstrap";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -40,7 +39,7 @@ import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import clsx from "clsx";
-import userImageDefault from '../../../assets/images/users/user.png';
+import userImageDefault from "../../../assets/images/users/user.png";
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
@@ -58,15 +57,18 @@ function TextMaskCustom(props) {
   );
 }
 
+TextMaskCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired
+};
 
-class RegistrarUsuario extends Component {
+class RegistrarUsuarioSinCorreo extends Component {
   state = {
     nombre: "",
     apellido: "",
     telefono: "",
     direccion: "",
     departamento: "Santa Ana",
-    fecha_nacimiento: new Date().setFullYear(new Date().getFullYear() - 15),
+    fecha_nacimiento: new Date().setFullYear(new Date().getFullYear() - 25),
     fecha_socio: new Date(),
     email: "",
     password: "",
@@ -75,13 +77,10 @@ class RegistrarUsuario extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {history, registrarUsuario, authError, userSignOut} = this.props;
-    console.log(authError);
-    registrarUsuario(this.state).then(() => {
-      // history.push('/app/users');
-      userSignOut();
-    })
-
+    const { history, registrarUsuarioSinCorreo } = this.props;
+    registrarUsuarioSinCorreo(this.state).then(resp => {
+      history.push("/app/users");
+    });
   };
 
   handleChange = e => {
@@ -163,6 +162,26 @@ class RegistrarUsuario extends Component {
         width: 200
       }
     }));
+
+    // function TextMaskCustom(props) {
+    //   const { inputRef, ...other } = props;
+    //   console.log(props)
+    //   return (
+    //     <MaskedInput
+    //       {...other}
+    //       ref={ref => {
+    //         inputRef(ref ? ref.inputElement : null);
+    //       }}
+    //       mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+    //       placeholderChar={'\u2000'}
+    //       showMask
+    //     />
+    //   );
+    // }
+
+    // TextMaskCustom.propTypes = {
+    //   inputRef: PropTypes.func.isRequired,
+    // };
 
     return (
       <div className="app-wrapper">
@@ -257,7 +276,10 @@ class RegistrarUsuario extends Component {
                               variant="outlined"
                             >
                               {departments.map(department => (
-                                <MenuItem key={department.value} value={department.value}>
+                                <MenuItem
+                                  key={department.value}
+                                  value={department.value}
+                                >
                                   {department.value}
                                 </MenuItem>
                               ))}
@@ -285,7 +307,7 @@ class RegistrarUsuario extends Component {
                             </MuiPickersUtilsProvider>
                           </div>
                         </div>
-                        <div className="col-md-8 col-12">
+                        <div className="col-md-12 col-12">
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
                               name="direccion"
@@ -295,64 +317,6 @@ class RegistrarUsuario extends Component {
                               value={this.state.direccion}
                               onChange={this.handleChange}
                             />
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              name="email"
-                              type="email"
-                              label="Correo Eléctronico"
-                              helperText="Ingresa el correo eléctronico"
-                              variant="outlined"
-                              value={this.state.email}
-                              onChange={this.handleChange}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <FormControl
-                              className={clsx(
-                                classes.margin,
-                                classes.textField
-                              )}
-                              variant="outlined"
-                            >
-                              <InputLabel htmlFor="outlined-adornment-password">
-                                Contraseña
-                              </InputLabel>
-                              <OutlinedInput
-                                id="outlined-adornment-password"
-                                required
-                                name="password"
-                                type={
-                                  this.state.showPassword ? "text" : "password"
-                                }
-                                label="Contraseña"
-                                // helperText="Ingresa la contraseña"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                endAdornment={
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      aria-label="toggle password visibility"
-                                      onClick={this.handleClickShowPassword}
-                                      onMouseDown={this.handleMouseDownPassword}
-                                      edge="end"
-                                    >
-                                      {this.state.showPassword ? (
-                                        <Visibility />
-                                      ) : (
-                                          <VisibilityOff />
-                                        )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                }
-                                labelWidth={85}
-                              />
-                            </FormControl>
                           </div>
                         </div>
                         <div className="col-12 mt-3">
@@ -393,9 +357,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    registrarUsuario: async (newUser) => dispatch(registrarUsuario(newUser)),
-    // signOut: async () => dispatch(signOut()),
-    userSignOut: () => dispatch(userSignOut()),
+    registrarUsuarioSinCorreo: async newUser =>
+      dispatch(registrarUsuarioSinCorreo(newUser))
   };
 };
 
@@ -403,5 +366,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(RegistrarUsuario)
+  )(RegistrarUsuarioSinCorreo)
 );

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
 import { firestoreConnect } from "react-redux-firebase";
 
-import { createProducto } from "../../../../actions/productosActions";
+import { createProducto, uploadImageProducto } from "actions/productosActions";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -24,11 +24,11 @@ import Spinner from "components/Spinner/Spinner";
 class RegistrarProducto extends Component {
   state = {};
 
-  createProducto = producto => {
+  registrarProducto = producto => {
     // this.props.createProducto(this.state)
     // this.props.history.push(`/app/inventario`)
 
-    const { firestore, history, firebase } = this.props;
+    const { firestore, history, firebase, createProducto } = this.props;
     const nuevoProducto = {
       nombre: producto.nombre,
       precio: Number(producto.precio),
@@ -36,11 +36,8 @@ class RegistrarProducto extends Component {
       descripcion: producto.descripcion
     };
 
-    // firebase.
+    createProducto(nuevoProducto).then(() => history.push("/app/inventario"));
 
-    firestore
-      .add({ collection: "productos" }, nuevoProducto)
-      .then(() => history.push("/app/inventario"));
   };
 
   render() {
@@ -49,7 +46,7 @@ class RegistrarProducto extends Component {
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title="Registrar productos" />
         <FormProducto 
-          actionSubmit={this.createProducto} 
+          actionSubmit={this.registrarProducto} 
         />
       </div>
     );
@@ -65,7 +62,8 @@ const mapStateToProps = ({ firestore, firebase }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createProducto: producto => dispatch(createProducto(producto))
+    createProducto: async (producto) => dispatch(createProducto(producto)),
+    uploadImageProducto: async (file) => dispatch(uploadImageProducto(file))
   };
 };
 

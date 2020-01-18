@@ -26,8 +26,8 @@ const TableMBContribuciones = ({ contribuciones, history }) => {
       return {
         cantidad_cuota: contribucion.cantidad_cuota,
         estado: contribucion.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>,
-        fecha_fin: moment(contribucion.fecha_fin.toDate()).format("LLL"),
-        fecha_inicio: moment(contribucion.fecha_inicio.toDate()).format("LLL"),
+        fecha_fin: moment(contribucion.fecha_fin.toDate()).format("LL"),
+        fecha_inicio: moment(contribucion.fecha_inicio.toDate()).format("LL"),
         fecha_ultimo_pago: moment(null).format("LLL"),
         id: contribucion.id,
         id_usuario: contribucion.id_usuario,

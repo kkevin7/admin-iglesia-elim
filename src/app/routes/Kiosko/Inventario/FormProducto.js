@@ -3,6 +3,8 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Redux
+import { createProducto, uploadImageProducto } from "actions/productosActions";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -20,6 +22,7 @@ import imageDefault from "../../../../assets/images/products/product1.png";
 import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "components/Spinner/Spinner";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
 
 class FormProducto extends Component {
   constructor(props) {
@@ -57,28 +60,34 @@ class FormProducto extends Component {
     this.props.actionSubmit(this.state);
 
     //upload image
-    // if(this.state.file !== null){
-    //   console.log("metodo");
-    //   const {firebase} = this.props;
-    //   const file = this.state.file;
-    //   const storageRef = firebase.storage().ref(`/productos/${file.name}`);
-    //   const taskUpload = storageRef.put(file);
+    if(this.state.file !== null){
+      const {firebase, uploadImageProducto} = this.props;
+      uploadImageProducto(this.state.file)
+      .then(fileRef => {
+        console.log(fileRef);
+        console.log(fileRef.task.snapshot);
+        console.log(fileRef.ref.getDownloadURL());
+        // console.log(fileRef.getDownloadURL());
+      })
+      // const file = this.state.file;
+      // const storageRef = firebase.storage().ref(`/productos/recurso_${(new Date()).getTime()}`);
+      // const taskUpload = storageRef.put(file);
 
-    //   taskUpload.on('state_changed', snapshot => {
-    //     let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //     this.setState({
-    //       uploadValue: percentage
-    //     })
-    //   }, error => {
-    //     console.log(error.message)
-    //   }, () => {
-    //     this.setState({
-    //       uploadValue: 100,
-    //       file: null,
-    //       urlImage: taskUpload.snapshot.downloadURL
-    //     })
-    //   })
-    // }
+      // taskUpload.on('state_changed', snapshot => {
+      //   let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      //   this.setState({
+      //     uploadValue: percentage
+      //   })
+      // }, error => {
+      //   console.log(error.message)
+      // }, () => {
+      //   this.setState({
+      //     uploadValue: 100,
+      //     file: null,
+      //     urlImage: taskUpload.snapshot.downloadURL
+      //   })
+      // })
+    }
   };
 
   handleVolver = () => {
@@ -165,7 +174,6 @@ class FormProducto extends Component {
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
                               required
-                              id="outlined-required"
                               name="nombre"
                               label="Nombre"
                               variant="outlined"
@@ -178,7 +186,6 @@ class FormProducto extends Component {
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
                               required
-                              id="outlined-required"
                               type="number"
                               InputProps={{ inputProps: { min: 1, step: 1 } }}
                               min="1"
@@ -195,7 +202,6 @@ class FormProducto extends Component {
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
                               required
-                              id="outlined-required"
                               type="number"
                               name="precio"
                               InputProps={{
@@ -211,7 +217,6 @@ class FormProducto extends Component {
                         <div className="col-md-12 col-12">
                           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                             <TextField
-                              id="outlined-multiline-static"
                               name="descripcion"
                               label="Descripción"
                               multiline
@@ -300,9 +305,16 @@ const mapStateToProps = ({ firestore }) => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    createProducto: async (producto) => dispatch(createProducto(producto)),
+    uploadImageProducto: async (file) => dispatch(uploadImageProducto(file))
+  };
+};
+
 export default withRouter(
   compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
       {
         collection: "categoria_producto"

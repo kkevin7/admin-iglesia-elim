@@ -1,7 +1,7 @@
 export const signIn = (credentials) => {
-    return (dispatch, getState, { getFirebase }) => {
+    return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
-        firebase.auth().signInWithEmailAndPassword(
+        return await firebase.auth().signInWithEmailAndPassword(
             credentials.email,
             credentials.password
         ).then(() => {
@@ -17,31 +17,40 @@ export const signIn = (credentials) => {
 }
 
 export const signOut = () => {
-    return (dispatch, getState, { getFirebase }) => {
+    return async (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
-        firebase.auth().signOut().then(() => {
+        return await firebase.auth().signOut().then(() => {
             dispatch({ type: 'SIGNOUT_SUCCESS' })
         });
     }
 }
 
 export const registrarUsuario = (newUser) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
-        firebase.auth().createUserWithEmailAndPassword(
+        const fecha = new Date(newUser.fecha_nacimiento);
+        let carnet = "";
+        carnet = (newUser.nombre).charAt(0) + (newUser.apellido).charAt(0) + fecha.getDate() + (fecha.getMonth() + 1) + fecha.getFullYear();
+        return await firebase.auth().createUserWithEmailAndPassword(
             newUser.email,
             newUser.password
         ).then((resp) => {
-            return firestore.collection('usuarios').doc(resp.user.uid).set({
-                nombre: newUser.nombre,
-                apellido: newUser.apellido,
-                telefono: newUser.telefono,
-                direccion: newUser.direccion,
-                fecha_nacimiento: newUser.fecha_nacimiento,
-                departamento: newUser.departamento,
-                fecha_socio: newUser.fecha_socio
-            })
+            return firestore.collection('usuarios').orderBy('carnet').startAt((carnet).toUpperCase()).get()
+                .then((snapshotUsuarios) => {
+                    carnet += (snapshotUsuarios.size + 1).toString().padStart(3, "0");
+                    return firestore.collection('usuarios').doc(resp.user.uid).set({
+                        carnet: carnet,
+                        nombre: newUser.nombre,
+                        apellido: newUser.apellido,
+                        telefono: newUser.telefono,
+                        direccion: newUser.direccion,
+                        fecha_nacimiento: newUser.fecha_nacimiento,
+                        departamento: newUser.departamento,
+                        fecha_socio: newUser.fecha_socio,
+                        estado: true,
+                    })
+                })
         }).then(() => {
             dispatch({
                 type: 'REGISTRAR_USUARIO_SUCCESS'
@@ -51,5 +60,38 @@ export const registrarUsuario = (newUser) => {
                 type: 'REGISTRAR_USUARIO_ERROR', err
             })
         })
+    }
+}
+
+export const registrarUsuarioSinCorreo = (newUser) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const fecha = new Date(newUser.fecha_nacimiento);
+        let carnet = "";
+        carnet = (newUser.nombre).charAt(0) + (newUser.apellido).charAt(0) + fecha.getDate() + (fecha.getMonth() + 1) + fecha.getFullYear();
+        return await firestore.collection('usuarios').orderBy('carnet').startAt((carnet).toUpperCase()).get()
+            .then((snapshotUsuarios) => {
+                carnet += (snapshotUsuarios.size + 1).toString().padStart(3, "0");
+                return firestore.collection('usuarios').add({
+                    carnet: carnet,
+                    nombre: newUser.nombre,
+                    apellido: newUser.apellido,
+                    telefono: newUser.telefono,
+                    direccion: newUser.direccion,
+                    fecha_nacimiento: newUser.fecha_nacimiento,
+                    departamento: newUser.departamento,
+                    fecha_socio: newUser.fecha_socio,
+                    estado: true,
+                })
+            }).then(() => {
+                dispatch({
+                    type: 'REGISTRAR_USUARIO_SIN_CORREO_SUCCESS'
+                })
+            }).catch(err => {
+                dispatch({
+                    type: 'REGISTRAR_USUARIO_SIN_CORREO_ERROR',
+                    err
+                })
+            })
     }
 }
