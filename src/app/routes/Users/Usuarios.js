@@ -46,7 +46,8 @@ export default withRouter(
   compose(
     connect(mapStateToProps),
     firestoreConnect([{
-      collection: "usuarios"
+      collection: "usuarios",
+      orderBy: [["fecha_socio", "desc"]],
     }])
   )
     (Users));

@@ -127,6 +127,8 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Users/RegistrarUsuarioSinCorreo'))}/>
                      <Route path={`${match.url}/DetalleUsuario/:id`}
                          component={asyncComponent(() => import('./routes/Users/DetalleUsuario'))}/>
+                     <Route path={`${match.url}/editarUsuario/:id`}
+                         component={asyncComponent(() => import('./routes/Users/EditarUsuario'))}/>
 
 
                   {/* Profile */}

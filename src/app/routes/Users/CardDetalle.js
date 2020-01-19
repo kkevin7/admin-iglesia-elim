@@ -24,7 +24,7 @@ import SweetAlertDarBaja from "./SweetAlertDarBaja";
 
 const CardDetalle = ({ history, usuario }) => {
   const handleRedirectEdit = id => {
-    history.push(`/app/editUsuario/${id}`);
+    history.push(`/app/editarUsuario/${id}`);
   };
 
   const redirectContribuciones = id => {
@@ -33,9 +33,9 @@ const CardDetalle = ({ history, usuario }) => {
 
   return (
     <Card>
-      <Typography variant="h5" className="text-center  my-4">
+      {/* <Typography variant="h5" className="text-center  my-4">
         Detalle de Usuario
-      </Typography>
+      </Typography> */}
       <CardContent>
         <div className="row">
           <div className="col-md-2 col-md-3  col-6 mx-auto">
@@ -92,7 +92,7 @@ const CardDetalle = ({ history, usuario }) => {
                   <h4>
                     <span className="font-weight-bold">Nacimiento:</span> {""}
                     {usuario.fecha_nacimiento
-                      ? moment(usuario.fecha_nacimiento).format("LL")
+                      ? moment(usuario.fecha_nacimiento.toDate()).format("LL")
                       : ""}
                   </h4>
                 </div>

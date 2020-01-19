@@ -72,10 +72,11 @@ export const registrarUsuario = newUser => {
                             });
                     });
             })
-            .then(() => {
+            .then((resp) => {
                 dispatch({
                     type: "REGISTRAR_USUARIO_SUCCESS"
                 });
+                return resp;
             })
             .catch(err => {
                 dispatch({
@@ -120,10 +121,11 @@ export const registrarUsuarioSinCorreo = newUser => {
                     rol: "Socio"
                 });
             })
-            .then(() => {
+            .then((resp) => {
                 dispatch({
                     type: "REGISTRAR_USUARIO_SIN_CORREO_SUCCESS"
                 });
+                return resp;
             })
             .catch(err => {
                 dispatch({
@@ -133,6 +135,42 @@ export const registrarUsuarioSinCorreo = newUser => {
             });
     };
 };
+
+
+export const editUser = usuario => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const editUsuario = {
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            telefono: usuario.telefono,
+            direccion: usuario.direccion,
+            fecha_nacimiento: new Date(usuario.fecha_nacimiento),
+            departamento: usuario.departamento,
+            fecha_socio: new Date(usuario.fecha_socio),
+        }
+        return await firestore
+            .update(
+                {
+                    collection: "usuarios",
+                    doc: usuario.id
+                },
+                editUsuario
+            )
+            .then(() => {
+                dispatch({
+                    type: "EDIT_USUARIO_SUCCESS"
+                });
+            })
+            .catch(err => {
+                dispatch({
+                    type: "EDIT_USUARIO_ERROR",
+                    err
+                });
+            });
+    };
+};
+
 
 export const deleteOnlyUser = id => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {

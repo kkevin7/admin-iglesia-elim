@@ -6,9 +6,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 //Components
-import ProfileHeader from "components/profile/ProfileHeader/index";
+import FormUsuario from "./FormUsuario";
 import Spinner from "components/Spinner/Spinner";
-import CardDetalle from "./CardDetalle";
+//Redux
+import { editUser } from "actions/authActions";
 //Card
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
@@ -22,13 +23,20 @@ import FormControl from "@material-ui/core/FormControl";
 //Icons
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-class DetalleUsuario extends Component {
+class EditarUsuario extends Component {
   state = {};
+
+  handleEditUser = usuario => {
+    const { editUser, history } = this.props;
+    editUser(usuario).then(() => {
+        history.push(`/app/detalleUsuario/${this.props.match.params.id}`);
+    });
+  };
 
   redirectGoBack = () => {
     const { history } = this.props;
     history.goBack();
-  };
+  }
 
   render() {
     const { usuario } = this.props;
@@ -36,8 +44,8 @@ class DetalleUsuario extends Component {
 
     return (
       <div className="app-wrapper">
-        <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
-          <h2 className="title mb-3 mb-sm-0">Detalle de Usuario</h2>
+          <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
+          <h2 className="title mb-3 mb-sm-0">Modificar Usuario</h2>
           <Button
             variant="contained"
             className="my-1 bg-cyan text-white"
@@ -47,7 +55,7 @@ class DetalleUsuario extends Component {
             VOLVER
           </Button>
         </div>
-        <CardDetalle usuario={usuario} />
+        <FormUsuario usuario={usuario} actionComponent={this.handleEditUser} correo={false} />
       </div>
     );
   }
@@ -59,11 +67,19 @@ const mapStateToProps = ({ firestore }) => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    editUser: async usuario => dispatch(editUser(usuario))
+  };
+};
+
 export default withRouter(
   compose(
-    connect(mapStateToProps),
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
     firestoreConnect(props => {
-      if (!props.match.params.id) return [];
       return [
         {
           collection: "usuarios",
@@ -72,5 +88,5 @@ export default withRouter(
         }
       ];
     })
-  )(DetalleUsuario)
+  )(EditarUsuario)
 );

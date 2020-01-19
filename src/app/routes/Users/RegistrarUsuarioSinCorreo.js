@@ -49,7 +49,7 @@ class RegistrarUsuarioSinCorreo extends Component {
   actionComponent = usuario => {
     const { history, registrarUsuarioSinCorreo } = this.props;
     registrarUsuarioSinCorreo(usuario).then(resp => {
-      history.push("/app/users");
+      history.push(`/app/detalleUsuario/${resp.id}`);
     });
   };
 

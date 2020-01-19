@@ -17,6 +17,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+import { CardContent } from "@material-ui/core";
 //calendar
 import "date-fns";
 import Grid from "@material-ui/core/Grid";
@@ -36,7 +37,8 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import clsx from "clsx";
 import userImageDefault from "../../../assets/images/users/user.png";
-import { CardContent } from "@material-ui/core";
+//Icons
+import SaveIcon from "@material-ui/icons/Save";
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
@@ -58,14 +60,15 @@ class FormUsuario extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      direccion: "",
-      departamento: "Santa Ana",
-      fecha_nacimiento: new Date().setFullYear(new Date().getFullYear() - 15),
-      fecha_socio: new Date(),
-      email: "",
+      id: props.usuario ? props.usuario.id : "",
+      nombre: props.usuario ? props.usuario.nombre : "",
+      apellido: props.usuario ? props.usuario.apellido : "",
+      telefono: props.usuario ? props.usuario.telefono : "",
+      direccion: props.usuario ? props.usuario.direccion : "",
+      departamento: props.usuario ? props.usuario.departamento : "Santa Ana",
+      fecha_nacimiento: props.usuario ? props.usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 15),
+      fecha_socio: props.usuario ? props.usuario.fecha_socio.toDate() : new Date(),
+      email: props.usuario ? props.usuario.email : "",
       password: "",
       showPassword: false
     };
@@ -262,6 +265,7 @@ class FormUsuario extends Component {
                             value={this.state.fecha_nacimiento}
                             onChange={this.handleFechaNacimiento}
                             helperText="Ingresa la fecha de nacimiento"
+                            fullWidth
                           />
                         </Grid>
                       </MuiPickersUtilsProvider>
@@ -333,7 +337,7 @@ class FormUsuario extends Component {
                     </div>
                   </div>) : ""}
                   <div className="col-12 mt-3">
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button variant="contained" color="primary" type="submit" startIcon={<SaveIcon/>}>
                       Guardar
                     </Button>
                   </div>
