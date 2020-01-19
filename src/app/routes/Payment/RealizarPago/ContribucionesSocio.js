@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -37,16 +37,20 @@ class ContribucionesSocio extends Component {
     return (
       <div className="app-wrapper">
         <Card>
-          <Typography
+          
+          {/* <CardHeader
+              className="text-center text-uppercase font-weight-bold"
+              title="Contribuciones en curso"
+            /> */}
+          {contribuciones.length > 0 ? (
+            <Fragment>
+              <Typography
             variant="h5"
             className="text-center text-uppercase font-weight-bold my-4"
           >
             Contribuciones en curso
           </Typography>
-          {/* <CardHeader
-              className="text-center text-uppercase font-weight-bold"
-              title="Contribuciones en curso"
-            /> */}
+            
           <div className="row p-3">
             {contribuciones &&
               contribuciones.map(contribucion => (
@@ -60,6 +64,15 @@ class ContribucionesSocio extends Component {
                 </div>
               ))}
           </div>
+          </Fragment>
+          ) : (
+            <Typography
+            variant="h6"
+            className="text-center text-uppercase my-4"
+          >
+            No se encontró ninguna contribución activa
+          </Typography>
+          )}
         </Card>
       </div>
     );

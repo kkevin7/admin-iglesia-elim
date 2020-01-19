@@ -98,7 +98,7 @@ class ContenidoPedido extends Component {
       total: Number(this.state.total),
       fecha_venta: new Date(),
       vendedor: this.props.vendedor,
-      estado: "PENDIENTE"
+      estado: "COMPLETADA"
     };
     console.log(restaProducto);
 

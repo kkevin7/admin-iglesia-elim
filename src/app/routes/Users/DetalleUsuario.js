@@ -13,12 +13,6 @@ import CardDetalle from "./CardDetalle";
 class DetalleUsuario extends Component {
     state = {  }
 
-    // componentDidMount(){
-    //   const {firebase} = this.props;
-    //   console.log(firebase);
-    //   console.log(this.props.match.params.id)
-    // }
-
     render() {
         const {usuario} = this.props;
         if(!usuario) return <Spinner/>;
