@@ -3,7 +3,7 @@ import { getFirebase } from "react-redux-firebase";
 export const createProducto = producto => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        const { nombre, precio, existencia, descripcion, url } = producto;
+        const { nombre, precio, existencia, descripcion } = producto;
 
         await firestore
             .collection("productos")
@@ -13,7 +13,8 @@ export const createProducto = producto => {
                 existencia: Number(existencia),
                 descripcion,
                 fecha_creacion: new Date(),
-                url
+                url: null,
+                file_id: null,
             })
             .then(async () => {
                 await dispatch({
@@ -35,11 +36,12 @@ export const createProductoImg = producto => {
         const firestore = getFirestore();
         const firebase = getFirebase();
         const { nombre, precio, existencia, descripcion, file } = producto;
+        const file_id = (new Date()).getTime();
 
-        const storageRef = firebase.storage().ref(`productos/${file.name}`);
-        const task = storageRef.put(file);
-        await task.then(async fileRef => {
-            await fileRef.ref.getDownloadURL().then(async url => {
+        const storageRef = firebase.storage().ref();
+        const uploadTask = storageRef.child(`/productos/${file_id}`).put(file);
+        await uploadTask.then(async snapshotFile => {
+            await snapshotFile.ref.getDownloadURL().then(async url => {
                 await firestore
                     .collection("productos")
                     .add({
@@ -48,7 +50,8 @@ export const createProductoImg = producto => {
                         existencia: Number(existencia),
                         descripcion,
                         fecha_creacion: new Date(),
-                        url: url
+                        url: url,
+                        file_id: snapshotFile.ref.name,
                     })
                     .then(async () => {
                         await dispatch({
@@ -56,66 +59,174 @@ export const createProductoImg = producto => {
                             producto: producto
                         });
                     })
-                    .catch(err => {
-                        dispatch({
+                    .catch(async error => {
+                        await dispatch({
                             type: "CREATE_PRODUCTO_ERROR",
-                            err
+                            error
                         });
                     });
             });
         });
-
-
-
     };
 };
 
-export const uploadImageProducto = file => {
+export const updateProducto = producto => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const { id, nombre, precio, existencia, descripcion } = producto;
+
+        await firestore
+            .update(
+                {
+                    collection: "productos",
+                    doc: id
+                },
+                {
+                    nombre,
+                    precio: Number(precio),
+                    existencia: Number(existencia),
+                    descripcion,
+                    fecha_creacion: new Date(),
+                })
+            .then(async () => {
+                await dispatch({
+                    type: "UPDATE_PRODUCTO",
+                    producto: producto
+                });
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "UPDATE_PRODUCTO_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const updateProductoImg = producto => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+        const { id, nombre, precio, existencia, descripcion, file, file_id } = producto;
+        const nuevoFileId = (new Date()).getTime();
+
+        const storageRef = firebase.storage().ref();
+        const desertRef = storageRef.child(`/productos/${file_id}`);
+        const uploadTask = storageRef.child(`/productos/${nuevoFileId}`).put(file);
+        if (file_id) {
+            await desertRef.delete();
+        }
+        await uploadTask.then(async snapshotFile => {
+            await snapshotFile.ref.getDownloadURL().then(async url => {
+                await firestore
+                    .update(
+                        {
+                            collection: "productos",
+                            doc: id
+                        },
+                        {
+                            nombre,
+                            precio: Number(precio),
+                            existencia: Number(existencia),
+                            descripcion,
+                            fecha_creacion: new Date(),
+                            url: url,
+                            file_id: nuevoFileId,
+                        })
+                    .then(async () => {
+                        await dispatch({
+                            type: "UPDATE_PRODUCTO",
+                            producto: producto
+                        });
+                    })
+                    .catch(async error => {
+                        await dispatch({
+                            type: "UPDATE_PRODUCTO_ERROR",
+                            error
+                        });
+                    });
+            });
+        });
+    };
+};
+
+
+export const uploadImageProducto = (file) => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
+        const file_id = (new Date()).getTime();
 
-        const storageRef = firebase.storage().ref(`productos/${file.name}`);
-        const task = storageRef.put(file);
-        return await task;
-
-        // const task = storageRef.child(`productos`).child(`recuro_${(new Date()).getTime()}`).put(file);
-        // return await task;
-
-        //     return await task.on('state_changed', (snapshot) => {
-        //     let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        //     // this.setState({
-        //     //   uploadValue: percentage
-        //     // })
-        //   }, (error) => {
-        //     console.error(error.message)
-        //   }, () => {
-        //     console.log("TASK", task.snapshot.downloadURL);
-        //     // Upload complete
-        //     // this.setState({
-        //     //   picture: task.snapshot.downloadURL
-        //     // })
-        //   })
+        const storageRef = firebase.storage().ref();
+        const uploadTask = storageRef.child(`/productos/${file_id}`).put(file);
+        return await uploadTask.then(async () => {
+            await dispatch({
+                type: "UPLOAD_IMG_PRODUCTO_SUCCESS",
+            });
+        }).catch(async error => {
+            await dispatch({
+                type: "UPLOAD_IMG_PRODUCTO_ERROR",
+                error
+            });
+        });
     };
 };
 
+export const deleteProducto = id => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        await firestore.delete({
+            collection: 'productos',
+            doc: id
+        }).then(async () => {
+            await dispatch({
+                type: "DELETE_PRODUCTO",
+            });
+        })
+            .catch(async error => {
+                await dispatch({
+                    type: "DELETE_PRODUCTO_ERROR",
+                    error
+                });
+            });
+    }
+}
+
+export const deleteImageProducto = file_id => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firebase = getFirebase();
+        const storageRef = firebase.storage().ref();
+        const desertRef = storageRef.child(`/productos/${file_id}`);
+        await desertRef.delete().then(async () => {
+            await dispatch({
+                type: "DELETE_IMG_PRODUCTO_SUCCESS",
+            });
+        }).catch(async (error) => {
+            await dispatch({
+                type: "DELETE_IMG_PRODUCTO_ERROR",
+                error
+            });
+        });
+    }
+}
+
 export const buscarProductoHayExistencia = producto => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
         // make async call to database
         const firestore = getFirestore();
-        firestore
+        return await firestore
             .collection("productos")
             .where("existencia", ">", 0)
             .get()
-            .then(resultado => {
-                dispatch({
+            .then(async resultado => {
+                await dispatch({
                     type: "PRODUCTO_HAY_EXISTENCIA",
-                    producto: producto.data()
+                    producto: resultado.data()
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async error => {
+                await dispatch({
                     type: "PRODUCTO_HAY_EXISTENCIA_ERROR",
-                    err
+                    error
                 });
             });
     };

@@ -3,6 +3,8 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Redux
+import { deleteProducto, deleteImageProducto } from "actions/productosActions";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -21,8 +23,17 @@ import Spinner from "components/Spinner/Spinner";
 import SweetAlertEliminar from './SweetAlertEliminar';
 import DialogAddExistencia from './DialogAddExistencia';
 
-const CardDetalle = ({ producto, history }) => {
+const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto }) => {
   if (!producto) return <Spinner />;
+
+  const handleElminarProducto = async (id) => {
+    if(producto.file_id){
+      await deleteImageProducto(producto.file_id);
+    }
+    await deleteProducto(id).then(async () => {
+      await history.push(`/app/inventario`);
+    });
+  }
 
   const handleRedirectEdit = () => {
     history.push(`/app/editarProducto/${producto.id}`);
@@ -60,8 +71,8 @@ const CardDetalle = ({ producto, history }) => {
                       component="img"
                       alt="Contemplative Reptile"
                       height="210"
-                      image={imageDefault}
-                      title="Contemplative Reptile"
+                      image={producto.url ? producto.url : imageDefault}
+                      title={producto.nombre}
                     />
                   </CardActionArea>
                 </Card>
@@ -128,6 +139,7 @@ const CardDetalle = ({ producto, history }) => {
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <SweetAlertEliminar 
                     id={producto.id}
+                    actionComponent={handleElminarProducto}
                     btnSize="medium" 
                     btnText="Eliminar Producto" 
                     btnClass="btn-block bg-danger text-white"
@@ -148,9 +160,17 @@ const mapStateToProps = ({ firestore }) => ({
   firestore: firestore
 });
 
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteProducto: async (producto) => dispatch(deleteProducto(producto)),
+    deleteImageProducto: async (producto) => dispatch(deleteImageProducto(producto)),
+  };
+};
+
+
 export default withRouter(
   compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(props => [
       {
         collection: "productos",

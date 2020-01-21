@@ -10,8 +10,8 @@ const SweetAlertEliminar = ({ id, firestore, history, btnText, btnClass, btnSize
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [alertOK, setAlertOK] = React.useState(false);
 
-  const handleEliminar = () => {
-    firestore.delete({
+  const handleEliminar = async () => {
+    await firestore.delete({
       collection: 'productos',
       doc: id
     }).then(() => {

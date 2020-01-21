@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+//Redux
+import { deleteProducto, deleteImageProducto } from "actions/productosActions";
+//Card
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,19 +13,21 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+//Icons
 import Icon from '@material-ui/core/Icon';
-import DefaultImgProducto from '../../../../assets/images/products/caja.png';
 import DeleteIcon from '@material-ui/icons/Delete';
+//Image
+import DefaultImgProducto from '../../../../assets/images/products/caja.png';
 import SweetAlert from 'react-bootstrap-sweetalert';
 import SweetAlertEliminar from './SweetAlertEliminar';
 
-const CardProducto = ({ producto, firestore, history }) => {
+const CardProducto = ({ producto, firestore, history, deleteProducto, deleteImageProducto }) => {
 
   const handleElminarProducto = async (id) => {
-    await firestore.delete({
-      collection: 'productos',
-      doc: id
-    })
+    if(producto.file_id){
+      await deleteImageProducto(producto.file_id);
+    }
+    await deleteProducto(id);
   }
 
   const handleRedirectDetalle = (id) => {
@@ -75,4 +83,16 @@ const CardProducto = ({ producto, firestore, history }) => {
   );
 }
 
-export default withRouter( CardProducto);
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteProducto: async (producto) => dispatch(deleteProducto(producto)),
+    deleteImageProducto: async (producto) => dispatch(deleteImageProducto(producto)),
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(null, mapDispatchToProps),
+    firestoreConnect()
+  )(CardProducto)
+);

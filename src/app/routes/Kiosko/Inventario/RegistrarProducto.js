@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
 import { firestoreConnect } from "react-redux-firebase";
-
+//Redux
 import { createProducto, createProductoImg, uploadImageProducto } from "actions/productosActions";
 //Inputs
 import { Input } from "@material-ui/core";
@@ -26,7 +26,7 @@ class RegistrarProducto extends Component {
 
   registrarProducto = producto => {
     const { history, createProducto, createProductoImg } = this.props;
-    
+
     if(producto.file){
       createProductoImg(producto).then(() => history.push("/app/inventario"));
     }else{
@@ -38,7 +38,7 @@ class RegistrarProducto extends Component {
 
     return (
       <div className="app-wrapper">
-        <ContainerHeader match={this.props.match} title="Registrar productos" />
+        <ContainerHeader match={this.props.match} title="Registrar Producto" />
         <FormProducto 
           actionSubmit={this.registrarProducto} 
         />

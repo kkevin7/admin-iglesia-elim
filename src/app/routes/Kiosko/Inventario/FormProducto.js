@@ -23,22 +23,19 @@ import SaveIcon from "@material-ui/icons/Save";
 import Spinner from "components/Spinner/Spinner";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-
 class FormProducto extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nombre:
-        typeof props.producto !== "undefined" ? props.producto.nombre : "",
-      precio:
-        typeof props.producto !== "undefined" ? props.producto.precio : "",
-      existencia:
-        typeof props.producto !== "undefined" ? props.producto.existencia : "",
-      descripcion:
-        typeof props.producto !== "undefined" ? props.producto.descripcion : "",
+      id: props.producto ? props.producto.id : "",
+      nombre: props.producto ? props.producto.nombre : "",
+      precio: props.producto ? props.producto.precio : "",
+      existencia: props.producto ? props.producto.existencia : "",
+      descripcion: props.producto ? props.producto.descripcion : "",
       proveedor: null,
       categoria_producto: null,
-      url: null,
+      url: props.producto ? props.producto.url : "",
+      file_id: props.producto ? props.producto.file_id : "",
       file: null,
       urlImage: "",
       uploadValue: 0
@@ -59,44 +56,6 @@ class FormProducto extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.actionSubmit(this.state);
-
-    //upload image
-    // if(this.state.file !== null){
-    //   const {firebase, uploadImageProducto} = this.props;
-    //   uploadImageProducto(this.state.file)
-    //   .then(fileRef => {
-    //     console.log("FILE REF ",fileRef);
-    //     console.log("SNAPSHOT",fileRef.task.snapshot);
-    //     console.log("GET URL",fileRef.ref.getDownloadURL());
-    //     console.log("TO STRING",fileRef.ref.getDownloadURL().toString());
-    //     console.log(".URL ",fileRef.ref.getDownloadURL().url);
-    //    fileRef.ref.getDownloadURL().then(url => {
-    //      console.log("CALL BACK",url);
-    //    });
-    //     // console.log(fileRef.getDownloadURL());
-    //   })
-      // const file = this.state.file;
-      // const storageRef = firebase.storage().ref(`/productos/recurso_${(new Date()).getTime()}`);
-      // const taskUpload = storageRef.put(file);
-
-      // taskUpload.on('state_changed', snapshot => {
-      //   let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //   this.setState({
-      //     uploadValue: percentage
-      //   })
-      // }, error => {
-      //   console.log(error.message)
-      // }, () => {
-      //   this.setState({
-      //     uploadValue: 100,
-      //     file: null,
-      //     urlImage: taskUpload.snapshot.downloadURL
-      //   })
-      // })
-    //   console.log("IMAGEN SELECCIONADA")
-    // }else{
-    //   console.log("IMAGEN VACIA")
-    // }
   };
 
   handleVolver = () => {
@@ -120,14 +79,10 @@ class FormProducto extends Component {
   render() {
     const { proveedores, categoria_producto } = this.props;
     if (!proveedores || !categoria_producto) return <Spinner />;
-    // console.log(proveedores)
 
     return (
       <Fragment>
-        <div className="row mb-md-3">
-          <div className="col-lg-12">
-            <div className="jr-card">
-              <Button
+        {/* <Button
                 className="mb-4 text-white bg-teal"
                 variant="contained"
                 onClick={this.handleVolver}
@@ -140,168 +95,161 @@ class FormProducto extends Component {
                 <h3 className="card-heading font-weight-bold text-center">
                   DATOS DEL PRODUCTO
                 </h3>
-              </div>
-              <div className="jr-card-body ">
-                <form autoComplete="off" onSubmit={this.handleSubmit}>
-                  <div className="row">
-                    <div className="col-md-3 col-12">
-                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                        <Card onClick={this.handleImageClick}>
-                          <CardActionArea>
-                            <CardMedia
-                              component="img"
-                              alt="Contemplative Reptile"
-                              height="210"
-                              image={
-                                this.state.urlImage
-                                  ? this.state.urlImage
-                                  : imageDefault
-                              }
-                              title="Contemplative Reptile"
-                            />
-                            {/* <Button 
+              </div> */}
+        <Card>
+          <CardContent>
+            <form autoComplete="off" onSubmit={this.handleSubmit}>
+              <div className="row">
+                <div className="col-md-3 col-12">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <Card onClick={this.handleImageClick}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          alt="Contemplative Reptile"
+                          height="210"
+                          image={
+                            this.state.urlImage
+                              ? this.state.urlImage
+                              : this.state.url ? this.state.url : imageDefault
+                          }
+                          title="Contemplative Reptile"
+                        />
+                        {/* <Button 
                             className="mt-2 bg-info text-white" 
                             variant="contained" 
                             fullWidth 
                             component="label"
                             > */}
-                            {/* Seleccionar imagen */}
-                            <input
-                              onChange={this.handleSelectImage}
-                              ref={input => (this.inputElement = input)}
-                              type="file"
-                              style={{ display: "none" }}
-                            />
-                            {/* </Button> */}
-                          </CardActionArea>
-                        </Card>
+                        {/* Seleccionar imagen */}
+                        <input
+                          onChange={this.handleSelectImage}
+                          ref={input => (this.inputElement = input)}
+                          type="file"
+                          style={{ display: "none" }}
+                        />
+                        {/* </Button> */}
+                      </CardActionArea>
+                    </Card>
+                  </div>
+                </div>
+                <div className="col-md-9 col-12">
+                  <div className="row">
+                    <div className="col-md-4 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          required
+                          name="nombre"
+                          label="Nombre"
+                          variant="outlined"
+                          value={this.state.nombre}
+                          onChange={this.handleChangeFilds}
+                        />
                       </div>
                     </div>
-                    <div className="col-md-9 col-12">
-                      <div className="row">
-                        <div className="col-md-4 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              name="nombre"
-                              label="Nombre"
-                              variant="outlined"
-                              value={this.state.nombre}
-                              onChange={this.handleChangeFilds}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-4 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              type="number"
-                              InputProps={{ inputProps: { min: 1, step: 1 } }}
-                              min="1"
-                              step="1"
-                              name="existencia"
-                              label="Existencia"
-                              variant="outlined"
-                              value={this.state.existencia}
-                              onChange={this.handleChangeNumber}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-4 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              type="number"
-                              name="precio"
-                              InputProps={{
-                                inputProps: { min: 0, step: 0.01 }
-                              }}
-                              label="Precio"
-                              variant="outlined"
-                              value={this.state.precio}
-                              onChange={this.handleChangeFilds}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-12 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              name="descripcion"
-                              label="Descripción"
-                              multiline
-                              rows="4"
-                              variant="outlined"
-                              value={this.state.descripcion}
-                              onChange={this.handleChangeFilds}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              id="select-proveedor"
-                              name="proveedor"
-                              select
-                              label="Proveedor"
-                              value={this.state.proveedor}
-                              onChange={this.handleChangeFilds}
-                              helperText="Selecciona el proveedor"
-                              variant="outlined"
-                            >
-                              {proveedores.map(proveedor => (
-                                <MenuItem
-                                  key={proveedor.id}
-                                  value={proveedor.id}
-                                >
-                                  {proveedor.nombre}
-                                </MenuItem>
-                              ))}
-                            </TextField>
-                          </div>
-                        </div>
-                        <div className="col-md-6 col-12">
-                          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                            <TextField
-                              required
-                              id="select-categoria-producto"
-                              name="categoria_producto"
-                              select
-                              label="Categoria Producto"
-                              value={this.state.categoria_producto}
-                              onChange={this.handleChangeFilds}
-                              helperText="Selecciona la Categoria del Prodcuto"
-                              variant="outlined"
-                            >
-                              {categoria_producto.map(categoria => (
-                                <MenuItem
-                                  key={categoria.id}
-                                  value={categoria.id}
-                                >
-                                  {categoria.nombre}
-                                </MenuItem>
-                              ))}
-                            </TextField>
-                          </div>
-                        </div>
-                        <div className="col-12 mt-3">
-                          <Button
-                            variant="contained"
-                            startIcon={<SaveIcon />}
-                            color="primary"
-                            type="submit"
-                          >
-                            Guardar
-                          </Button>
-                        </div>
+                    <div className="col-md-4 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          required
+                          type="number"
+                          InputProps={{ inputProps: { min: 1, step: 1 } }}
+                          min="1"
+                          step="1"
+                          name="existencia"
+                          label="Existencia"
+                          variant="outlined"
+                          value={this.state.existencia}
+                          onChange={this.handleChangeNumber}
+                        />
                       </div>
+                    </div>
+                    <div className="col-md-4 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          required
+                          type="number"
+                          name="precio"
+                          InputProps={{
+                            inputProps: { min: 0, step: 0.01 }
+                          }}
+                          label="Precio"
+                          variant="outlined"
+                          value={this.state.precio}
+                          onChange={this.handleChangeFilds}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-12 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          name="descripcion"
+                          label="Descripción"
+                          multiline
+                          rows="4"
+                          variant="outlined"
+                          value={this.state.descripcion}
+                          onChange={this.handleChangeFilds}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          required
+                          id="select-proveedor"
+                          name="proveedor"
+                          select
+                          label="Proveedor"
+                          value={this.state.proveedor}
+                          onChange={this.handleChangeFilds}
+                          helperText="Selecciona el proveedor"
+                          variant="outlined"
+                        >
+                          {proveedores.map(proveedor => (
+                            <MenuItem key={proveedor.id} value={proveedor.id}>
+                              {proveedor.nombre}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
+                          required
+                          id="select-categoria-producto"
+                          name="categoria_producto"
+                          select
+                          label="Categoria Producto"
+                          value={this.state.categoria_producto}
+                          onChange={this.handleChangeFilds}
+                          helperText="Selecciona la Categoria del Prodcuto"
+                          variant="outlined"
+                        >
+                          {categoria_producto.map(categoria => (
+                            <MenuItem key={categoria.id} value={categoria.id}>
+                              {categoria.nombre}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </div>
+                    </div>
+                    <div className="col-12 mt-3">
+                      <Button
+                        variant="contained"
+                        startIcon={<SaveIcon />}
+                        color="primary"
+                        type="submit"
+                      >
+                        Guardar
+                      </Button>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </form>
+          </CardContent>
+        </Card>
       </Fragment>
     );
   }
@@ -314,16 +262,11 @@ const mapStateToProps = ({ firestore }) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    createProducto: async (producto) => dispatch(createProducto(producto)),
-    uploadImageProducto: async (file) => dispatch(uploadImageProducto(file))
-  };
-};
-
 export default withRouter(
   compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+      mapStateToProps
+    ),
     firestoreConnect([
       {
         collection: "categoria_producto"
