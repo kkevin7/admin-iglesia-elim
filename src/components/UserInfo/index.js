@@ -31,7 +31,6 @@ class UserInfo extends React.Component {
   };
 
   handleProfile = () => {
-    // console.log(this.props);
     const {history, match} = this.props;
     history.push(`${match.url}/profile`);
   }

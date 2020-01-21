@@ -2,7 +2,7 @@ const initState = {
   authError: null,
   usuarios: [{}]
 };
-
+ 
 const authReducer = (state = initState, action) => {
   switch (action.type) {
     case "LOGIN_ERROR":

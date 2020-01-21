@@ -10,7 +10,9 @@ import {
     SIGNIN_TWITTER_USER_SUCCESS,
     SIGNIN_USER_SUCCESS,
     SIGNOUT_USER_SUCCESS,
-    SIGNUP_USER_SUCCESS
+    SIGNUP_USER_SUCCESS,
+    NUEVO_USUARIO,
+    NUEVO_USUARIO_ERROR,
 } from "constants/ActionTypes";
 
 const INIT_STATE = {
@@ -108,6 +110,23 @@ export default (state = INIT_STATE, action) => {
             return {
                 ...state,
                 loader: false
+            }
+        }
+        case NUEVO_USUARIO: {
+            console.log("PASE POR ACTION AUTH NUEVO USUARIO: ", localStorage.setItem('user_id', action.authUser.user.uid))
+            return {
+                ...state,
+                loader: false,
+                // authUser: localStorage.setItem('user_id', action.authUser.user.uid),
+            }
+        }
+        case NUEVO_USUARIO_ERROR: {
+            return {
+                ...state,
+                alertMessage: action.err.message,
+                authError: action.err.message,
+                showMessage: true,
+                loader: false,
             }
         }
         default:

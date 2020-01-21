@@ -29,14 +29,14 @@ class EditarUsuario extends Component {
   handleEditUser = usuario => {
     const { editUser, history } = this.props;
     editUser(usuario).then(() => {
-        history.push(`/app/detalleUsuario/${this.props.match.params.id}`);
+      history.push(`/app/detalleUsuario/${this.props.match.params.id}`);
     });
   };
 
   redirectGoBack = () => {
     const { history } = this.props;
     history.goBack();
-  }
+  };
 
   render() {
     const { usuario } = this.props;
@@ -44,7 +44,7 @@ class EditarUsuario extends Component {
 
     return (
       <div className="app-wrapper">
-          <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
+        <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
           <h2 className="title mb-3 mb-sm-0">Modificar Usuario</h2>
           <Button
             variant="contained"
@@ -55,7 +55,11 @@ class EditarUsuario extends Component {
             VOLVER
           </Button>
         </div>
-        <FormUsuario usuario={usuario} actionComponent={this.handleEditUser} correo={false} />
+        <FormUsuario
+          usuario={usuario}
+          actionComponent={this.handleEditUser}
+          correo={false}
+        />
       </div>
     );
   }

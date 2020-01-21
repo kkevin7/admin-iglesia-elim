@@ -28,6 +28,7 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 //Others components
+import clsx from "clsx";
 import { Alert } from "reactstrap";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -35,7 +36,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import clsx from "clsx";
+//Images
 import userImageDefault from "../../../assets/images/users/user.png";
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
@@ -215,7 +216,7 @@ class FormUsuario extends Component {
                           Número de Teléfono
                         </InputLabel>
                         <Input
-                          required
+                          // required
                           value={this.state.telefono}
                           onChange={this.handleChange}
                           id="telefono"
@@ -262,6 +263,7 @@ class FormUsuario extends Component {
                             KeyboardButtonProps={{
                               "aria-label": "change date"
                             }}
+                            maxDate={new Date().setFullYear(new Date().getFullYear() - 5)}
                             value={this.state.fecha_nacimiento}
                             onChange={this.handleFechaNacimiento}
                             helperText="Ingresa la fecha de nacimiento"

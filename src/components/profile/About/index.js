@@ -27,7 +27,7 @@ class About extends React.Component {
         {
           title: "Cumpleaños",
           icon: "zmdi zmdi-cake jr-fs-xlxl text-orange",
-          desc: props.profile.fecha_nacimiento ? moment(props.profile.fecha_nacimiento).format("LL"): "",
+          desc: props.profile.fecha_nacimiento ? moment(props.profile.fecha_nacimiento.toDate()).format("LL"): "",
           userList: null
         },
         {

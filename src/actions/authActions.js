@@ -47,14 +47,14 @@ export const registrarUsuario = newUser => {
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(async resp => {
                 // return await firestore.collection('usuarios').orderBy('carnet').startAt(carnet).endAt(carnet+ "\uf8ff");
-                return await firestore
+                await firestore
                     .collection("usuarios")
                     .where("carnet", ">=", carnet)
                     .where("carnet", "<=", carnet + "\uf8ff")
                     .get()
-                    .then(snapshotUsuarios => {
+                    .then(async snapshotUsuarios => {
                         carnet += (snapshotUsuarios.size + 1).toString().padStart(3, "0");
-                        return firestore
+                        await firestore
                             .collection("usuarios")
                             .doc(resp.user.uid)
                             .set({
@@ -71,6 +71,7 @@ export const registrarUsuario = newUser => {
                                 rol: "Socio"
                             });
                     });
+                    return resp;
             })
             .then((resp) => {
                 dispatch({

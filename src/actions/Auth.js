@@ -17,7 +17,9 @@ import {
     SIGNOUT_USER,
     SIGNOUT_USER_SUCCESS,
     SIGNUP_USER,
-    SIGNUP_USER_SUCCESS
+    SIGNUP_USER_SUCCESS,
+    NUEVO_USUARIO,
+    NUEVO_USUARIO_ERROR,
 } from 'constants/ActionTypes';
 
 export const userSignUp = (user) => {
@@ -130,3 +132,123 @@ export const hideAuthLoader = () => {
         type: ON_HIDE_LOADER,
     };
 };
+
+export const nuevoUsuario = newUser => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+        const fecha = new Date(newUser.fecha_nacimiento);
+        let carnet = "";
+        carnet =
+            newUser.nombre.charAt(0) +
+            newUser.apellido.charAt(0) +
+            fecha.getDate() +
+            (fecha.getMonth() + 1) +
+            fecha.getFullYear();
+        carnet = carnet.toString().toUpperCase();
+
+        return await firebase
+            .auth()
+            .createUserWithEmailAndPassword(newUser.email, newUser.password)
+            .then(async signUpUser => {
+                if (signUpUser.message) {
+                    await showAuthMessage(signUpUser.message);
+                } else {
+                    await firestore
+                        .collection("usuarios")
+                        .where("carnet", ">=", carnet)
+                        .where("carnet", "<=", carnet + "\uf8ff")
+                        .get()
+                        .then(async snapshotUsuarios => {
+                            carnet += await (snapshotUsuarios.size + 1).toString().padStart(3, "0");
+                            await firestore
+                                .collection("usuarios")
+                                .doc(signUpUser.user.uid)
+                                .set({
+                                    carnet: carnet,
+                                    nombre: newUser.nombre,
+                                    apellido: newUser.apellido,
+                                    telefono: newUser.telefono,
+                                    direccion: newUser.direccion,
+                                    fecha_nacimiento: new Date(newUser.fecha_nacimiento),
+                                    departamento: newUser.departamento,
+                                    fecha_socio: new Date(newUser.fecha_socio),
+                                    email: newUser.email,
+                                    estado: true,
+                                    rol: "Socio"
+                                }).then(async (resp) => {
+                                    localStorage.setItem('user_id', signUpUser.user.uid);
+                                    await userSignUpSuccess(signUpUser.user.uid);
+                                });
+                        });
+                }
+            })
+            // .then(async (signUpUser) => {
+            //     if (signUpUser.message) {
+            //         await showAuthMessage(signUpUser.message);
+            //     }else{
+            //         localStorage.setItem('user_id', signUpUser.user.uid);
+            //         await userSignUpSuccess(signUpUser.user.uid);
+            //     }
+            //     return signUpUser;
+            // })
+            .catch(async err => {
+                await dispatch({
+                    type: NUEVO_USUARIO_ERROR,
+                    err
+                });
+            });
+    };
+};
+
+
+// export const nuevoUsuario = newUser => {
+//     return async (dispatch, getState, { getFirebase, getFirestore }) => {
+//         const firebase = getFirebase();
+//         const firestore = getFirestore();
+//         const fecha = new Date(newUser.fecha_nacimiento);
+//         let carnet = "";
+//         carnet =
+//             newUser.nombre.charAt(0) +
+//             newUser.apellido.charAt(0) +
+//             fecha.getDate() +
+//             (fecha.getMonth() + 1) +
+//             fecha.getFullYear();
+//         carnet = carnet.toString().toUpperCase();
+
+//         const signUpUser = await firebase
+//             .auth()
+//             .createUserWithEmailAndPassword(newUser.email, newUser.password);
+//         if (signUpUser.message) {
+//             await showAuthMessage(signUpUser.message);
+//         } else {
+//             const snapshotCarnet = await firestore
+//                 .collection("usuarios")
+//                 .where("carnet", ">=", carnet)
+//                 .where("carnet", "<=", carnet + "\uf8ff")
+//                 .get();
+//             carnet += await (snapshotCarnet.size + 1).toString().padStart(3, "0");
+//             await firestore
+//                 .collection("usuarios")
+//                 .doc(signUpUser.user.uid)
+//                 .set({
+//                     carnet: carnet,
+//                     nombre: newUser.nombre,
+//                     apellido: newUser.apellido,
+//                     telefono: newUser.telefono,
+//                     direccion: newUser.direccion,
+//                     fecha_nacimiento: new Date(newUser.fecha_nacimiento),
+//                     departamento: newUser.departamento,
+//                     fecha_socio: new Date(newUser.fecha_socio),
+//                     email: newUser.email,
+//                     estado: true,
+//                     rol: "Socio"
+//                 }).then(async () => {
+//                     localStorage.setItem('user_id', signUpUser.user.uid);
+//                     await userSignUpSuccess(signUpUser.user.uid);
+//                 });
+//         }
+//         return signUpUser;
+//     };
+// };
+
