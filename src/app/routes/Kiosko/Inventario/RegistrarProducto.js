@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import ContainerHeader from "components/ContainerHeader/index";
 import { firestoreConnect } from "react-redux-firebase";
 
-import { createProducto, uploadImageProducto } from "actions/productosActions";
+import { createProducto, createProductoImg, uploadImageProducto } from "actions/productosActions";
 //Inputs
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -25,19 +25,13 @@ class RegistrarProducto extends Component {
   state = {};
 
   registrarProducto = producto => {
-    // this.props.createProducto(this.state)
-    // this.props.history.push(`/app/inventario`)
-
-    const { firestore, history, firebase, createProducto } = this.props;
-    const nuevoProducto = {
-      nombre: producto.nombre,
-      precio: Number(producto.precio),
-      existencia: Number(producto.existencia),
-      descripcion: producto.descripcion
-    };
-
-    createProducto(nuevoProducto).then(() => history.push("/app/inventario"));
-
+    const { history, createProducto, createProductoImg } = this.props;
+    
+    if(producto.file){
+      createProductoImg(producto).then(() => history.push("/app/inventario"));
+    }else{
+      createProducto(producto).then(() => history.push("/app/inventario"));
+    }
   };
 
   render() {
@@ -63,7 +57,8 @@ const mapStateToProps = ({ firestore, firebase }) => {
 const mapDispatchToProps = dispatch => {
   return {
     createProducto: async (producto) => dispatch(createProducto(producto)),
-    uploadImageProducto: async (file) => dispatch(uploadImageProducto(file))
+    uploadImageProducto: async (file) => dispatch(uploadImageProducto(file)),
+    createProductoImg: async (producto) => dispatch(createProductoImg(producto)),
   };
 };
 

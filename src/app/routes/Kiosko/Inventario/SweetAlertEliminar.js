@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { withRouter } from "react-router-dom";
 import { firestoreConnect } from "react-redux-firebase";
 
-const SweetAlertEliminar = ({ id, firestore, history, btnText, btnClass, btnSize }) => {
+const SweetAlertEliminar = ({ id, firestore, history, btnText, btnClass, btnSize, actionComponent }) => {
 
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [alertOK, setAlertOK] = React.useState(false);
@@ -49,11 +49,19 @@ const SweetAlertEliminar = ({ id, firestore, history, btnText, btnClass, btnSize
         show={alertOK}
         success title="Acción realizda con éxito!"
         onConfirm={() => {
-          handleEliminar();
+          if(!actionComponent){
+            handleEliminar();
+          }else{
+            actionComponent(id)
+          }
           setAlertOK(false)
         }}
         onCancel={() => {
-          handleEliminar();
+          if(!actionComponent){
+            handleEliminar();
+          }else{
+            actionComponent(id)
+          }
           setAlertOK(false)
         }}>
         OK!

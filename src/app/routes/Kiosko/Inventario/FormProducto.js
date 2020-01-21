@@ -38,6 +38,7 @@ class FormProducto extends Component {
         typeof props.producto !== "undefined" ? props.producto.descripcion : "",
       proveedor: null,
       categoria_producto: null,
+      url: null,
       file: null,
       urlImage: "",
       uploadValue: 0
@@ -60,15 +61,20 @@ class FormProducto extends Component {
     this.props.actionSubmit(this.state);
 
     //upload image
-    if(this.state.file !== null){
-      const {firebase, uploadImageProducto} = this.props;
-      uploadImageProducto(this.state.file)
-      .then(fileRef => {
-        console.log(fileRef);
-        console.log(fileRef.task.snapshot);
-        console.log(fileRef.ref.getDownloadURL());
-        // console.log(fileRef.getDownloadURL());
-      })
+    // if(this.state.file !== null){
+    //   const {firebase, uploadImageProducto} = this.props;
+    //   uploadImageProducto(this.state.file)
+    //   .then(fileRef => {
+    //     console.log("FILE REF ",fileRef);
+    //     console.log("SNAPSHOT",fileRef.task.snapshot);
+    //     console.log("GET URL",fileRef.ref.getDownloadURL());
+    //     console.log("TO STRING",fileRef.ref.getDownloadURL().toString());
+    //     console.log(".URL ",fileRef.ref.getDownloadURL().url);
+    //    fileRef.ref.getDownloadURL().then(url => {
+    //      console.log("CALL BACK",url);
+    //    });
+    //     // console.log(fileRef.getDownloadURL());
+    //   })
       // const file = this.state.file;
       // const storageRef = firebase.storage().ref(`/productos/recurso_${(new Date()).getTime()}`);
       // const taskUpload = storageRef.put(file);
@@ -87,7 +93,10 @@ class FormProducto extends Component {
       //     urlImage: taskUpload.snapshot.downloadURL
       //   })
       // })
-    }
+    //   console.log("IMAGEN SELECCIONADA")
+    // }else{
+    //   console.log("IMAGEN VACIA")
+    // }
   };
 
   handleVolver = () => {

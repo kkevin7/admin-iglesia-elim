@@ -16,11 +16,10 @@ import SweetAlertEliminar from './SweetAlertEliminar';
 const CardProducto = ({ producto, firestore, history }) => {
 
   const handleElminarProducto = async (id) => {
-    const response = await firestore.delete({
+    await firestore.delete({
       collection: 'productos',
       doc: id
     })
-    return response;
   }
 
   const handleRedirectDetalle = (id) => {
@@ -47,7 +46,7 @@ const CardProducto = ({ producto, firestore, history }) => {
             className="card-img-top"
             component="img"
             height="200"
-            image={DefaultImgProducto}
+            image={producto.url ? producto.url :DefaultImgProducto}
             title={producto.nombre}
           />
           <CardContent>
@@ -69,7 +68,7 @@ const CardProducto = ({ producto, firestore, history }) => {
             <i className="zmdi zmdi-eye zmdi-hc-fw mr-1" />
             Detalles
         </Button>
-        <SweetAlertEliminar id={producto.id}/>
+        <SweetAlertEliminar id={producto.id} actionComponent={handleElminarProducto}/>
         </CardActions>
       </Card>
     </div>
