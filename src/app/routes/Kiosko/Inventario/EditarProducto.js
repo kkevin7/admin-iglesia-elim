@@ -24,24 +24,26 @@ class EditarProducto extends Component {
   }
 
   render() {
-    const { producto, firestore } = this.props;
-    if (!producto || !firestore) return <Spinner />;
-    console.log("consulta producto:",producto)
+    const { producto, proveedores, categoria_producto, } = this.props;
+    if (!producto || !proveedores || !categoria_producto) return <Spinner />;
 
     return (
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title="Editar Producto" />
         <FormProducto 
         producto={producto} 
+        proveedores={proveedores}
+        categoria_producto={categoria_producto}
         actionSubmit={this.handleEditProducto}
         />
       </div>
     );
   }
 }
-const mapStateToProps = ({ firestore: { ordered }, firestore }) => ({
-  producto: ordered.producto && ordered.producto[0],
-  firestore: firestore && firestore
+const mapStateToProps = ({ firestore }) => ({
+  producto: firestore.ordered.producto && firestore.ordered.producto[0],
+  proveedores: firestore.ordered.proveedores,
+  categoria_producto: firestore.ordered.categoria_producto,
 });
 
 const mapDispatchToProps = dispatch => {
@@ -60,6 +62,12 @@ export default withRouter(
         collection: "productos",
         storeAs: "producto",
         doc: props.match.params.id
+      },
+      {
+        collection: "categoria_producto"
+      },
+      {
+        collection: "proveedores"
       }
     ])
   )(EditarProducto)

@@ -11,11 +11,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 class BookStore extends Component {
 
-
   render() {
-    const { productos, firestore } = this.props;
-    
-
+    const { productos } = this.props;
     if (!productos) return <Spinner />;
 
     return (
@@ -30,7 +27,10 @@ class BookStore extends Component {
           {productos &&
             productos.map(producto => {
               return (
-                <CardProducto key={producto.id} producto={producto} firestore={firestore} />
+                <CardProducto
+                 key={producto.id} 
+                 producto={producto} 
+                 />
               )
             })}
         </div>
@@ -39,18 +39,20 @@ class BookStore extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  // console.log(state.firestore.ordered.productos);
-  // const productos = producto;
-  // return productos;
+const mapStateToProps = ({firestore}) => {
   return {
-    productos: state.firestore.ordered.productos
+    productos: firestore.ordered.productos,
   };
 };
 
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect([{ collection: "productos" }])
+    firestoreConnect(
+      [
+        { collection: "productos" },
+        
+      ]
+      )
   )(BookStore)
 );

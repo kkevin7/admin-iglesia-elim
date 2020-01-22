@@ -32,19 +32,47 @@ class FormProducto extends Component {
       precio: props.producto ? props.producto.precio : "",
       existencia: props.producto ? props.producto.existencia : "",
       descripcion: props.producto ? props.producto.descripcion : "",
-      proveedor: null,
-      categoria_producto: null,
+      proveedor: props.producto
+        ? props.producto.proveedor
+        : props.proveedores
+        ? props.proveedores.length > 0
+          ? props.proveedores[0].nombre
+          : ""
+        : "",
+      categoria_producto: props.producto
+        ? props.producto.categoria_producto
+        : props.categoria_producto
+        ? props.categoria_producto.length > 0
+          ? props.categoria_producto[0].nombre
+          : ""
+        : "",
       url: props.producto ? props.producto.url : "",
       file_id: props.producto ? props.producto.file_id : "",
       file: null,
       urlImage: "",
-      uploadValue: 0
+      uploadValue: 0,
+      //Error
+      proveedor_error: false,
+      categoria_producto_error: false
     };
   }
+
   handleChangeFilds = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
+  };
+
+  handleChangeError = e => {
+    if (e.target.value) {
+      this.setState({
+        [e.target.name + "_error"]: false
+      });
+    } else {
+      this.setState({
+        [e.target.name + "_error"]: true
+      });
+    }
   };
 
   handleChangeNumber = e => {
@@ -78,7 +106,6 @@ class FormProducto extends Component {
 
   render() {
     const { proveedores, categoria_producto } = this.props;
-    if (!proveedores || !categoria_producto) return <Spinner />;
 
     return (
       <Fragment>
@@ -111,7 +138,9 @@ class FormProducto extends Component {
                           image={
                             this.state.urlImage
                               ? this.state.urlImage
-                              : this.state.url ? this.state.url : imageDefault
+                              : this.state.url
+                              ? this.state.url
+                              : imageDefault
                           }
                           title="Contemplative Reptile"
                         />
@@ -201,13 +230,20 @@ class FormProducto extends Component {
                           select
                           label="Proveedor"
                           value={this.state.proveedor}
-                          onChange={this.handleChangeFilds}
+                          onChange={e => {
+                            this.handleChangeError(e);
+                            this.handleChangeFilds(e);
+                          }}
                           helperText="Selecciona el proveedor"
                           variant="outlined"
                         >
-                          {proveedores.map(proveedor => (
-                            <MenuItem key={proveedor.id} value={proveedor.id}>
-                              {proveedor.nombre}
+                          {proveedores.map((prov, index) => (
+                            <MenuItem
+                              key={prov.id}
+                              value={prov.nombre}
+                              selected={index == 0 ? true : false}
+                            >
+                              {prov.nombre}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -217,17 +253,24 @@ class FormProducto extends Component {
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
                           required
+                          error={this.state.proveedor_error}
                           id="select-categoria-producto"
                           name="categoria_producto"
                           select
                           label="Categoria Producto"
                           value={this.state.categoria_producto}
-                          onChange={this.handleChangeFilds}
+                          onChange={e => {
+                            this.handleChangeError(e);
+                            this.handleChangeFilds(e);
+                          }}
                           helperText="Selecciona la Categoria del Prodcuto"
                           variant="outlined"
                         >
-                          {categoria_producto.map(categoria => (
-                            <MenuItem key={categoria.id} value={categoria.id}>
+                          {categoria_producto.map((categoria, index) => (
+                            <MenuItem
+                              key={categoria.id}
+                              value={categoria.nombre}
+                            >
                               {categoria.nombre}
                             </MenuItem>
                           ))}
@@ -255,25 +298,4 @@ class FormProducto extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
-  return {
-    proveedores: firestore.ordered.proveedores,
-    categoria_producto: firestore.ordered.categoria_producto
-  };
-};
-
-export default withRouter(
-  compose(
-    connect(
-      mapStateToProps
-    ),
-    firestoreConnect([
-      {
-        collection: "categoria_producto"
-      },
-      {
-        collection: "proveedores"
-      }
-    ])
-  )(FormProducto)
-);
+export default withRouter(FormProducto);

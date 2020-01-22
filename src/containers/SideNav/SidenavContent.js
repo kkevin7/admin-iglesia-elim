@@ -159,6 +159,18 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/app/registrarCompra">
+                  <i className="zmdi zmdi-collection-add zmdi-hc-fw" />
+                  <span className="nav-text">Registrar compra</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/app/compras">
+                  <i className="zmdi zmdi-collection-add zmdi-hc-fw" />
+                  <span className="nav-text">Compras</span>
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/app/proveedores">
                   <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
                   <span className="nav-text">Proveedores</span>

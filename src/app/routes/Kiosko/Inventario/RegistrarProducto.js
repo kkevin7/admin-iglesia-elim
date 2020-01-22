@@ -35,12 +35,16 @@ class RegistrarProducto extends Component {
   };
 
   render() {
-
+    const {proveedores, categoria_producto, } = this.props;
+    if (!proveedores || !categoria_producto) return <Spinner />;
+    
     return (
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title="Registrar Producto" />
         <FormProducto 
           actionSubmit={this.registrarProducto} 
+          proveedores={proveedores}
+          categoria_producto={categoria_producto}
         />
       </div>
     );
@@ -51,6 +55,8 @@ const mapStateToProps = ({ firestore, firebase }) => {
   return {
     firestore: firestore && firestore,
     firebase: firebase && firebase,
+    proveedores: firestore.ordered.proveedores,
+    categoria_producto: firestore.ordered.categoria_producto,
   };
 };
 
@@ -68,6 +74,15 @@ export default withRouter(
       mapStateToProps,
       mapDispatchToProps
     ),
-    firestoreConnect()
+    firestoreConnect(
+      [
+        {
+          collection: "categoria_producto"
+        },
+        {
+          collection: "proveedores"
+        }
+      ]
+    )
   )(RegistrarProducto)
 );
