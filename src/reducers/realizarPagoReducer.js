@@ -18,7 +18,6 @@ const initState = {
           noResultados: true
         }
       case "BUSCAR_SOCIO_ERROR":
-        console.log("ERROR AL ENCONTRAR SOCIO", action.err);
         return {
           ...state,
           noResultados: true

@@ -77,10 +77,12 @@ export default withRouter(
     firestoreConnect(
       [
         {
-          collection: "categoria_producto"
+          collection: "categoria_producto",
+          where: ["estado", "==", true]
         },
         {
-          collection: "proveedores"
+          collection: "proveedores",
+          where: ["estado", "==", true]
         }
       ]
     )

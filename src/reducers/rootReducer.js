@@ -8,7 +8,8 @@ import authReducer from "./authReducer";
 import productoReducer from "./productoReducer";
 import realizarPagoReducer from "./realizarPagoReducer";
 import contribucionReducer from "./contribucionReducer";
-import estadisticasInventario from "./EstadisticasInventarioReducer";
+import EstadisticasInventario from "./EstadisticasInventarioReducer";
+import ComprasReducer from "./ComprasReducer";
 
 export default history =>
   combineReducers({
@@ -16,8 +17,9 @@ export default history =>
     settings: Settings,
     auth: Auth,
     authCustom: authReducer,
-    estadisticasInventario: estadisticasInventario,
+    estadisticasInventario: EstadisticasInventario,
     producto: productoReducer,
+    compra: ComprasReducer,
     realizarPago: realizarPagoReducer,
     contribucion: contribucionReducer,
     firestore: firestoreReducer,

@@ -25,10 +25,10 @@ export const createProducto = producto => {
                     producto: producto
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async error => {
+                await dispatch({
                     type: "CREATE_PRODUCTO_ERROR",
-                    err
+                    error
                 });
             });
     };

@@ -14,30 +14,36 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
 //Components
 import Spinner from "components/Spinner/Spinner";
-import SweetAlertEliminar from './SweetAlertEliminar';
-import DialogAddExistencia from './DialogAddExistencia';
+import SweetAlertEliminar from "./SweetAlertEliminar";
+import DialogAddExistencia from "./DialogAddExistencia";
 
-const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto }) => {
+const CardDetalle = ({
+  producto,
+  history,
+  deleteImageProducto,
+  deleteProducto
+}) => {
   if (!producto) return <Spinner />;
 
-  const handleElminarProducto = async (id) => {
-    if(producto.file_id){
+  const handleElminarProducto = async id => {
+    if (producto.file_id) {
       await deleteImageProducto(producto.file_id);
     }
     await deleteProducto(id).then(async () => {
       await history.push(`/app/inventario`);
     });
-  }
+  };
 
   const handleRedirectEdit = () => {
     history.push(`/app/editarProducto/${producto.id}`);
-  }
+  };
 
   let classExistencia = `mt-2 badge text-uppercase text-white `;
   if (producto.existencia > 5) {
@@ -105,22 +111,53 @@ const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto })
                     </h4>
                   </div>
                 </div>
-                
+
                 <div className="col-md-6 col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
                       <span className={`font-weight-bold`}>Categoria:</span>{" "}
                       {""}
-                      {producto.categoria_producto ? producto.categoria_producto : ""}
+                      {producto.categoria_producto
+                        ? producto.categoria_producto
+                        : ""}
                     </h4>
                   </div>
                 </div>
                 <div className="col-md-6 col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
-                      <span className="font-weight-bold">Proveedor:</span>{" "}
-                      {""}
+                      <span className="font-weight-bold">Proveedor:</span> {""}
                       {producto.proveedor ? producto.proveedor : ""}
+                    </h4>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className="font-weight-bold">Estado:</span> {""}
+                      {producto.estado ? (
+                        <div className="badge badge-green ml-auto">
+                          <Typography
+                            className="text-white"
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            Disponible
+                          </Typography>
+                        </div>
+                      ) : (
+                        <div className="badge badge-red ml-auto">
+                          <Typography
+                            className="text-white"
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            No Disponible
+                          </Typography>
+                        </div>
+                      )}
                     </h4>
                   </div>
                 </div>
@@ -142,27 +179,29 @@ const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto })
                 <div className="col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     {/* <Button startIcon={<AddIcon/>} className="btn-block bg-cyan text-white" variant="contained" >sddAgregar Existencia</Button> */}
-                    <DialogAddExistencia producto={producto}/>
-                  </div> 
-                </div>
-                <div className="col-12 my-2">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <Button 
-                    startIcon={<EditIcon/>} 
-                    className="btn-block bg-warning text-white" 
-                    variant="contained" 
-                    onClick={handleRedirectEdit}
-                    >Editar Producto</Button>
+                    <DialogAddExistencia producto={producto} />
                   </div>
                 </div>
                 <div className="col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <SweetAlertEliminar 
-                    id={producto.id}
-                    actionComponent={handleElminarProducto}
-                    btnSize="medium" 
-                    btnText="Eliminar Producto" 
-                    btnClass="btn-block bg-danger text-white"
+                    <Button
+                      startIcon={<EditIcon />}
+                      className="btn-block bg-warning text-white"
+                      variant="contained"
+                      onClick={handleRedirectEdit}
+                    >
+                      Editar Producto
+                    </Button>
+                  </div>
+                </div>
+                <div className="col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <SweetAlertEliminar
+                      id={producto.id}
+                      actionComponent={handleElminarProducto}
+                      btnSize="medium"
+                      btnText="Eliminar Producto"
+                      btnClass="btn-block bg-danger text-white"
                     />
                   </div>
                 </div>
@@ -182,15 +221,18 @@ const mapStateToProps = ({ firestore }) => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteProducto: async (producto) => dispatch(deleteProducto(producto)),
-    deleteImageProducto: async (producto) => dispatch(deleteImageProducto(producto)),
+    deleteProducto: async producto => dispatch(deleteProducto(producto)),
+    deleteImageProducto: async producto =>
+      dispatch(deleteImageProducto(producto))
   };
 };
 
-
 export default withRouter(
   compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
     firestoreConnect(props => [
       {
         collection: "productos",

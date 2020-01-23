@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import moment from "moment";
-//DataTable
+//Table
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -26,18 +26,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 //Icons
-import DeleteIcon from "@material-ui/icons/Delete";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
-import PrintIcon from "@material-ui/icons/Print";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-//components
-import Spinner from "components/Spinner/Spinner";
-import DialogPago from "app/routes/Payment/RealizarPago/DialogPago";
-
-// function createData(name, calories, fat, carbs, protein) {
-//     return { name, calories, fat, carbs, protein };
-//   }
+import CallMadeIcon from '@material-ui/icons/CallMade';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,14 +55,23 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: "rubro", numeric: true, disablePadding: false, label: "Rubro" },
-  { id: "fecha_inicio", numeric: false, disablePadding: false, label: "Fecha Incio" },
-  { id: "valor", numeric: true, disablePadding: false, label: "Monto" },
-  { id: "id", numeric: false, disablePadding: false, label: "Código" },
-  { id: "fecha_pago", numeric: false, disablePadding: false, label: "Fecha Pago" },
-  { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
-  { id: "acciones", numeric: false, disablePadding: false, label: "Acciones" },
-  { id: "comprobante", numeric: false, disablePadding: false, label: "Comprobante" },
+  { id: "id", numeric: true, disablePadding: false, label: "ID" },
+  {
+    id: "id_producto",
+    numeric: false,
+    disablePadding: false,
+    label: "ID Producto"
+  },
+  { id: "cantidad", numeric: true, disablePadding: false, label: "Cantidad" },
+  {
+    id: "precio_compra",
+    numeric: true,
+    disablePadding: false,
+    label: "Precio de Compra"
+  },
+  { id: "total", numeric: true, disablePadding: false, label: "Total" },
+  { id: "fecha", numeric: false, disablePadding: false, label: "Fecha" },
+  { id: "acciones", numeric: false, disablePadding: false, label: "Acciones" }
 ];
 
 function EnhancedTableHead(props) {
@@ -157,7 +155,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTableCuotas = ({ cuotas, history }) => {
+const DataTableCompras = ({ compras, history }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -174,7 +172,7 @@ const DataTableCuotas = ({ cuotas, history }) => {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = cuotas.map(n => n.name);
+      const newSelecteds = compras.map(n => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -216,105 +214,84 @@ const DataTableCuotas = ({ cuotas, history }) => {
 
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, cuotas.length - page * rowsPerPage);
+    rowsPerPage - Math.min(rowsPerPage, compras.length - page * rowsPerPage);
 
-    const btnRedirectComprobante = id => {
-        history.push(`/app/comprobanteCuota/${id}`);
-      };
+  const btnRedirectDetalle = id => {
+    history.push(`/app/detalleProducto/${id}`);
+  };
 
   return (
-      <Paper className={classes.paper}>
-        <TableContainer 
-        // className={classes.container}
+    <Paper className={classes.paper}>
+      <TableContainer
+      // className={classes.container}
+      >
+        <Table
+          stickyHeader
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size={dense ? "small" : "medium"}
+          aria-label="enhanced table"
         >
-            <Table 
-            stickyHeader 
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={cuotas.length}
-            />
-            <TableBody>
-              {stableSort(cuotas, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+          <EnhancedTableHead
+            classes={classes}
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={compras.length}
+          />
+          <TableBody>
+            {stableSort(compras, getSorting(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                const isItemSelected = isSelected(row.name);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={event => handleClick(event, row.name)}
-                      // role="checkbox"
-                      // aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      // selected={isItemSelected}
-                    >
-                      <TableCell align="left" >{row.rubro}</TableCell>
-                      <TableCell align="left">
-                        {row.fecha_inicio ? moment(row.fecha_inicio.toDate()).format("LL") : ""}
+                return (
+                  <TableRow hover tabIndex={-1} key={row.id}>
+                    <TableCell align="left">{row.id}</TableCell>
+                    <TableCell align="left">$ {row.id_producto}</TableCell>
+                    <TableCell align="left">{row.cantidad}</TableCell>
+                    <TableCell align="left">
+                      $ {row.precio_compra.toFixed(2)}
+                    </TableCell>
+                    <TableCell align="left">$ {row.total.toFixed(2)}</TableCell>
+                    <TableCell align="left">
+                    {row.fecha ? moment(row.fecha.toDate()).format("LLL") : ""}
+                        </TableCell>
+                    <TableCell>
+                        <Button
+                          startIcon={<CallMadeIcon/>}
+                          className="bg-cyan text-white"
+                          variant="contained"
+                          onClick={() => btnRedirectDetalle(row.id_producto)}
+                        >
+                          VER PRODUCTO
+                        </Button>
                       </TableCell>
-                      <TableCell align="left">
-                        $ {row.valor.toFixed(2)}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left" >
-                      {row.fecha_pago
-                  ? moment(row.fecha_pago.toDate()).format("LLL")
-                  : ""}
-                      </TableCell>
-                      <TableCell align="left">{row.estado}</TableCell>
-                      <TableCell>
-                        {row.estado === "VIGENTE" ? <DialogPago cuota={row} /> : ""}
-                      </TableCell>
-                      <TableCell>
-                      {row.estado === "PAGADA" ? (
-                  <Button
-                    startIcon={<PrintIcon />}
-                    className="bg-cyan text-white"
-                    variant="contained"
-                    onClick={() => btnRedirectComprobante(row.id)}
-                  >
-                    GENERAR
-                  </Button>
-                ) : (
-                  ""
-                )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[12, 24, 36]}
-          component="div"
-          count={cuotas.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
+                  </TableRow>
+                );
+              })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[12, 24, 36]}
+        component="div"
+        count={compras.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 };
 
-export default withRouter(DataTableCuotas);
+export default withRouter(DataTableCompras);

@@ -3,6 +3,10 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Redux
+import { updateProducto } from "actions/productosActions";
+import { createCompra } from "actions/ComprasActions";
+//Dialog
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -13,10 +17,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import AddIcon from "@material-ui/icons/Add";
 import Spinner from "components/Spinner/Spinner";
 
-const FormDialog = ({ producto, firestore }) => {
+const FormDialog = ({ history, producto, firestore, createCompra, updateProducto }) => {
   const [open, setOpen] = React.useState(false);
   const [existencia, setExistencia] = React.useState("");
-  const [error, setError] = React.useState(false);
+  const [precioCompra, setPrecioCompra] = React.useState("");
+  const [total, setTotal] = React.useState("");
+  //Errores
+  const [errorExistencia, setErrorExistencia] = React.useState(false);
+  const [errorPrecioCompra, setErrorPrecioCompra] = React.useState(false);
+  const [errorTotal, setErrorTotal] = React.useState(false);
 
   if (typeof producto === "undefined")
     return <h3>No se puede agregar existencias</h3>;
@@ -30,40 +39,59 @@ const FormDialog = ({ producto, firestore }) => {
     setOpen(false);
   };
   //Error
-  const handleError = error => {
-    setError(error);
+  const handleError = (error, e )=> {
+    if(e.target.name == "existencia"){
+      setExistencia(Number(e.target.value));
+      setErrorExistencia(error);
+    }
+    if(e.target.name == "precio_compra"){
+      setPrecioCompra(Number(e.target.value));
+      setErrorPrecioCompra(error);
+    }
+    if(e.target.name == "total"){
+      setTotal(Number(e.target.value));
+      setErrorTotal(error);
+    }
   };
   //TextField
-  const handleExistencia = e => {
-    setExistencia(Number(e.target.value));
+  const handleValidation = e => {
     if (e.target.value > 0) {
-      handleError(false);
+      handleError(false, e);
     } else {
-      handleError(true);
+      handleError(true, e);
     }
   };
 
-  const handleBtnAgregar = e => {
+  const handleBtnAgregar = async e => {
     e.preventDefault();
-    if (existencia > 0) {
+    if (existencia > 0 && total>0) {
       let editProducto = { ...producto };
       editProducto.existencia += existencia;
 
-      firestore
-        .update(
-          {
-            collection: "productos",
-            doc: producto.id
-          },
-          editProducto
-        )
-        .then(() => {
-          setOpen(false);
-          setExistencia("");
-        });
+      const compra = {
+        id_producto: producto.id,
+        cantidad: existencia,
+        precio_compra: precioCompra ? precioCompra.toFixed(2) : "",
+        total: total.toFixed(2)
+      };
 
+      await updateProducto(editProducto)
+        .then(async () => {
+          await createCompra(compra);
+        })
+        .then(async () => {
+          await setOpen(false);
+          await setExistencia("");
+        }).then(async () => {
+          await history.push("/app/compras")
+        });
     } else {
-      handleError(true);
+      if(!existencia > 0){
+      setErrorExistencia(true);
+      }
+      if(!total > 0){
+      setErrorTotal(true);
+      }
       return;
     }
   };
@@ -83,17 +111,18 @@ const FormDialog = ({ producto, firestore }) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Agregar Existencias</DialogTitle>
+        <DialogTitle id="form-dialog-title">Agregar una Compra</DialogTitle>
         <DialogContent>
           <DialogContentText>
+            Estas a punto de realizar un compra de productos.
             La cantidad que ingreses se agregar a la cantidad existente en el
             inventario
           </DialogContentText>
           <TextField
+           autoFocus
             required
-            error={error}
-            helperText={error ? "La cantidad debe ser mayor a cero" : ""}
-            autoFocus
+            error={errorExistencia}
+            helperText={errorExistencia ? "La cantidad debe ser mayor a cero" : ""}
             margin="dense"
             type="number"
             inputProps={{ min: "1", step: "1" }}
@@ -101,7 +130,34 @@ const FormDialog = ({ producto, firestore }) => {
             label="Existencia"
             variant="outlined"
             value={existencia}
-            onChange={handleExistencia}
+            onChange={handleValidation}
+            fullWidth
+          />
+          <TextField
+            error={errorPrecioCompra}
+            helperText={errorPrecioCompra ? "El precio debe ser mayor a cero" : ""}
+            margin="dense"
+            type="number"
+            inputProps={{ min: "0.01", step: "0.01" }}
+            name="precio_compra"
+            label="Precio Unitario de Compra"
+            variant="outlined"
+            value={precioCompra}
+            onChange={handleValidation}
+            fullWidth
+          />
+          <TextField
+            required
+            error={errorTotal}
+            helperText={errorTotal ? "El total debe ser mayor a cero" : ""}
+            margin="dense"
+            type="number"
+            inputProps={{ min: "0.01", step: "0.01" }}
+            name="total"
+            label="Total"
+            variant="outlined"
+            value={total}
+            onChange={handleValidation}
             fullWidth
           />
         </DialogContent>
@@ -122,4 +178,19 @@ const FormDialog = ({ producto, firestore }) => {
   );
 };
 
-export default firestoreConnect()(FormDialog);
+const mapDispatchToProps = dispatch => {
+  return {
+    updateProducto: async producto => dispatch(updateProducto(producto)),
+    createCompra: async compra => dispatch(createCompra(compra))
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(
+      null,
+      mapDispatchToProps
+    ),
+    firestoreConnect()
+  )(FormDialog)
+);

@@ -52,7 +52,7 @@ class Estadisticas extends Component {
             />
             <CardData
               titulo={`Compras`}
-              resultado={Number(9)}
+              resultado={Number(count_compras)}
               color={`bg-danger`}
               img={compraImg}
             />

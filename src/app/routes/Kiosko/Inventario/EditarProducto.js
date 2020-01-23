@@ -64,10 +64,12 @@ export default withRouter(
         doc: props.match.params.id
       },
       {
-        collection: "categoria_producto"
+        collection: "categoria_producto",
+        where: ["estado", "==", true]
       },
       {
-        collection: "proveedores"
+        collection: "proveedores",
+        where: ["estado", "==", true]
       }
     ])
   )(EditarProducto)
