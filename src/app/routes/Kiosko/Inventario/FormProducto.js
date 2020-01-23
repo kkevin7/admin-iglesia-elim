@@ -6,10 +6,13 @@ import { compose } from "redux";
 //Redux
 import { createProducto, uploadImageProducto } from "actions/productosActions";
 //Inputs
-import { Input } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -29,14 +32,15 @@ class FormProducto extends Component {
     this.state = {
       id: props.producto ? props.producto.id : "",
       nombre: props.producto ? props.producto.nombre : "",
-      precio: props.producto ? props.producto.precio : "",
+      precio: props.producto ? props.producto.precio.toFixed(2) : "",
       existencia: props.producto ? props.producto.existencia : "",
       descripcion: props.producto ? props.producto.descripcion : "",
+      estado: props.producto ? props.producto.estado : true,
       proveedor: props.producto
         ? props.producto.proveedor
         : props.proveedores
         ? props.proveedores.length > 0
-          ? props.proveedores[0].nombre
+          ? props.proveedores[0].id
           : ""
         : "",
       categoria_producto: props.producto
@@ -240,10 +244,10 @@ class FormProducto extends Component {
                           {proveedores.map((prov, index) => (
                             <MenuItem
                               key={prov.id}
-                              value={prov.nombre}
+                              value={prov.id}
                               selected={index == 0 ? true : false}
                             >
-                              {prov.nombre}
+                              {prov.nombre+" "+prov.apellido}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -275,6 +279,31 @@ class FormProducto extends Component {
                             </MenuItem>
                           ))}
                         </TextField>
+                      </div>
+                    </div>
+                    <div
+                      className={`col-md-6 col-12 ${
+                        this.props.producto ? "" : "d-none"
+                      }`}
+                    >
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <FormControl>
+                          <InputLabel id="label-estado">
+                            Estado
+                          </InputLabel>
+                          <Select
+                            labelId="estado-label"
+                            id="estado"
+                            name="estado"
+                            // defaultValue={true}
+                            value={this.state.estado}
+                            onChange={this.handleChangeFilds}
+                            className={`${this.state.estado ? "bg-green" : "bg-red"}`}
+                          >
+                            <MenuItem value={true} className="bg-green" >Activo</MenuItem>
+                            <MenuItem value={false} className="bg-red" >No Disponible</MenuItem>
+                          </Select>
+                        </FormControl>
                       </div>
                     </div>
                     <div className="col-12 mt-3">

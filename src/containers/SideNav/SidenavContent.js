@@ -128,6 +128,12 @@ class SidenavContent extends Component {
               <span className="MuiTouchRipple-root"></span>
             </button>
             <ul className="sub-menu">
+            <li>
+                <NavLink to="/app/estadisticasInventario">
+                  <i className="zmdi zmdi-chart zmdi-hc-fw" />
+                  <span className="nav-text">Estadísticas</span>
+                </NavLink>
+              </li>
               <li>
                 <NavLink to="/app/inventario">
                   <i className="zmdi zmdi-collection-text zmdi-hc-fw" />
@@ -158,15 +164,15 @@ class SidenavContent extends Component {
                   <span className="nav-text">Ventas</span>
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink to="/app/registrarCompra">
                   <i className="zmdi zmdi-collection-add zmdi-hc-fw" />
                   <span className="nav-text">Registrar compra</span>
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink to="/app/compras">
-                  <i className="zmdi zmdi-collection-add zmdi-hc-fw" />
+                  <i className="zmdi zmdi-case-download zmdi-hc-fw" />
                   <span className="nav-text">Compras</span>
                 </NavLink>
               </li>
@@ -183,11 +189,12 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/b6">
+                <NavLink to="/app/reportesInventario">
                   <i className="zmdi zmdi-local-printshop zmdi-hc-fw" />
                   <span className="nav-text">Reportes </span>
                 </NavLink>
               </li>
+              
             </ul>
           </li>
 

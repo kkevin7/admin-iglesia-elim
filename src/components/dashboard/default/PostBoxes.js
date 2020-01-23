@@ -2,6 +2,7 @@ import React from 'react';
 
 const PostBox = ({post}) => {
   const {image, title, description} = post;
+  console.log(post);
   return (
     <div className="col-xl-6 col-lg-12 col-sm-6 col-12 mb-4">
       <div className="row">

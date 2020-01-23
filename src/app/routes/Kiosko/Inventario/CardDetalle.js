@@ -84,7 +84,7 @@ const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto })
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
                       <span className="font-weight-bold">Nombre:</span> {""}
-                      {producto.nombre}
+                      {producto.nombre ? producto.nombre : ""}
                     </h4>
                   </div>
                 </div>
@@ -92,7 +92,7 @@ const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto })
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
                       <span className="font-weight-bold">Precio:</span> {"$ "}
-                      {producto.precio.toFixed(2)}
+                      {producto.precio ? producto.precio.toFixed(2) : " "}
                     </h4>
                   </div>
                 </div>
@@ -101,16 +101,36 @@ const CardDetalle = ({ producto, history, deleteImageProducto, deleteProducto })
                     <h4>
                       <span className={`font-weight-bold`}>Existencia:</span>{" "}
                       {""}
-                      {producto.existencia}
+                      {producto.existencia ? producto.existencia : ""}
                     </h4>
                   </div>
                 </div>
+                
+                <div className="col-md-6 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className={`font-weight-bold`}>Categoria:</span>{" "}
+                      {""}
+                      {producto.categoria_producto ? producto.categoria_producto : ""}
+                    </h4>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className="font-weight-bold">Proveedor:</span>{" "}
+                      {""}
+                      {producto.proveedor ? producto.proveedor : ""}
+                    </h4>
+                  </div>
+                </div>
+
                 <div className="col-md-12 col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
                       <span className="font-weight-bold">Descripcion:</span>{" "}
                       {""}
-                      {producto.descripcion}
+                      {producto.descripcion ? producto.descripcion : ""}
                     </h4>
                   </div>
                 </div>

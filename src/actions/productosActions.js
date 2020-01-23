@@ -17,6 +17,7 @@ export const createProducto = producto => {
                 file_id: null,
                 proveedor,
                 categoria_producto,
+                estado: true,
             })
             .then(async () => {
                 await dispatch({
@@ -54,8 +55,9 @@ export const createProductoImg = producto => {
                         fecha_creacion: new Date(),
                         url: url,
                         file_id: snapshotFile.ref.name,
-                        proveedor, 
+                        proveedor,
                         categoria_producto,
+                        estado: true
                     })
                     .then(async () => {
                         await dispatch({
@@ -77,7 +79,7 @@ export const createProductoImg = producto => {
 export const updateProducto = producto => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        const { id, nombre, precio, existencia, descripcion, proveedor, categoria_producto, } = producto;
+        const { id, nombre, precio, existencia, descripcion, proveedor, categoria_producto, estado } = producto;
 
         await firestore
             .update(
@@ -91,8 +93,9 @@ export const updateProducto = producto => {
                     existencia: Number(existencia),
                     descripcion,
                     fecha_creacion: new Date(),
-                    proveedor, 
+                    proveedor,
                     categoria_producto,
+                    estado,
                 })
             .then(async () => {
                 await dispatch({
@@ -113,7 +116,7 @@ export const updateProductoImg = producto => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
-        const { id, nombre, precio, existencia, descripcion, file, file_id, proveedor, categoria_producto, } = producto;
+        const { id, nombre, precio, existencia, descripcion, file, file_id, proveedor, categoria_producto, estado } = producto;
         const nuevoFileId = (new Date()).getTime();
 
         const storageRef = firebase.storage().ref();
@@ -138,8 +141,9 @@ export const updateProductoImg = producto => {
                             fecha_creacion: new Date(),
                             url: url,
                             file_id: nuevoFileId,
-                            proveedor, 
+                            proveedor,
                             categoria_producto,
+                            estado,
                         })
                     .then(async () => {
                         await dispatch({
@@ -234,6 +238,35 @@ export const buscarProductoHayExistencia = producto => {
             .catch(async error => {
                 await dispatch({
                     type: "PRODUCTO_HAY_EXISTENCIA_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const bajaExistenciasProductos = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("productos")
+            .orderBy('existencia', 'asc')
+            .limit(5)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    const productos = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
+                    await dispatch({
+                        type: "PRODUCTOS_BAJA_EXISTENCIA",
+                        bajaExistencias: productos
+                    });
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "PRODUCTOS_BAJA_EXISTENCIA_ERROR",
                     error
                 });
             });

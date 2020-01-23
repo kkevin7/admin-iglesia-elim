@@ -64,9 +64,14 @@ const CardProducto = ({ producto, firestore, history, deleteProducto, deleteImag
             <Typography variant="body2" color="textSecondary" component="p">
               {producto.descripcion}
             </Typography>
-            <div className={classExistencia}>
+            <div className={` col-12  ${classExistencia}`}>
             <Typography className="text-white" variant="body2" color="textSecondary" component="p">
               Existencia: {producto.existencia}
+            </Typography>
+            </div>
+            <div className={`col-12 mt-2 badge text-uppercase text-white bg-cyan`}>
+            <Typography className="text-white" variant="body2" color="textSecondary" component="p">
+              Precio: $ {producto.precio.toFixed(2)}
             </Typography>
             </div>
           </CardContent>
