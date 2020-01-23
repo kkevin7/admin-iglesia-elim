@@ -1,6 +1,6 @@
 const initState = {
   productos: [],
-  bajaExistencias: [],
+  // bajaExistencias: [],
   //errores;
   error: ""
 };
@@ -22,17 +22,17 @@ const productoReducer = (state = initState, action) => {
     case "PRODUCTO_HAY_EXISTENCIA_ERROR":
       console.log("ERROR AL CREAR EL PRODUCTO", action.error);
       return state;
-    case "PRODUCTOS_BAJA_EXISTENCIA":
-      console.log("redux ", action.bajaExistencias);
-      return {
-        ...state,
-        bajaExistencias: action.bajaExistencias
-      };
-    case "PRODUCTOS_BAJA_EXISTENCIA_ERROR":
-      return {
-        ...state,
-        error: action.error
-      };
+    // case "PRODUCTOS_BAJA_EXISTENCIA":
+    //   console.log("redux ", action.bajaExistencias);
+    //   return {
+    //     ...state,
+    //     bajaExistencias: action.bajaExistencias
+    //   };
+    // case "PRODUCTOS_BAJA_EXISTENCIA_ERROR":
+    //   return {
+    //     ...state,
+    //     error: action.error
+    //   };
     default:
       return state;
   }

@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from 'moment';
 //Redux
-import { bajaExistenciasProductos } from "actions/productosActions";
+import { bajaExistenciasProductos, countProductos, countVentas, countCompras, countProveedores } from "actions/EstadisticasInventarioActions";
 //Images
 import productoImg from "assets/images/dashboard/producto2.png";
 import ventaImg from "assets/images/dashboard/venta.png";
@@ -22,13 +22,17 @@ class Estadisticas extends Component {
   state = {};
 
   componentDidMount(){
-    const {bajaExistenciasProductos} = this.props;
+    const {bajaExistenciasProductos, countProductos, countVentas, countCompras, countProveedores} = this.props;
     bajaExistenciasProductos();
+    countProductos();
+    countVentas();
+    countCompras();
+    countProveedores();
   }
 
   render() {
-    const {bajaExistencias} = this.props;
-    if(!bajaExistencias.length > 0) return <Spinner/>
+    const {bajaExistencias, count_productos, count_ventas, count_compras, count_proveedores} = this.props;
+    if(!bajaExistencias.length > 0 || !count_productos || !count_ventas || !count_proveedores ) return <Spinner/>
 
     return (
       <div className="app-wrapper">
@@ -36,13 +40,13 @@ class Estadisticas extends Component {
           <div className="row">
             <CardData
               titulo={`Productos`}
-              resultado={Number(9)}
+              resultado={Number(count_productos)}
               color={`bg-primary`}
               img={productoImg}
             />
             <CardData
               titulo={`Ventas`}
-              resultado={Number(9)}
+              resultado={Number(count_ventas)}
               color={`bg-warning`}
               img={ventaImg}
             />
@@ -54,7 +58,7 @@ class Estadisticas extends Component {
             />
             <CardData
               titulo={`Preveedores`}
-              resultado={Number(9)}
+              resultado={Number(count_proveedores)}
               color={`bg-info`}
               img={proveedorImg}
             />
@@ -74,17 +78,23 @@ class Estadisticas extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore, producto}) => {
+const mapStateToProps = ({ firestore, estadisticasInventario}) => {
   return {
-    bajaExistencias: producto.bajaExistencias,
-    // proveedores: firestore.ordered.proveedores,
-    // categoria_producto: firestore.ordered.categoria_producto,
+    bajaExistencias: estadisticasInventario.bajaExistencias,
+    count_productos:  estadisticasInventario.count_productos,
+    count_ventas:  estadisticasInventario.count_ventas,
+    count_compras:  estadisticasInventario.count_compras,
+    count_proveedores:  estadisticasInventario.count_proveedores,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    bajaExistenciasProductos: async (producto) => dispatch(bajaExistenciasProductos(producto)),
+    bajaExistenciasProductos: async () => dispatch(bajaExistenciasProductos()),
+    countProductos:async () => dispatch(countProductos()),
+    countVentas:async () => dispatch(countVentas()),
+    countCompras:async () => dispatch(countCompras()),
+    countProveedores:async () => dispatch(countProveedores()),
   };
 };
 

@@ -243,32 +243,3 @@ export const buscarProductoHayExistencia = producto => {
             });
     };
 };
-
-export const bajaExistenciasProductos = () => {
-    return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        return await firestore
-            .collection("productos")
-            .orderBy('existencia', 'asc')
-            .limit(5)
-            .get()
-            .then(async snapshot => {
-                if (snapshot.empty) {
-                    console.log('No hay registros poca existencia.');
-                    return;
-                } else {
-                    const productos = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
-                    await dispatch({
-                        type: "PRODUCTOS_BAJA_EXISTENCIA",
-                        bajaExistencias: productos
-                    });
-                }
-            })
-            .catch(async error => {
-                await dispatch({
-                    type: "PRODUCTOS_BAJA_EXISTENCIA_ERROR",
-                    error
-                });
-            });
-    };
-};

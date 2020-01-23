@@ -90,7 +90,7 @@ class ContenidoPedido extends Component {
       nombre: producto.nombre,
       precio: Number(producto.precio),
       existencia: Number(producto.existencia - producto.cantidad),
-      descripcion: producto.descripcion
+      descripcion: producto.descripcion,
     }));
 
     const nuevoPedido = {
