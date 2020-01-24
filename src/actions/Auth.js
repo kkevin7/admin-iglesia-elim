@@ -19,16 +19,16 @@ import {
     SIGNUP_USER,
     SIGNUP_USER_SUCCESS,
     NUEVO_USUARIO,
-    NUEVO_USUARIO_ERROR,
-} from 'constants/ActionTypes';
+    NUEVO_USUARIO_ERROR
+} from "constants/ActionTypes";
 
-export const userSignUp = (user) => {
+export const userSignUp = user => {
     return {
         type: SIGNUP_USER,
         payload: user
     };
 };
-export const userSignIn = (user) => {
+export const userSignIn = user => {
     return {
         type: SIGNIN_USER,
         payload: user
@@ -39,39 +39,38 @@ export const userSignOut = () => {
         type: SIGNOUT_USER
     };
 };
-export const userSignUpSuccess = (authUser) => {
+export const userSignUpSuccess = authUser => {
     return {
         type: SIGNUP_USER_SUCCESS,
         payload: authUser
     };
 };
 
-export const userSignInSuccess = (authUser) => {
+export const userSignInSuccess = authUser => {
     return {
         type: SIGNIN_USER_SUCCESS,
         payload: authUser
-    }
+    };
 };
 export const userSignOutSuccess = () => {
     return {
-        type: SIGNOUT_USER_SUCCESS,
-    }
+        type: SIGNOUT_USER_SUCCESS
+    };
 };
 
-export const showAuthMessage = (message) => {
+export const showAuthMessage = message => {
     return {
         type: SHOW_MESSAGE,
         payload: message
     };
 };
 
-
 export const userGoogleSignIn = () => {
     return {
         type: SIGNIN_GOOGLE_USER
     };
 };
-export const userGoogleSignInSuccess = (authUser) => {
+export const userGoogleSignInSuccess = authUser => {
     return {
         type: SIGNIN_GOOGLE_USER_SUCCESS,
         payload: authUser
@@ -82,13 +81,13 @@ export const userFacebookSignIn = () => {
         type: SIGNIN_FACEBOOK_USER
     };
 };
-export const userFacebookSignInSuccess = (authUser) => {
+export const userFacebookSignInSuccess = authUser => {
     return {
         type: SIGNIN_FACEBOOK_USER_SUCCESS,
         payload: authUser
     };
 };
-export const setInitUrl = (url) => {
+export const setInitUrl = url => {
     return {
         type: INIT_URL,
         payload: url
@@ -99,7 +98,7 @@ export const userTwitterSignIn = () => {
         type: SIGNIN_TWITTER_USER
     };
 };
-export const userTwitterSignInSuccess = (authUser) => {
+export const userTwitterSignInSuccess = authUser => {
     return {
         type: SIGNIN_TWITTER_USER_SUCCESS,
         payload: authUser
@@ -110,7 +109,7 @@ export const userGithubSignIn = () => {
         type: SIGNIN_GITHUB_USER
     };
 };
-export const userGithubSignInSuccess = (authUser) => {
+export const userGithubSignInSuccess = authUser => {
     return {
         type: SIGNIN_GITHUB_USER_SUCCESS,
         payload: authUser
@@ -118,18 +117,18 @@ export const userGithubSignInSuccess = (authUser) => {
 };
 export const showAuthLoader = () => {
     return {
-        type: ON_SHOW_LOADER,
+        type: ON_SHOW_LOADER
     };
 };
 
 export const hideMessage = () => {
     return {
-        type: HIDE_MESSAGE,
+        type: HIDE_MESSAGE
     };
 };
 export const hideAuthLoader = () => {
     return {
-        type: ON_HIDE_LOADER,
+        type: ON_HIDE_LOADER
     };
 };
 
@@ -147,60 +146,60 @@ export const nuevoUsuario = newUser => {
             fecha.getFullYear();
         carnet = carnet.toString().toUpperCase();
 
-        return await firebase
+        const signUpUser = await firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
-            .then(async signUpUser => {
-                if (signUpUser.message) {
-                    await showAuthMessage(signUpUser.message);
-                } else {
-                    await firestore
-                        .collection("usuarios")
-                        .where("carnet", ">=", carnet)
-                        .where("carnet", "<=", carnet + "\uf8ff")
-                        .get()
-                        .then(async snapshotUsuarios => {
-                            carnet += await (snapshotUsuarios.size + 1).toString().padStart(3, "0");
-                            await firestore
-                                .collection("usuarios")
-                                .doc(signUpUser.user.uid)
-                                .set({
-                                    carnet: carnet,
-                                    nombre: newUser.nombre,
-                                    apellido: newUser.apellido,
-                                    telefono: newUser.telefono,
-                                    direccion: newUser.direccion,
-                                    fecha_nacimiento: new Date(newUser.fecha_nacimiento),
-                                    departamento: newUser.departamento,
-                                    fecha_socio: new Date(newUser.fecha_socio),
-                                    email: newUser.email,
-                                    estado: true,
-                                    rol: "Socio"
-                                }).then(async (resp) => {
-                                    localStorage.setItem('user_id', signUpUser.user.uid);
-                                    await userSignUpSuccess(signUpUser.user.uid);
-                                });
-                        });
-                }
-            })
-            // .then(async (signUpUser) => {
-            //     if (signUpUser.message) {
-            //         await showAuthMessage(signUpUser.message);
-            //     }else{
-            //         localStorage.setItem('user_id', signUpUser.user.uid);
-            //         await userSignUpSuccess(signUpUser.user.uid);
-            //     }
-            //     return signUpUser;
-            // })
             .catch(async err => {
                 await dispatch({
                     type: NUEVO_USUARIO_ERROR,
                     err
                 });
             });
+
+        if (signUpUser.message) {
+            await dispatch({
+                type: SHOW_MESSAGE,
+                payload: signUpUser.message
+            });
+        } else {
+            await firestore
+                .collection("usuarios")
+                .where("carnet", ">=", carnet)
+                .where("carnet", "<=", carnet + "\uf8ff")
+                .get()
+                .then(async snapshotUsuarios => {
+                    carnet += await (snapshotUsuarios.size + 1)
+                        .toString()
+                        .padStart(3, "0");
+                    await firestore
+                        .collection("usuarios")
+                        .doc(signUpUser.user.uid)
+                        .set({
+                            carnet: carnet,
+                            nombre: newUser.nombre,
+                            apellido: newUser.apellido,
+                            telefono: newUser.telefono,
+                            direccion: newUser.direccion,
+                            fecha_nacimiento: new Date(newUser.fecha_nacimiento),
+                            departamento: newUser.departamento,
+                            fecha_socio: new Date(newUser.fecha_socio),
+                            email: newUser.email,
+                            estado: true,
+                            rol: "Socio"
+                        });
+                })
+                .then(async () => {
+                    await localStorage.setItem("user_id", signUpUser.user.uid);
+                    await dispatch({
+                        type: SIGNUP_USER_SUCCESS,
+                        payload: signUpUser.user.uid
+                    });
+                });
+        }
+
+        return signUpUser;
     };
 };
-
 
 // export const nuevoUsuario = newUser => {
 //     return async (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -251,4 +250,3 @@ export const nuevoUsuario = newUser => {
 //         return signUpUser;
 //     };
 // };
-

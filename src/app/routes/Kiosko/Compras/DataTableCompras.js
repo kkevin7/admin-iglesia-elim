@@ -55,7 +55,7 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: "id", numeric: true, disablePadding: false, label: "ID" },
+  // { id: "id", numeric: true, disablePadding: false, label: "ID" },
   {
     id: "id_producto",
     numeric: false,
@@ -162,7 +162,7 @@ const DataTableCompras = ({ compras, history }) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(12);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -250,7 +250,7 @@ const DataTableCompras = ({ compras, history }) => {
 
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
-                    <TableCell align="left">{row.id}</TableCell>
+                    {/* <TableCell align="left">{row.id}</TableCell> */}
                     <TableCell align="left">$ {row.id_producto}</TableCell>
                     <TableCell align="left">{row.cantidad}</TableCell>
                     <TableCell align="left">
@@ -282,7 +282,7 @@ const DataTableCompras = ({ compras, history }) => {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[12, 24, 36]}
+        rowsPerPageOptions={[10, 15, 20, 30]}
         component="div"
         count={compras.length}
         rowsPerPage={rowsPerPage}

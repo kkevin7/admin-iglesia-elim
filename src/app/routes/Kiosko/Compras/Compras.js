@@ -44,7 +44,8 @@ const mapStateToProps = ({ firestore}) => {
         mapDispatchToProps
       ),
       firestoreConnect([{
-          collection: "compras"
+          collection: "compras",
+          orderBy: [["fecha", "desc"]]
       }])
     )(Compras)
   );

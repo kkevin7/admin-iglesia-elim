@@ -124,14 +124,14 @@ class SignUp extends React.Component {
 
     e.preventDefault();
     this.props.showAuthLoader();
-    this.props.nuevoUsuario(this.state).then(user => {
-      console.log("USER: ", user);
+    this.props.nuevoUsuario(this.state)
+    .then(async user => {
       if (user) {
-        this.props.history.push("/app/home");
+       await this.props.history.push("/app/home");
       }
     });
 
-    this.props.userSignUp({ email, password });
+    // this.props.userSignUp({ email, password });
   };
 
   render() {

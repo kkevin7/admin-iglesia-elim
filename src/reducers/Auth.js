@@ -27,6 +27,7 @@ const INIT_STATE = {
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
         case SIGNUP_USER_SUCCESS: {
+            console.log("SIGNUP_USER_SUCCESS");
             return {
                 ...state,
                 loader: false,
@@ -56,6 +57,7 @@ export default (state = INIT_STATE, action) => {
         }
 
         case SHOW_MESSAGE: {
+            console.log("SHOW_MESSAGE");
             return {
                 ...state,
                 alertMessage: action.payload,
