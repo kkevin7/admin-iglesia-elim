@@ -1,4 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux"
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+import moment from 'moment';
+//Redux
+import {reportProductosColocados, reportProductosVentas} from "actions/ReportesActions";
 //Card
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -28,6 +36,8 @@ class Reportes extends Component {
   state = {
     especificarFecha: false,
     showReport: false,
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
   };
 
   handleEspeficiarFecha = (state) => {
@@ -40,6 +50,11 @@ class Reportes extends Component {
     this.setState({
       showReport: state
     })
+  }
+
+  handleReportProductosColocados = () => {
+    const {reportProductosColocados, reportProductosVentas} = this.props;
+    reportProductosColocados(this.state);
   }
 
   render() {
@@ -57,8 +72,9 @@ class Reportes extends Component {
                     startIcon={<EventNoteIcon />}
                     fullWidth
                     onClick={() => {
-                      this.handleEspeficiarFecha(false)
-                      this.handleShowReport(true)
+                      this.handleEspeficiarFecha(false);
+                      this.handleShowReport(true);
+                      this.handleReportProductosColocados();
                     }}
                   >
                     Mes Actual
@@ -147,4 +163,25 @@ class Reportes extends Component {
   }
 }
 
-export default Reportes;
+const mapStateToProps = ({ firestore, reportes}) => {
+  return {
+    productos: reportes.productos,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    reportProductosColocados: async (fecha) => dispatch(reportProductosColocados(fecha)),
+    reportProductosVentas: async (fecha) => dispatch(reportProductosVentas(fecha)),
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
+    firestoreConnect()
+  )(Reportes)
+);

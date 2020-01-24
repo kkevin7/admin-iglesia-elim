@@ -10,6 +10,7 @@ import realizarPagoReducer from "./realizarPagoReducer";
 import contribucionReducer from "./contribucionReducer";
 import EstadisticasInventario from "./EstadisticasInventarioReducer";
 import ComprasReducer from "./ComprasReducer";
+import ReportesReducer from "./ReportesReducer";
 
 export default history =>
   combineReducers({
@@ -22,6 +23,7 @@ export default history =>
     compra: ComprasReducer,
     realizarPago: realizarPagoReducer,
     contribucion: contribucionReducer,
+    reportes: ReportesReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer,
   });
