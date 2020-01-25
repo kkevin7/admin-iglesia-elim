@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from 'moment';
 //Redux
-import {reportProductosColocados, reportProductosVentas} from "actions/ReportesActions";
+import {reportProductosColocados} from "actions/ReportesActions";
 //Card
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -53,11 +53,12 @@ class Reportes extends Component {
   }
 
   handleReportProductosColocados = () => {
-    const {reportProductosColocados, reportProductosVentas} = this.props;
+    const {reportProductosColocados} = this.props;
     reportProductosColocados(this.state);
   }
 
   render() {
+    const {productosColocados} = this.props;
 
     return (
       <div className="app-wrapper">
@@ -71,10 +72,14 @@ class Reportes extends Component {
                     color="primary"
                     startIcon={<EventNoteIcon />}
                     fullWidth
-                    onClick={() => {
-                      this.handleEspeficiarFecha(false);
-                      this.handleShowReport(true);
-                      this.handleReportProductosColocados();
+                    onClick={async () => {
+                      await this.setState({
+                        fechaInicio: new Date((new Date()).getFullYear(), (new Date()).getMonth(), 1), 
+                        fechaFin: new Date()
+                      })
+                      await this.handleEspeficiarFecha(false);
+                      await this.handleShowReport(true);
+                      await this.handleReportProductosColocados();
                     }}
                   >
                     Mes Actual
@@ -86,9 +91,14 @@ class Reportes extends Component {
                     color="primary"
                     startIcon={<EventNoteIcon />}
                     fullWidth
-                    onClick={() => {
-                      this.handleEspeficiarFecha(false)
-                      this.handleShowReport(true)
+                    onClick={async () => {
+                      await this.setState({
+                        fechaInicio: new Date((new Date()).getFullYear(), (new Date()).getMonth()-1, 1), 
+                        fechaFin: new Date((new Date()).getFullYear(), (new Date()).getMonth(), 0)
+                      })
+                      await this.handleEspeficiarFecha(false);
+                      await this.handleShowReport(true);
+                      await this.handleReportProductosColocados();
                     }}
                   >
                     Mes Pasado
@@ -100,9 +110,14 @@ class Reportes extends Component {
                     color="primary"
                     startIcon={<EventNoteIcon />}
                     fullWidth
-                    onClick={() => {
-                      this.handleEspeficiarFecha(false)
-                      this.handleShowReport(true)
+                    onClick={async () => {
+                      await this.setState({
+                        fechaInicio: new Date((new Date()).getFullYear(), (new Date()).getMonth()-3, 1), 
+                        fechaFin: new Date()
+                      })
+                      await this.handleEspeficiarFecha(false);
+                      await this.handleShowReport(true);
+                      await this.handleReportProductosColocados();
                     }}
                   >
                     Últimos 3 Meses
@@ -114,9 +129,14 @@ class Reportes extends Component {
                     color="primary"
                     startIcon={<EventNoteIcon />}
                     fullWidth
-                    onClick={() => {
-                      this.handleEspeficiarFecha(false)
-                      this.handleShowReport(true)
+                    onClick={async () => {
+                      await this.setState({
+                        fechaInicio: new Date((new Date()).getFullYear(), 0, 1), 
+                        fechaFin: new Date()
+                      })
+                      await this.handleEspeficiarFecha(false);
+                      await this.handleShowReport(true);
+                      await this.handleReportProductosColocados();
                     }}
                   >
                     Año Actual
@@ -128,9 +148,14 @@ class Reportes extends Component {
                     color="primary"
                     startIcon={<EventNoteIcon />}
                     fullWidth
-                    onClick={() => {
-                      this.handleEspeficiarFecha(false)
-                      this.handleShowReport(true)
+                    onClick={async () => {
+                      await this.setState({
+                        fechaInicio: new Date((new Date()).getFullYear()-1, 0, 1), 
+                        fechaFin: new Date((new Date()).getFullYear()-1, 12 , 0)
+                      })
+                      await this.handleEspeficiarFecha(false);
+                      await this.handleShowReport(true);
+                      await this.handleReportProductosColocados();
                     }}
                   >
                     Año Pasado
@@ -157,7 +182,12 @@ class Reportes extends Component {
         </Card>
 
         <EspecificarFecha visible={this.state.especificarFecha} />
-        <ProductosColocados visible={this.state.showReport}/>
+        <ProductosColocados 
+        visible={this.state.showReport}
+        productos={productosColocados}
+        fechaInicio={this.state.fechaInicio}
+        fechaFin={this.state.fechaFin}
+        />
       </div>
     );
   }
@@ -165,14 +195,13 @@ class Reportes extends Component {
 
 const mapStateToProps = ({ firestore, reportes}) => {
   return {
-    productos: reportes.productos,
+    productosColocados: reportes.productosColocados,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     reportProductosColocados: async (fecha) => dispatch(reportProductosColocados(fecha)),
-    reportProductosVentas: async (fecha) => dispatch(reportProductosVentas(fecha)),
   };
 };
 

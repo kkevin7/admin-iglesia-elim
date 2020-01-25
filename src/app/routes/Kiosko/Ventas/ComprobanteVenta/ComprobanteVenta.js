@@ -15,13 +15,6 @@ class ComprobanteVenta extends Component {
   render() {
     const venta = this.props.venta;
     if (!venta) return <Spinner />;
-    console.log("LA VENTA");
-    console.log(venta);
-    console.log(this.props)
-
-    const mostrarReporte = () => {
-      window.print();
-    };
 
     return (
       <div className="app-wrapper">
@@ -44,7 +37,6 @@ class ComprobanteVenta extends Component {
                       className="my-1"
                       color="primary"
                       startIcon={<PrintIcon />}
-                      onClick={mostrarReporte}
                     >
                       IMPRIMIR COMPROBANTE
                     </Button>

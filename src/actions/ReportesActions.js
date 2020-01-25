@@ -1,7 +1,7 @@
-export const reportProductosColocados = fecha => {
+export const reportProductosColocados = fechas => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        const { fechaInicial, fechaFin } = fecha;
+        const { fechaInicio, fechaFin } = fechas;
         let productos = [];
         let ventas = [];
         let productosVentas = [];
@@ -18,14 +18,14 @@ export const reportProductosColocados = fecha => {
                 } else {
                     productos = await snapshot.docs.map(item => ({ id: item.id, ...item.data() }))
                 }
-                console.log("Productos: ", productos);
             })
             .catch(err => {
                 console.log('Error al obtener los productos', err);
             });
-        console.log("Productos: ", productos);
 
         await ventasRef
+            .where("fecha_venta", ">=" ,fechaInicio)
+            .where("fecha_venta", "<=" ,fechaFin)
             .get()
             .then(async snapshot => {
                 if (snapshot.empty) {
@@ -44,40 +44,30 @@ export const reportProductosColocados = fecha => {
                 console.log('Error al obtener los ventas', err);
             });
 
-            console.log("ProductosVentas: ", productosVentas);
+        await productos.forEach(producto => {
+            const productoFilter = productosVentas.filter(venta => venta.id == producto.id);
+            if (productoFilter.length > 0) {
+                const cantidadTotal = productoFilter.reduce((total, pv) => {
+                    return total + pv.cantidad;
+                }, 0);
+                const totalPagado = productoFilter.reduce((total, pv) => {
+                    return total + pv.cantidad * pv.precio;
+                }, 0);
+                productosColocados.push({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    descripcion: producto.descripcion,
+                    cantidad: cantidadTotal,
+                    precio: producto.precio,
+                    total: totalPagado,
+                })
+            }
+        });
 
-    };
-}
-
-export const reportProductosVentas = fecha => {
-    return async (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const { fechaInicial, fechaFin } = fecha;
-        let ventas = [];
-        let productos = [];
-
-        const ventasRef = await firestore.collection("ventas");
-
-        await ventasRef
-            .get()
-            .then(async snapshot => {
-                if (snapshot.empty) {
-                    console.log('No se encontraron ventas.');
-                    return;
-                } else {
-                    ventas = await snapshot.docs.map(item => {
-                        item.data().pedido.forEach(producto => {
-                            productos.push(producto);
-                        })
-                        return (item.data().pedido)
-                    })
-                }
-            })
-            .catch(err => {
-                console.log('Error al obtener los ventas', err);
-            });
-        console.log("Ventas: ", ventas);
-        console.log("Ventas: ", productos);
+        await dispatch({
+            type: "REPORTE_PRODUCTOS_COLOCADOS",
+            productosColocados: productosColocados
+          });
 
     };
 }
