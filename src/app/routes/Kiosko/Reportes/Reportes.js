@@ -52,9 +52,18 @@ class Reportes extends Component {
     })
   }
 
-  handleReportProductosColocados = () => {
+  handleReportProductosColocados = async () => {
     const {reportProductosColocados} = this.props;
-    reportProductosColocados(this.state);
+    await reportProductosColocados(this.state);
+  }
+
+  handleFechas = async (fechas) =>{
+    await this.setState({
+      fechaInicio: fechas.fechaInicio, 
+      fechaFin: fechas.fechaFin
+    });
+    await this.handleReportProductosColocados();
+    await this.handleShowReport(true);
   }
 
   render() {
@@ -181,7 +190,10 @@ class Reportes extends Component {
           </CardContent>
         </Card>
 
-        <EspecificarFecha visible={this.state.especificarFecha} />
+        <EspecificarFecha 
+        visible={this.state.especificarFecha} 
+        handleFechas={this.handleFechas}
+        />
         <ProductosColocados 
         visible={this.state.showReport}
         productos={productosColocados}

@@ -21,8 +21,8 @@ import {
 //Icons
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 
-const EspecificarFecha = ({ visible }) => {
-  const [fechaInicio, setFechaInicio] = React.useState(new Date());
+const EspecificarFecha = ({ visible, handleFechas }) => {
+  const [fechaInicio, setFechaInicio] = React.useState(new Date((new Date()).getFullYear(), (new Date()).getMonth(), (new Date()).getDate()));
   const [fechaFin, setFechaFin] = React.useState(new Date());
 
   if (!visible) return "";
@@ -47,7 +47,7 @@ const EspecificarFecha = ({ visible }) => {
                       }}
                       maxDate={new Date()}
                       value={fechaInicio}
-                      onChange={e => setFechaInicio(e)}
+                      onChange={e => setFechaInicio(new Date(e.getFullYear(), e.getMonth(), e.getDate()))}
                       fullWidth
                     />
                   </Grid>
@@ -77,7 +77,16 @@ const EspecificarFecha = ({ visible }) => {
               </div>
             </div>
             <div className="mt-4 col-md-4 col-12">
-              <Button startIcon={<PlaylistPlayIcon/>} variant="contained" color="primary" fullWidth>
+              <Button 
+              startIcon={<PlaylistPlayIcon/>} 
+              variant="contained" 
+              color="primary" 
+              fullWidth
+              onClick={async () => await handleFechas({
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin
+              })}
+              >
                 GENERAR
               </Button>
             </div>
