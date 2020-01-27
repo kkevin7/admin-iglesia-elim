@@ -1,8 +1,9 @@
 const initState = {
   authError: null,
-  usuarios: [{}]
+  usuarios: [],
+  birthdays: []
 };
- 
+
 const authReducer = (state = initState, action) => {
   switch (action.type) {
     case "LOGIN_ERROR":
@@ -40,6 +41,16 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         authError: action.err.message
+      };
+    case "BIRTHDAYS":
+      return {
+        ...state,
+        birthdays: action.birthdays
+      };
+    case "BIRTHDAYS_ERROR":
+      return {
+        ...state,
+        authError: action.error.message
       };
     default:
       return state;

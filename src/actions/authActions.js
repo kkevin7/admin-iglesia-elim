@@ -71,9 +71,9 @@ export const registrarUsuario = newUser => {
                                 rol: "Socio"
                             });
                     });
-                    return resp;
+                return resp;
             })
-            .then((resp) => {
+            .then(resp => {
                 dispatch({
                     type: "REGISTRAR_USUARIO_SUCCESS"
                 });
@@ -122,7 +122,7 @@ export const registrarUsuarioSinCorreo = newUser => {
                     rol: "Socio"
                 });
             })
-            .then((resp) => {
+            .then(resp => {
                 dispatch({
                     type: "REGISTRAR_USUARIO_SIN_CORREO_SUCCESS"
                 });
@@ -137,7 +137,6 @@ export const registrarUsuarioSinCorreo = newUser => {
     };
 };
 
-
 export const editUser = usuario => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
@@ -148,8 +147,8 @@ export const editUser = usuario => {
             direccion: usuario.direccion,
             fecha_nacimiento: new Date(usuario.fecha_nacimiento),
             departamento: usuario.departamento,
-            fecha_socio: new Date(usuario.fecha_socio),
-        }
+            fecha_socio: new Date(usuario.fecha_socio)
+        };
         return await firestore
             .update(
                 {
@@ -171,7 +170,6 @@ export const editUser = usuario => {
             });
     };
 };
-
 
 export const deleteOnlyUser = id => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -246,5 +244,45 @@ export const reactivarUser = id => {
                     err
                 });
             });
+    };
+};
+
+export const birthdaysMes = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        let usuarios = [];
+
+        await firestore
+            .collection("usuarios")
+            .where("estado", "==", true)
+            .orderBy("fecha_nacimiento", "asc")
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log("No hay registros.");
+                    return;
+                } else {
+                    usuarios = snapshot.docs.map(item => ({
+                        id: item.id,
+                        ...item.data()
+                    }));
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "BIRTHDAYS_ERROR",
+                    error
+                });
+            });
+
+        usuarios = await usuarios.filter(
+            usuario =>
+                new Date(usuario.fecha_nacimiento).getMonth() == new Date().getMonth()
+        );
+
+        await dispatch({
+            type: "BIRTHDAYS",
+            birthdays: usuarios
+        });
     };
 };

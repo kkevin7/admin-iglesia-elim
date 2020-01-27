@@ -281,6 +281,12 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink to="/app/birthdays">
+                  <i className="zmdi zmdi-cake zmdi-hc-fw" />
+                  <span className="nav-text">Cumpleaños </span>
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/app/RegistrarUsuario">
                   <i className="zmdi zmdi-account-add zmdi-hc-fw" />
                   <span className="nav-text">Nuevo usuario </span>

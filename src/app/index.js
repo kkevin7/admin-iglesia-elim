@@ -143,7 +143,8 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Users/DetalleUsuario'))}/>
                      <Route path={`${match.url}/editarUsuario/:id`}
                          component={asyncComponent(() => import('./routes/Users/EditarUsuario'))}/>
-
+                      <Route path={`${match.url}/birthdays`}
+                         component={asyncComponent(() => import('./routes/Users/Birthdays'))}/>
 
                   {/* Profile */}
                   <Route path={`${match.url}/profile`}

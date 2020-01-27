@@ -5,11 +5,8 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
-//Components
-import FormUsuario from "./FormUsuario";
-import Spinner from "components/Spinner/Spinner";
 //Redux
-import { editUser } from "actions/authActions";
+import {birthdaysMes} from "actions/authActions";
 //Card
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -22,30 +19,31 @@ import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 //Icons
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+//Components
+import Spinner from "components/Spinner/Spinner";
+import DataTableBirthdays from "app/routes/Users/DataTableBirthdays";
 
-class EditarUsuario extends Component {
+class Birthdays extends Component {
   state = {};
-
-  handleEditUser = usuario => {
-    const { editUser, history } = this.props;
-    editUser(usuario).then(() => {
-      history.push(`/app/detalleUsuario/${this.props.match.params.id}`);
-    });
-  };
 
   redirectGoBack = () => {
     const { history } = this.props;
     history.goBack();
   };
 
+  componentDidMount(){
+    const {birthdaysMes} = this.props;
+    birthdaysMes();
+  }
+
   render() {
-    const { usuario } = this.props;
-    if (!usuario) return <Spinner />;
+    const {birthdays} = this.props;
+    if(!birthdays) return <Spinner/>
 
     return (
       <div className="app-wrapper">
         <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
-          <h2 className="title mb-3 mb-sm-0">Modificar Usuario</h2>
+          <h2 className="title mb-3 mb-sm-0">Cumpleañeros del Mes</h2>
           <Button
             variant="contained"
             className="my-1 bg-cyan text-white"
@@ -55,42 +53,29 @@ class EditarUsuario extends Component {
             VOLVER
           </Button>
         </div>
-        <FormUsuario
-          usuario={usuario}
-          actionComponent={this.handleEditUser}
-          correo={false}
+        <DataTableBirthdays
+          usuarios={birthdays}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ authCustom }) => {
   return {
-    usuario: firestore.ordered.usuario && firestore.ordered.usuario[0]
+    birthdays: authCustom.birthdays
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    editUser: async usuario => dispatch(editUser(usuario))
+    birthdaysMes: async () => dispatch(birthdaysMes()),
   };
 };
 
 export default withRouter(
   compose(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    ),
-    firestoreConnect(props => {
-      return [
-        {
-          collection: "usuarios",
-          doc: props.match.params.id,
-          storeAs: "usuario"
-        }
-      ];
-    })
-  )(EditarUsuario)
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect(),
+  )(Birthdays)
 );
