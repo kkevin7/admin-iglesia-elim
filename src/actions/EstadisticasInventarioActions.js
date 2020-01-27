@@ -130,3 +130,82 @@ export const countProveedores = () => {
             });
     };
 };
+
+export const topVentas = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        let productos = [];
+        let ventas = [];
+        let productosVentas = [];
+        let topVentas = [];
+
+        const productosRef = await firestore.collection("productos");
+        const ventasRef = await firestore.collection("ventas");
+
+        await productosRef.get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No se encontraron productos.');
+                    return;
+                } else {
+                    productos = await snapshot.docs.map(item => ({ id: item.id, ...item.data() }))
+                }
+            })
+            .catch(err => {
+                console.log('Error al obtener los productos', err);
+            });
+
+        await ventasRef
+            .where("fecha_venta", ">=" ,new Date((new Date()).getFullYear(), (new Date()).getMonth()-6, (new Date()).getDate()))
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No se encontraron ventas.');
+                    return;
+                } else {
+                    ventas = await snapshot.docs.map(item => {
+                        item.data().pedido.forEach(producto => {
+                            productosVentas.push(producto);
+                        })
+                        return (item.data().pedido)
+                    })
+                }
+            })
+            .catch(err => {
+                console.log('Error al obtener los ventas', err);
+            });
+
+        await productos.forEach(producto => {
+            const productoFilter = productosVentas.filter(venta => venta.id == producto.id);
+            if (productoFilter.length > 0) {
+                const cantidadTotal = productoFilter.reduce((total, pv) => {
+                    return total + pv.cantidad;
+                }, 0);
+                topVentas.push({
+                    id: producto.id,
+                    nombre: producto.nombre,
+                    descripcion: producto.descripcion,
+                    cantidad: cantidadTotal,
+                    precio: producto.precio,
+                    url: producto.url
+                })
+            }
+        });
+
+        await topVentas.sort(function (a,b){
+            if(a.cantidad < b.cantidad){
+                return 1;
+            }
+            if(a.cantidad > b.cantidad){
+                return -1;
+            }
+            return 0;
+        });
+
+        await dispatch({
+            type: "TOP_VENTAS",
+            topVentas: topVentas.slice(0,5),
+        });
+
+    };
+}

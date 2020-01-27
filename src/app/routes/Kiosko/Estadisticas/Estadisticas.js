@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from 'moment';
 //Redux
-import { bajaExistenciasProductos, countProductos, countVentas, countCompras, countProveedores } from "actions/EstadisticasInventarioActions";
+import { countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos, topVentas } from "actions/EstadisticasInventarioActions";
 //Images
 import productoImg from "assets/images/dashboard/producto2.png";
 import ventaImg from "assets/images/dashboard/venta.png";
@@ -22,18 +22,18 @@ class Estadisticas extends Component {
   state = {};
 
   componentDidMount(){
-    const {bajaExistenciasProductos, countProductos, countVentas, countCompras, countProveedores} = this.props;
-    bajaExistenciasProductos();
+    const {countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos,topVentas } = this.props;
     countProductos();
     countVentas();
     countCompras();
     countProveedores();
+    bajaExistenciasProductos();
+    topVentas();
   }
 
   render() {
-    const {bajaExistencias, count_productos, count_ventas, count_compras, count_proveedores} = this.props;
-    if(!bajaExistencias.length > 0 || !count_productos || !count_ventas || !count_proveedores ) return <Spinner/>
-
+    const {bajaExistencias, count_productos, count_ventas, count_compras, count_proveedores, top_ventas} = this.props;
+    if(!count_productos || !count_ventas || !count_proveedores || !bajaExistencias || !top_ventas.length > 0 ) return <Spinner/>
     return (
       <div className="app-wrapper">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">
@@ -67,7 +67,9 @@ class Estadisticas extends Component {
 
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">
           <div className="row">
-            <TopVendidos />
+            <TopVendidos 
+              productos={top_ventas}
+            />
             <BajaExistencias
               productos={bajaExistencias}
             />
@@ -80,21 +82,23 @@ class Estadisticas extends Component {
 
 const mapStateToProps = ({ firestore, estadisticasInventario}) => {
   return {
-    bajaExistencias: estadisticasInventario.bajaExistencias,
     count_productos:  estadisticasInventario.count_productos,
     count_ventas:  estadisticasInventario.count_ventas,
     count_compras:  estadisticasInventario.count_compras,
     count_proveedores:  estadisticasInventario.count_proveedores,
+    bajaExistencias: estadisticasInventario.bajaExistencias,
+    top_ventas: estadisticasInventario.topVentas,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    bajaExistenciasProductos: async () => dispatch(bajaExistenciasProductos()),
     countProductos:async () => dispatch(countProductos()),
     countVentas:async () => dispatch(countVentas()),
     countCompras:async () => dispatch(countCompras()),
     countProveedores:async () => dispatch(countProveedores()),
+    bajaExistenciasProductos: async () => dispatch(bajaExistenciasProductos()),
+    topVentas: async () => dispatch(topVentas()),
   };
 };
 

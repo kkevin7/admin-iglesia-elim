@@ -1,9 +1,10 @@
 const initState = {
-  bajaExistencias: [],
   count_productos: "",
   count_ventas: "",
   count_compras: "",
   count_proveedores: "",
+  bajaExistencias: [],
+  topVentas: [],
   error: ""
 };
 
@@ -59,6 +60,11 @@ const EstadisticasInventarioReducer = (state = initState, action) => {
         ...state,
         error: action.error
       };
+    case "TOP_VENTAS":
+        return {
+          ...state,
+          topVentas: action.topVentas
+        };
     default:
       return state;
   }
