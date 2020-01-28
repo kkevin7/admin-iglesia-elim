@@ -22,8 +22,10 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import imageDefault from "../../../../assets/images/products/product1.png";
-import SaveIcon from "@material-ui/icons/Save";
+//Components
 import Spinner from "components/Spinner/Spinner";
+//Icons
+import SaveIcon from "@material-ui/icons/Save";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 class FormProducto extends Component {

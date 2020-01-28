@@ -129,6 +129,14 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Payment/RealizarPago/Cuotas'))}/>
                      <Route path={`${match.url}/comprobanteCuota/:id`}
                          component={asyncComponent(() => import('./routes/Payment/RealizarPago/ComprobanteCuota'))}/>
+                        
+                      {/* Devoluciones */}
+                      <Route path={`${match.url}/devoluciones`}
+                         component={asyncComponent(() => import('./routes/Payment/Devoluciones/Devoluciones'))}/>
+                      <Route path={`${match.url}/devolucionSocio`}
+                         component={asyncComponent(() => import('./routes/Payment/Devoluciones/BuscarSocio'))}/>
+                      <Route path={`${match.url}/realizarDevolucion/:id`}
+                         component={asyncComponent(() => import('./routes/Payment/Devoluciones/RealizarDevolucion'))}/>
               
               {/* ----------------------------------------- USUARIOS --------------------------------------------- */}
 

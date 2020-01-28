@@ -1,5 +1,5 @@
 const initState = {
-    socio: [{}],
+    socio: {},
     noResultados: false
   };
 

@@ -216,7 +216,7 @@ class SidenavContent extends Component {
               <li>
                 <NavLink to="/app/paymentAdministration">
                   <i className="zmdi zmdi-chart zmdi-hc-fw" />
-                  <span className="nav-text">Administación</span>
+                  <span className="nav-text">Estadísticas</span>
                 </NavLink>
               </li>
               <li>
@@ -238,13 +238,13 @@ class SidenavContent extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/p3">
-                  <i className="zmdi zmdi-search-in-page zmdi-hc-fw" />
-                  <span className="nav-text">Busquedas</span>
+                <NavLink to="/app/topSocios">
+                  <i className="zmdi zmdi-star zmdi-hc-fw" />
+                  <span className="nav-text">Top Socios</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/p5">
+                <NavLink to="/app/devolucionSocio">
                   <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
                   <span className="nav-text">Devoluciones </span>
                 </NavLink>

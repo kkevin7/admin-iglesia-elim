@@ -11,6 +11,7 @@ import contribucionReducer from "./contribucionReducer";
 import EstadisticasInventario from "./EstadisticasInventarioReducer";
 import ComprasReducer from "./ComprasReducer";
 import ReportesReducer from "./ReportesReducer";
+import DevolucionReducer from "./DevolucionReducer";
 
 export default history =>
   combineReducers({
@@ -23,6 +24,7 @@ export default history =>
     compra: ComprasReducer,
     realizarPago: realizarPagoReducer,
     contribucion: contribucionReducer,
+    devolucion: DevolucionReducer,
     reportes: ReportesReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer,
