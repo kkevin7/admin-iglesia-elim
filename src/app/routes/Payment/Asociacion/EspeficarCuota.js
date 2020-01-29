@@ -29,7 +29,7 @@ class EspeficarCuota extends Component {
 
   handleChange = e => {
     this.setState({
-      [e.target.name]: Number(e.target.value)
+      [e.target.name]: e.target.value
     });
     if (e.target.value > 0) {
       this.setState({
@@ -50,7 +50,7 @@ class EspeficarCuota extends Component {
 
   handleCantidadCouta = e => {
     this.setState({
-      cantidad_cuota: Number(e.target.value)
+      cantidad_cuota: e.target.value
     });
     if (e.target.value) {
       const fecha = new Date();
@@ -85,11 +85,11 @@ class EspeficarCuota extends Component {
   };
 
   handleVerificarFields = e => {
-    e.preventDefault();
+    // e.preventDefault();
     const { disableNext, setUpPago } = this.props;
     if (
-      this.state.cantidad_cuota_error === false &&
-      this.state.valor_cuota_error === false
+      this.state.cantidad_cuota_error == false && this.state.cantidad_cuota &&
+      this.state.valor_cuota_error == false && this.state.valor_cuota
     ) {
       this.setState({
         showMessage: true
@@ -133,7 +133,7 @@ class EspeficarCuota extends Component {
             Información de la Couta a Recibir
           </h2>
         </div>
-        <form onSubmit={this.handleVerificarFields}>
+        <form>
           <div className="row">
             <div className="col-md-6 col-12">
               <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
@@ -145,7 +145,10 @@ class EspeficarCuota extends Component {
                   type="number"
                   name="valor_cuota"
                   value={this.state.valor_cuota}
-                  onChange={this.handleChange}
+                  onChange={async e => {
+                    await this.handleChange(e);
+                    await this.handleVerificarFields(e);
+                  }}
                   InputProps={{
                     inputProps: { min: 0, step: 0.01 }
                   }}
@@ -162,7 +165,10 @@ class EspeficarCuota extends Component {
                   type="number"
                   name="cantidad_cuota"
                   value={this.state.cantidad_cuota}
-                  onChange={this.handleCantidadCouta}
+                  onChange={async e => {
+                    await this.handleCantidadCouta(e);
+                    await this.handleVerificarFields(e);
+                  }}
                   InputProps={{
                     inputProps: { min: 1, step: 1 }
                   }}
@@ -228,11 +234,11 @@ class EspeficarCuota extends Component {
                 />
               </div>
             </div>
-            <div className="col-12 my-4">
+            {/* <div className="col-12 my-4">
               <Button variant="contained" color="primary" type="submit">
                 VERIFICAR
               </Button>
-            </div>
+            </div> */}
             {this.state.showMessage ? OKMessage : null}
           </div>
         </form>

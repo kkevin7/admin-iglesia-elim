@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Redux
+import { buscarSocioCarnet, createContribucion } from "actions/AsociacionActions";
 
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -39,18 +41,11 @@ class StepperAsociacion extends Component {
     super(props);
     this.state = {
       activeStep: 0,
-      socio: {},
       disableNext: true,
       pago: {},
       showAlert: true
     };
   }
-
-  setUpSocio = socio => {
-    this.setState({
-      socio: socio
-    });
-  };
 
   setUpPago = pago => {
     this.setState({
@@ -70,10 +65,11 @@ class StepperAsociacion extends Component {
     });
   };
 
-  handleAgregarPago = () => {
-    const { firestore, history } = this.props;
+  handleAgregarPago = async () => {
+    const { history, socio, firestore, createContribucion } = this.props;
     const nuevaContribucion = {
-      id_usuario: this.state.socio.id,
+      id_usuario: socio.id,
+      carnet: socio.carnet,
       valor_cuota: Number(this.state.pago.valor_cuota),
       cantidad_cuota: Number(this.state.pago.cantidad_cuota),
       fecha_inicio: new Date(this.state.pago.fecha_inicio),
@@ -83,55 +79,11 @@ class StepperAsociacion extends Component {
       estado: true,
       observaciones: this.state.pago.observaciones
     };
-    firestore
-      .add(
-        {
-          collection: "contribuciones"
-        },
-        nuevaContribucion
-      )
-      .then(contribucion => {
-        let fecha_cuota = nuevaContribucion.fecha_fin;
-        fecha_cuota.setMonth(
-          fecha_cuota.getMonth() - nuevaContribucion.cantidad_cuota
-        );
-
-        for (let i = 1; i <= nuevaContribucion.cantidad_cuota; i++) {
-          const first_date = new Date(
-            fecha_cuota.getFullYear(),
-            fecha_cuota.getMonth() + i,
-            1
-          );
-          const last_date = new Date(
-            fecha_cuota.getFullYear(),
-            fecha_cuota.getMonth() + 1 + i,
-            0
-          );
-
-          const cuota = {
-            id_contribucion: contribucion.id,
-            rubro: `Cuota Mensual ${i}`,
-            valor: nuevaContribucion.valor_cuota,
-            fecha_inicio: first_date,
-            fecha_fin: last_date,
-            saldo_anterior: 0,
-            saldo_actualizado: 0,
-            fecha_pago: null,
-            observaciones: "",
-            estado: "VIGENTE"
-          };
-          firestore.add(
-            {
-              collection: "cuotas"
-            },
-            cuota
-          );
-        }
-      });
+    await createContribucion(nuevaContribucion);
   };
 
   handleRedirect = () => {
-    const { history } = this.props;
+    const { history, socio } = this.props;
     history.push("/app/contribuciones");
   };
 
@@ -155,7 +107,7 @@ class StepperAsociacion extends Component {
           />
         );
       case 2:
-        return <Confirmacion socio={this.state.socio} pago={this.state.pago} />;
+        return <Confirmacion socio={this.props.socio} pago={this.state.pago} />;
       default:
         return "Unknown stepIndex";
     }
@@ -234,9 +186,9 @@ class StepperAsociacion extends Component {
                       success
                       show={this.state.showAlert}
                       title="Nuevo socio agregado"
-                      onConfirm={() => {
-                        this.handleAlertClick();
-                        this.handleRedirect();
+                      onConfirm={async () => {
+                        await this.handleAlertClick();
+                        await this.handleRedirect();
                       }}
                       onCancel={this.handleAlertClick}
                     >
@@ -298,9 +250,23 @@ class StepperAsociacion extends Component {
   }
 }
 
+const mapStateToProps = ({ firestore, asociacion }) => {
+  return {
+    socio: asociacion.socio && asociacion.socio[0],
+    noResultados: asociacion.noResultados
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    buscarSocioCarnet: async socio => dispatch(buscarSocioCarnet(socio)),
+    createContribucion: async nuevaContribucion => dispatch(createContribucion(nuevaContribucion)),
+  };
+};
+
 export default withRouter(
   compose(
-    connect(),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(),
     withStyles(useStyles)
   )(StepperAsociacion)

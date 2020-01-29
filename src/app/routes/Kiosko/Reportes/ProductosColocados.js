@@ -133,7 +133,15 @@ const ReporteProductosColocados = ({
   fechaFin
 }) => {
   if (!visible) return "";
-  if (!productos.length > 0) return <Spinner />;
+  if (!productos) return <Spinner />;
+
+  if (!productos.length > 0) return (
+    <Card className="my-3 text-center">
+      <CardContent>
+        <Typography variant="h5" >No se encontraron registros</Typography>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <Fragment>

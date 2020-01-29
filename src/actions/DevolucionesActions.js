@@ -26,7 +26,7 @@ export const createDevolucion = devolucion => {
     };
 };
 
-export const buscarSocio = busqueda => {
+export const buscarSocioCarnet = busqueda => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
       const firestore = getFirestore();
       const usuariosRef = firestore.collection("usuarios");

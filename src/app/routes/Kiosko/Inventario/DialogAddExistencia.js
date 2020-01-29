@@ -41,15 +41,15 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
   //Error
   const handleError = (error, e )=> {
     if(e.target.name == "existencia"){
-      setExistencia(Number(e.target.value));
+      setExistencia(e.target.value);
       setErrorExistencia(error);
     }
     if(e.target.name == "precio_compra"){
-      setPrecioCompra(Number(e.target.value));
+      setPrecioCompra(e.target.value);
       setErrorPrecioCompra(error);
     }
     if(e.target.name == "total"){
-      setTotal(Number(e.target.value));
+      setTotal(e.target.value);
       setErrorTotal(error);
     }
   };

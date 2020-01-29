@@ -12,6 +12,7 @@ import EstadisticasInventario from "./EstadisticasInventarioReducer";
 import ComprasReducer from "./ComprasReducer";
 import ReportesReducer from "./ReportesReducer";
 import DevolucionReducer from "./DevolucionReducer";
+import AsociacionReducer from "./AsociacionReducer";
 
 export default history =>
   combineReducers({
@@ -22,6 +23,7 @@ export default history =>
     estadisticasInventario: EstadisticasInventario,
     producto: productoReducer,
     compra: ComprasReducer,
+    asociacion: AsociacionReducer,
     realizarPago: realizarPagoReducer,
     contribucion: contribucionReducer,
     devolucion: DevolucionReducer,

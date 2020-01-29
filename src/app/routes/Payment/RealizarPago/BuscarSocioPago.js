@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 //Reducer
-import { buscarSocio } from "../../../../actions/realizarPagoActions";
+import { buscarSocioCarnet } from "actions/realizarPagoActions";
 
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -35,47 +35,47 @@ class BuscarSocioPago extends Component {
     });
   };
 
-  buscarSocio = e => {
+  buscarSocioCarnet = e => {
     e.preventDefault();
     const { busqueda} = this.state;
-    const { buscarSocio } = this.props;
+    const { buscarSocioCarnet } = this.props;
 
-    buscarSocio(busqueda);
+    buscarSocioCarnet(busqueda);
   };
 
   render() {
-    const {socio, noResultados} = this.props;
+    const { socio, noResultados } = this.props;
 
-    let fichaSocio;
-    if (socio.nombre) {
+    let fichaSocio = "";
+    if (socio) {
       fichaSocio = <FichaSocio socio={socio} />;
     } else {
-      fichaSocio = null;
+      fichaSocio = "";
     }
 
     //Mostrar mensaje de error
     let mensajeResultado = "";
-    if (noResultados) {
+    if (noResultados == true) {
       mensajeResultado = (
         <div className="alert alert-danger text-center font-weight-bold text-uppercase">
           No se encontro el socio
         </div>
       );
     } else {
-      mensajeResultado = null;
+      mensajeResultado = "";
     }
 
     return (
       <div className="col-12">
         <div className="row justify-content-center">
           <div className="col-md-8 col-12">
-            <form className="mb-4" onSubmit={this.buscarSocio}>
+            <form className="mb-4" onSubmit={this.buscarSocioCarnet}>
               <Typography
                 variant="h6"
                 gutterBottom
                 className="text-uppercase text-center"
               >
-                Ingresar el Código del Socio
+                Ingresar el Carnet del Socio
               </Typography>
               <div className="form-group">
                 <TextField
@@ -94,7 +94,7 @@ class BuscarSocioPago extends Component {
                 variant="contained"
                 className="bg-green text-white"
               >
-                Buscar Alumno
+                Buscar Socio
               </Button>
             </form>
             {fichaSocio}
@@ -108,13 +108,13 @@ class BuscarSocioPago extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    buscarSocio: busqueda => dispatch(buscarSocio(busqueda))
+    buscarSocioCarnet: busqueda => dispatch(buscarSocioCarnet(busqueda))
   };
 };
 
 const mapStateToProps = state => {
   return {
-    socio: state.realizarPago.socio,
+    socio: state.realizarPago.socio && state.realizarPago.socio[0],
     noResultados: state.realizarPago.noResultados,
   };
 };

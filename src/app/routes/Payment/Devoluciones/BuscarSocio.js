@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from "moment";
 //Redux
-import { buscarSocio } from "actions/DevolucionesActions";
+import { buscarSocioCarnet } from "actions/DevolucionesActions";
 //Card
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -29,8 +29,8 @@ class BuscarSocio extends Component {
 
   hadleBuscarSocio = async e => {
     e.preventDefault();
-    const { buscarSocio } = this.props;
-    await buscarSocio(this.state.busqueda);
+    const { buscarSocioCarnet } = this.props;
+    await buscarSocioCarnet(this.state.busqueda);
   };
 
   handleChange = e => {
@@ -46,7 +46,6 @@ class BuscarSocio extends Component {
 
   render() {
     const { socio, noResultados } = this.props;
-    console.log(socio);
 
     let fichaSocio = "";
     if (socio) {
@@ -80,14 +79,14 @@ class BuscarSocio extends Component {
                       gutterBottom
                       className="text-uppercase text-center"
                     >
-                      Ingresar el Código del Socio
+                      Ingresar el Carnet del Socio
                     </Typography>
                     <div className="form-group">
                       <TextField
                         type="text"
                         id="busqueda"
                         name="busqueda"
-                        label="Código"
+                        label="Carnet"
                         variant="outlined"
                         fullWidth
                         value={this.state.busqueda}
@@ -100,7 +99,7 @@ class BuscarSocio extends Component {
                       variant="contained"
                       className="bg-green text-white"
                     >
-                      Buscar Alumno
+                      Buscar Socio
                     </Button>
                   </form>
                   {fichaSocio}
@@ -137,7 +136,7 @@ const mapStateToProps = ({ firestore, devolucion }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    buscarSocio: async socio => dispatch(buscarSocio(socio))
+    buscarSocioCarnet: async socio => dispatch(buscarSocioCarnet(socio))
   };
 };
 

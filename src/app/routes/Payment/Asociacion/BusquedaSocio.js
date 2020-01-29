@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+//Redux
+import { buscarSocioCarnet } from "actions/AsociacionActions";
 
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -29,53 +35,39 @@ class BusquedaSocio extends Component {
     });
   };
 
-  buscarSocio = e => {
+  buscarSocio = async e => {
     e.preventDefault();
     const { busqueda } = this.state;
-    const { firestore, setUpSocio, disableNext } = this.props;
-    const usuariosRef = firestore.collection("usuarios").doc(busqueda);
-    // const consulta = coleccion.where('uid', "==", busqueda).get();
-    const consulta = usuariosRef.get();
-    consulta.then(resultado => {
-      if (!resultado.exists) {
-        // console.log("NO SE ENCONTRO");
+    const {disableNext, buscarSocioCarnet, noResultados } = this.props;
+    await buscarSocioCarnet(busqueda).then(async () => {
+      if (noResultados == true) {
         disableNext(true);
-        this.setState({
-          noResultados: true,
-          socio: {}
-        });
-      } else {
-        // console.log("SOCIO ENCONTRADO");
-        // console.log({...resultado.data(), id: busqueda})
-        setUpSocio({ ...resultado.data(), id: busqueda });
+      }else{
         disableNext(false);
-        this.setState({
-          noResultados: false,
-          socio: { ...resultado.data(), id: busqueda }
-        });
       }
     });
   };
 
   render() {
-    let fichaSocio;
-    if (this.state.socio.nombre) {
-      fichaSocio = <FichaSocio socio={this.state.socio} />;
+    const { socio, noResultados,} = this.props;
+
+    let fichaSocio = "";
+    if (socio) {
+      fichaSocio = <FichaSocio socio={socio} />;
     } else {
-      fichaSocio = null;
+      fichaSocio = "";
     }
 
     //Mostrar mensaje de error
-    const { noResultados } = this.state;
     let mensajeResultado = "";
-    if (noResultados) {
+    if (noResultados == true) {
       mensajeResultado = (
         <div className="alert alert-danger text-center font-weight-bold text-uppercase">
           No se encontro el socio
         </div>
       );
     } else {
-      mensajeResultado = null;
+      mensajeResultado = "";
     }
 
     return (
@@ -88,14 +80,14 @@ class BusquedaSocio extends Component {
                 gutterBottom
                 className="text-uppercase text-center"
               >
-                Ingresar el Código del Socio
+                Ingresar el Carnet del Socio
               </Typography>
               <div className="form-group">
                 <TextField
                   type="text"
                   id="busqueda"
                   name="busqueda"
-                  label="Código"
+                  label="Carnet"
                   variant="outlined"
                   fullWidth
                   onChange={this.handleChange}
@@ -107,7 +99,7 @@ class BusquedaSocio extends Component {
                 variant="contained"
                 className="bg-green text-white"
               >
-                Buscar Alumno
+                Buscar Socio
               </Button>
             </form>
             {fichaSocio}
@@ -119,4 +111,23 @@ class BusquedaSocio extends Component {
   }
 }
 
-export default BusquedaSocio;
+
+const mapStateToProps = ({ firestore, asociacion }) => {
+  return {
+    socio: asociacion.socio && asociacion.socio[0],
+    noResultados: asociacion.noResultados
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    buscarSocioCarnet: async socio => dispatch(buscarSocioCarnet(socio))
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect(),
+  )(BusquedaSocio)
+);

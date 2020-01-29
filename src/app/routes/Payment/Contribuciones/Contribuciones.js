@@ -6,6 +6,7 @@ import { compose } from "redux";
 //Components
 import TableMBContribuciones from "./TableMBContribuciones";
 import TableContribuciones from './TableContribuciones';
+import DataTableContribuciones from "./DataTableContribuciones";
 import Spinner from "components/Spinner/Spinner";
 
 class Contribuciones extends Component {
@@ -18,8 +19,8 @@ class Contribuciones extends Component {
 
     return (
       <div className="app-wrapper">
-        <TableMBContribuciones contribuciones={contribuciones} />
-        {/* <TableContribuciones/> */}
+        {/* <TableMBContribuciones contribuciones={contribuciones} /> */}
+        <DataTableContribuciones contribuciones={contribuciones} />
       </div>
     );
   }

@@ -46,8 +46,8 @@ class RealizarPago extends Component {
                 Atrás
               </Button> */}
               <Button
-                disabled={socio.nombre ? false : true}
-                className={`${socio.nombre ? " bg-cyan" : ""} text-white m-1`}
+                disabled={socio ? false : true}
+                className={`${socio ? " bg-cyan" : ""} text-white m-1`}
                 variant="contained"
                 startIcon={<ArrowForwardIcon />}
                 onClick={this.redirectContribucion}
@@ -62,9 +62,10 @@ class RealizarPago extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({realizarPago}) => {
   return {
-    socio: state.realizarPago.socio,
+    socio: realizarPago.socio && realizarPago.socio[0],
+    noResultados: realizarPago.noResultados
   };
 };
 
