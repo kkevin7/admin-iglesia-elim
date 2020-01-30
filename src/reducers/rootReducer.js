@@ -8,7 +8,7 @@ import authReducer from "./authReducer";
 import productoReducer from "./productoReducer";
 import realizarPagoReducer from "./realizarPagoReducer";
 import contribucionReducer from "./contribucionReducer";
-import EstadisticasInventario from "./EstadisticasInventarioReducer";
+import Estadisticas from "./EstadisticasReducer";
 import ComprasReducer from "./ComprasReducer";
 import ReportesReducer from "./ReportesReducer";
 import DevolucionReducer from "./DevolucionReducer";
@@ -20,7 +20,7 @@ export default history =>
     settings: Settings,
     auth: Auth,
     authCustom: authReducer,
-    estadisticasInventario: EstadisticasInventario,
+    estadisticas: Estadisticas,
     producto: productoReducer,
     compra: ComprasReducer,
     asociacion: AsociacionReducer,

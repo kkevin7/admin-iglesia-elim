@@ -214,7 +214,7 @@ class SidenavContent extends Component {
             </button>
             <ul className="sub-menu">
               <li>
-                <NavLink to="/app/paymentAdministration">
+                <NavLink to="/app/estadisticasContribuciones">
                   <i className="zmdi zmdi-chart zmdi-hc-fw" />
                   <span className="nav-text">Estadísticas</span>
                 </NavLink>

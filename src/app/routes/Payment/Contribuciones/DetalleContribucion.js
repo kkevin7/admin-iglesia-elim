@@ -25,41 +25,8 @@ class DetalleContribucion extends Component {
   };
 
   componentDidMount() {
-    // var usuarios = {};
-    // const { firestore } = this.props;
-    // const usuariosRef = firestore.collection("usuarios");
-    // usuariosRef.get().then(snapshot => {
-    //   snapshot.forEach(userDoc => {
-    //     var userDocData = userDoc.data();
-    //     if (usuarios[userDoc.id] == undefined) {
-    //       usuarios[userDoc.id] = userDocData;
-    //     }
-    //   });
-    //   // var countContribuciones;
-    //   Object.keys(usuarios).forEach(userDocId => {
-    //     const contribcionesRef = firestore
-    //       .collection("contribuciones")
-    //       .where("id_usuario", "==", userDocId);
-    //     contribcionesRef.get().then(contribucionSnapshot => {
-    //       contribucionSnapshot.forEach(contribucionDoc => {
-    //         var contribucionDocData = contribucionDoc.data();
-
-    //         if (
-    //           usuarios[contribucionDocData.id_usuario].contribucion == undefined
-    //         ) {
-    //           usuarios[contribucionDocData.id_usuario].contribucion = [];
-    //         }
-
-    //         usuarios[contribucionDocData.id_usuario].contribucion.push(
-    //           contribucionDocData
-    //         );
-    //       });
-    //     });
-    //   });
-    // });
     const {buscarContribucionAndSocio} = this.props;
     buscarContribucionAndSocio(this.props.match.params.id_contribucion)
-  
   }
 
   render() {
@@ -85,7 +52,6 @@ class DetalleContribucion extends Component {
 }
 
 const mapStateToProps = ({ firestore, contribucion }) => {
-  // console.log(contribucion.contribucion);
   return {
     socio: contribucion.socio,
     contribucion: contribucion.contribucion && contribucion.contribucion,
@@ -103,14 +69,9 @@ export default withRouter(
   compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(props => [
-      // {
-      //   collection: "contribuciones",
-      //   doc: props.match.params.id_contribucion,
-      //   storeAs: "contribucion"
-      // },
       {
         collection: "cuotas",
-        where: [["id_contribucion", "==", props.match.params.id_contribucion]],
+        where: [["carnet", "==", props.match.params.id_contribucion]],
         orderBy: ["fecha_inicio", "asc"]
       }
     ])

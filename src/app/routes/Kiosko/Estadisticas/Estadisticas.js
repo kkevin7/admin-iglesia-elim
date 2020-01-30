@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from 'moment';
 //Redux
-import { countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos, topVentas } from "actions/EstadisticasInventarioActions";
+import { countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos, topVentas } from "actions/EstadisticasActions";
 //Images
 import productoImg from "assets/images/dashboard/producto2.png";
 import ventaImg from "assets/images/dashboard/venta.png";
@@ -80,14 +80,14 @@ class Estadisticas extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore, estadisticasInventario}) => {
+const mapStateToProps = ({ estadisticas}) => {
   return {
-    count_productos:  estadisticasInventario.count_productos,
-    count_ventas:  estadisticasInventario.count_ventas,
-    count_compras:  estadisticasInventario.count_compras,
-    count_proveedores:  estadisticasInventario.count_proveedores,
-    bajaExistencias: estadisticasInventario.bajaExistencias,
-    top_ventas: estadisticasInventario.topVentas,
+    count_productos:  estadisticas.count_productos,
+    count_ventas:  estadisticas.count_ventas,
+    count_compras:  estadisticas.count_compras,
+    count_proveedores:  estadisticas.count_proveedores,
+    bajaExistencias: estadisticas.bajaExistencias,
+    top_ventas: estadisticas.topVentas,
   };
 };
 

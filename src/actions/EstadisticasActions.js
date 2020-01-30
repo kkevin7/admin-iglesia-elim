@@ -1,3 +1,5 @@
+/**---------------------------------------- SECTOR DE VENTAS ---------------------------------------- */
+
 export const bajaExistenciasProductos = () => {
     return async (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
@@ -209,3 +211,143 @@ export const topVentas = () => {
 
     };
 }
+
+/*---------------------------------- ADMINISTACION DE CUOTAS DE SOCIOS --------------------------------------------------------*/
+
+export const countSocios = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("usuarios")
+            .where("rol", "==", "Socio")
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    await dispatch({
+                        type: "COUNT_SOCIOS",
+                        count_socios: snapshot.size
+                    });
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "COUNT_COMPRAS_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const countContribuciones = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("contribuciones")
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    await dispatch({
+                        type: "COUNT_CONTRIBUCIONES",
+                        count_contribuciones: snapshot.size
+                    });
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "COUNT_COMPRAS_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const countCuotas = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("cuotas")
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    await dispatch({
+                        type: "COUNT_CUOTAS",
+                        count_cuotas: snapshot.size
+                    });
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "COUNT_COMPRAS_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+
+export const countDevoluciones = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("devoluciones")
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    await dispatch({
+                        type: "COUNT_DEVOLUCIONES",
+                        count_devoluciones: snapshot.size
+                    });
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "COUNT_COMPRAS_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const ultimosPagos = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore
+            .collection("cuotas")
+            .where("estado", "==", "PAGADA")
+            .orderBy('fecha_pago', 'desc')
+            .limit(5)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No hay registros poca existencia.');
+                    return;
+                } else {
+                    const ultimasCuotas = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
+                    await dispatch({
+                        type: "ULTIMOS_PAGOS",
+                        ultimasCuotas
+                    });
+                }
+            })
+            .catch(async error => {
+                // console.log(error);
+                await dispatch({
+                    type: "ULTIMOS_PAGOS_ERROR",
+                    error
+                });
+            });
+    };
+}
+
