@@ -3,15 +3,18 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
-//components
-import Spinner from "components/Spinner/Spinner";
-import ContainerHeader from "components/ContainerHeader/index";
-import TableCategoriaProductos from "./TableCategoriaProductos";
+//Form
 import { Button } from "@material-ui/core";
+//Icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import AddIcon from '@material-ui/icons/Add';
+//Components
+import ContainerHeader from "components/ContainerHeader/index";
+import TableCategoriaProductos from "./TableCategoriaProductos";
+import Spinner from "components/Spinner/Spinner";
 import SweetAlertEliminar from './SweetAlertEliminar';
+import DataTableCategoriaProducto from "./DataTableCategoriaProducto";
 
 class CategoriaProductos extends Component {
   state = { };
@@ -38,7 +41,8 @@ class CategoriaProductos extends Component {
               <span className="nav-text">Nueva Categoría</span>
               </NavLink>
 
-              <TableCategoriaProductos categoria_producto={categoria_producto} />
+              {/* <TableCategoriaProductos categoria_producto={categoria_producto} /> */}
+              <DataTableCategoriaProducto categoria_producto={categoria_producto} /> 
 
             </div>
           </div>

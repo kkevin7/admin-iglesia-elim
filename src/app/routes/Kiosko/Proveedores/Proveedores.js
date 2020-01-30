@@ -3,15 +3,18 @@ import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Form
+import { Button } from "@material-ui/core";
+//Icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@material-ui/icons/Add';
 //components
 import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import TableProveedores from "./TableProvedores";
-import { Button } from "@material-ui/core";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import AddIcon from '@material-ui/icons/Add';
 import SweetAlertEliminar from './SweetAlertEliminar';
+import DataTableProveedores from "./DataTableProveedores";
 
 class Proveedores extends Component {
   state = { };
@@ -38,7 +41,8 @@ class Proveedores extends Component {
               <span className="nav-text">Nuevo Proveedor</span>
               </NavLink>
 
-              <TableProveedores proveedores={proveedores} />
+              {/* <TableProveedores proveedores={proveedores} /> */}
+              <DataTableProveedores proveedores={proveedores} />
 
             </div>
           </div>
