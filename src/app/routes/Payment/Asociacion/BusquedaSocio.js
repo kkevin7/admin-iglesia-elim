@@ -38,29 +38,25 @@ class BusquedaSocio extends Component {
   buscarSocio = async e => {
     e.preventDefault();
     const { busqueda } = this.state;
-    const {disableNext, buscarSocioCarnet, noResultados } = this.props;
-    await buscarSocioCarnet(busqueda).then(async () => {
-      if (noResultados == true) {
-        disableNext(true);
-      }else{
-        disableNext(false);
-      }
-    });
+    const { buscarSocioCarnet, noResultados } = this.props;
+    await buscarSocioCarnet(busqueda);
   };
 
   render() {
-    const { socio, noResultados,} = this.props;
+    const { socio, noResultados, disableNext,} = this.props;
 
     let fichaSocio = "";
     if (socio) {
+      disableNext(false);
       fichaSocio = <FichaSocio socio={socio} />;
     } else {
+      disableNext(true);
       fichaSocio = "";
     }
 
     //Mostrar mensaje de error
     let mensajeResultado = "";
-    if (noResultados == true) {
+    if (noResultados === true) {
       mensajeResultado = (
         <div className="alert alert-danger text-center font-weight-bold text-uppercase">
           No se encontro el socio

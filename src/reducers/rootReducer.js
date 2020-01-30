@@ -13,6 +13,7 @@ import ComprasReducer from "./ComprasReducer";
 import ReportesReducer from "./ReportesReducer";
 import DevolucionReducer from "./DevolucionReducer";
 import AsociacionReducer from "./AsociacionReducer";
+import TopSocios from "./TopSociosReducer";
 
 export default history =>
   combineReducers({
@@ -26,6 +27,7 @@ export default history =>
     asociacion: AsociacionReducer,
     realizarPago: realizarPagoReducer,
     contribucion: contribucionReducer,
+    topSocios: TopSocios,
     devolucion: DevolucionReducer,
     reportes: ReportesReducer,
     firestore: firestoreReducer,

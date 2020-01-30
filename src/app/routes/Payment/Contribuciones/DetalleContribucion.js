@@ -71,7 +71,7 @@ export default withRouter(
     firestoreConnect(props => [
       {
         collection: "cuotas",
-        where: [["carnet", "==", props.match.params.id_contribucion]],
+        where: [["id_contribucion", "==", props.match.params.id_contribucion]],
         orderBy: ["fecha_inicio", "asc"]
       }
     ])

@@ -13,10 +13,8 @@ import contribucionImg from "assets/images/dashboard/beneficio.png";
 import cuotasImg from "assets/images/dashboard/negocios.png";
 import devolucionesImg from "assets/images/dashboard/transferir.png";
 //Components
-import CardData from "app/routes/Kiosko/Estadisticas/CardData";
-// import TopVendidos from "./TopVendidos";
-// import BajaExistencias from "./BajaExistencias";
 import Spinner from "components/Spinner/Spinner";
+import CardData from "app/routes/Kiosko/Estadisticas/CardData";
 import UltimosPagos from "./UltimosPagos";
 
 class Estadisticas extends Component {
