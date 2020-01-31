@@ -48,20 +48,31 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-const ProductosColocados = ({ visible, productos, fechaInicio, fechaFin }) => {
+const Ingresos = ({
+  visible,
+  cuotas,
+  devoluciones,
+  fechaInicio,
+  fechaFin
+}) => {
   const classes = useStyles();
   if (!visible) return "";
-  if ((!productos.length > 0 || !fechaInicio, !fechaFin)) return <Spinner />;
 
-  let totalPagado = productos.reduce((total, prod) => {
-    return total + prod.total;
+  const totalCuotas = cuotas.reduce((total, cuota) => {
+    return total + cuota.valor;
   }, 0);
+
+  const totalDevoluciones = devoluciones.reduce((total, devol) => {
+    return total + devol.monto
+  }, 0)
+
+  const totalFinal = totalCuotas - totalDevoluciones;
 
   return (
     <Fragment>
       <div className="col-12 m-3">
         <Typography variant="h4" className="text-center font-weight-bold">
-          Reporte de productos colocados
+          Reporte de Ingresos Generados
         </Typography>
       </div>
       <div className="col-12 my-5">
@@ -83,39 +94,56 @@ const ProductosColocados = ({ visible, productos, fechaInicio, fechaFin }) => {
           <Table className={classes.table} aria-label="spanning table">
             <TableHead>
               <TableRow>
-                <TableCell align="left">Producto</TableCell>
-                <TableCell align="left">Descripción</TableCell>
-                <TableCell align="right">Cantidad</TableCell>
-                <TableCell align="right">Costo Unidad</TableCell>
-                <TableCell align="right">Total</TableCell>
+                <TableCell className="w-50"  align="left">Cuotas Recaudadas</TableCell>
+                <TableCell className="w-50"  align="left">Total Generado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {productos.map(row => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.nombre}</TableCell>
-                  <TableCell>{row.descripcion}</TableCell>
-                  <TableCell align="right">{row.cantidad}</TableCell>
-                  <TableCell align="right">$ {row.precio.toFixed(2)}</TableCell>
-                  <TableCell align="right">$ {ccyFormat(row.total)}</TableCell>
-                </TableRow>
-              ))}
               <TableRow>
-                <TableCell rowSpan={2}></TableCell>
+                <TableCell className="w-50" >{cuotas.length}</TableCell>
+                <TableCell className="w-50" >$ {totalCuotas.toFixed(2)}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="spanning table">
+            <TableHead>
+              <TableRow>
+                <TableCell  className="w-50" align="left">Devoluciones Realizadas</TableCell>
+                <TableCell  className="w-50" align="left">Total Entregado</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell className="w-50" >{devoluciones.length}</TableCell>
+                <TableCell className="w-50" >$ - {totalDevoluciones.toFixed(2)}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="spanning table">
+            <TableBody>
+              <TableRow>
+              <TableCell rowSpan={2}></TableCell>
                 <TableCell align="right" className="font-weight-bold" colSpan={2}>
-                  Total
+                  Total Final
                 </TableCell>
                 <TableCell align="right" className="font-weight-bold" colSpan={2}>
-                  $ {ccyFormat(totalPagado)}
+                  $ {ccyFormat(totalFinal)}
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
+
       </CardContent>
       <div className="col-12 my-4">
         <div className="row">
-        <div className="col-12  text-center font-weight-bold">
+          <div className="col-12  text-center font-weight-bold">
             <Typography variant="p" className="text-center ">
               Generado: {moment(new Date()).format("LLL")}
             </Typography>
@@ -126,22 +154,24 @@ const ProductosColocados = ({ visible, productos, fechaInicio, fechaFin }) => {
   );
 };
 
-const ReporteProductosColocados = ({
+const ReporteIngresos = ({
   visible,
-  productos,
+  cuotas,
+  devoluciones,
   fechaInicio,
   fechaFin
 }) => {
   if (!visible) return "";
-  if (!productos) return <Spinner />;
+  if (!cuotas || !devoluciones) return <Spinner />;
 
-  if (!productos.length > 0) return (
-    <Card className="my-3 text-center">
-      <CardContent>
-        <Typography variant="h5" >No se encontraron registros</Typography>
-      </CardContent>
-    </Card>
-  );
+  if (!cuotas.length > 0 || !devoluciones.length > 0)
+    return (
+      <Card className="my-3 text-center">
+        <CardContent>
+          <Typography variant="h5">No se encontraron registros</Typography>
+        </CardContent>
+      </Card>
+    );
 
   return (
     <Fragment>
@@ -161,24 +191,26 @@ const ReporteProductosColocados = ({
                 </Button>
               }
             >
-              <ProductosColocados
+              <Ingresos
                 visible={visible}
-                productos={productos}
                 fechaInicio={fechaInicio}
                 fechaFin={fechaFin}
+                cuotas={cuotas}
+                devoluciones={devoluciones}
               />
             </PrintComponents>
           </div>
         </CardContent>
-        <ProductosColocados
+        <Ingresos
           visible={visible}
-          productos={productos}
           fechaInicio={fechaInicio}
           fechaFin={fechaFin}
+          cuotas={cuotas}
+          devoluciones={devoluciones}
         />
       </Card>
     </Fragment>
   );
 };
 
-export default ReporteProductosColocados;
+export default ReporteIngresos;

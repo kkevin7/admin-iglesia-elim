@@ -245,18 +245,18 @@ class SidenavContent extends Component {
               </li>
               <li>
                 <NavLink to="/app/devoluciones">
-                  <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
+                  <i className="zmdi zmdi-rotate-left zmdi-hc-fw" />
                   <span className="nav-text">Devoluciones </span>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/app/devolucionSocio">
-                  <i className="zmdi zmdi-accounts-list zmdi-hc-fw" />
+                  <i className="zmdi zmdi-swap-vertical zmdi-hc-fw" />
                   <span className="nav-text">Realizar Devolución </span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/app/p4">
+                <NavLink to="/app/reportePagos">
                   <i className="zmdi zmdi-local-printshop zmdi-hc-fw" />
                   <span className="nav-text">Reportes</span>
                 </NavLink>

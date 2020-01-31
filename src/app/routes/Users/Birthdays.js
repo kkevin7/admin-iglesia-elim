@@ -70,19 +70,16 @@ class Birthdays extends Component {
           (usuario.estado ? "ACTIVO" : "INACTIVO")
             .toLowerCase()
             .includes(busqueda) ||
-            (
-              usuario.fecha_nacimiento
-                ? `${new Date(usuario.fecha_nacimiento).getDate()} de ${
-                    meses[new Date(usuario.fecha_nacimiento).getMonth()]
-                  }`
-                : ""
-            )
+          (usuario.fecha_nacimiento
+            ? `${new Date(usuario.fecha_nacimiento).getDate()} de ${
+                meses[new Date(usuario.fecha_nacimiento).getMonth()]
+              }`
+            : ""
+          )
             .toLowerCase()
             .includes(busqueda)
       );
     }
-
-    
 
     return (
       <div className="app-wrapper">

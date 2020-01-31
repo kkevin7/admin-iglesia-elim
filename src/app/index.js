@@ -145,7 +145,11 @@ class App extends React.Component {
                       {/*Top Socios */}
                       <Route path={`${match.url}/topSocios`}
                          component={asyncComponent(() => import('./routes/Payment/TopSocios/TopSocios'))}/>
-              
+
+                      {/* Reportes */}
+                      <Route path={`${match.url}/reportePagos`}
+                         component={asyncComponent(() => import('./routes/Payment/Reportes/Reportes'))}/>
+
               {/* ----------------------------------------- USUARIOS --------------------------------------------- */}
 
                   {/* Users */}
