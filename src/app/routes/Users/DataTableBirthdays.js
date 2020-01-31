@@ -162,7 +162,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTableBithdays = ({ history, usuarios }) => {
+const DataTableBithdays = ({ history, usuarios, meses }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -227,20 +227,7 @@ const DataTableBithdays = ({ history, usuarios }) => {
     history.push(`/app/detalleUsuario/${id}`);
   };
 
-  const meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ]
+  
 
   return (
     <Paper className={classes.paper}>

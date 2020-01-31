@@ -4,16 +4,25 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 //components
-import Spinner from '../../../../components/Spinner/Spinner';
+import Spinner from "../../../../components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import CardProducto from "./CardProducto";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class BookStore extends Component {
-
   render() {
-    const { productos } = this.props;
+    const { productos, busqueda } = this.props;
     if (!productos) return <Spinner />;
+    let productosBusqueda = [];
+
+    if (busqueda) {
+      productosBusqueda = productos.filter(prod =>
+        prod.nombre.toLowerCase().includes(busqueda) ||
+        prod.descripcion.toLowerCase().includes(busqueda) ||
+        prod.existencia.toString().includes(busqueda) ||
+        prod.precio.toFixed(2).includes(busqueda) 
+      );
+    }
 
     return (
       <div className="app-wrapper">
@@ -24,35 +33,32 @@ class BookStore extends Component {
           </h3>
         </div>
         <div className="row mb-md-3">
-          {productos &&
+          {busqueda ?
+            productosBusqueda &&
+            productosBusqueda.map(producto => {
+              return <CardProducto key={producto.id} producto={producto} />;
+            })
+          : productos &&
             productos.map(producto => {
-              return (
-                <CardProducto
-                 key={producto.id} 
-                 producto={producto} 
-                 />
-              )
-            })}
+              return <CardProducto key={producto.id} producto={producto} />;
+            })
+          }
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({firestore}) => {
+const mapStateToProps = ({ firestore, busqueda }) => {
   return {
-    productos: firestore.ordered.productos,
+    busqueda: busqueda.busqueda.toLowerCase(),
+    productos: firestore.ordered.productos
   };
 };
 
 export default withRouter(
   compose(
     connect(mapStateToProps),
-    firestoreConnect(
-      [
-        { collection: "productos" },
-        
-      ]
-      )
+    firestoreConnect([{ collection: "productos" }])
   )(BookStore)
 );

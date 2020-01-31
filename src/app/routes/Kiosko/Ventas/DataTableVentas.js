@@ -266,7 +266,7 @@ const DataTableVenta = ({ ventas, history }) => {
                     >
                       <TableCell>{row.id}</TableCell>
                       <TableCell align="left">
-                        {moment(row.fecha_venta.toDate()).format("LLL")}
+                        {row.fecha_venta ? moment(row.fecha_venta.toDate()).format("LLL"): ""}
                       </TableCell>
                       <TableCell align="left">
                         $ {row.total.toFixed(2)}

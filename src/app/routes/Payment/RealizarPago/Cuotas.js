@@ -21,24 +21,43 @@ import Spinner from "components/Spinner/Spinner";
 class Cuotas extends Component {
   state = {};
   render() {
-    const {cuotas} = this.props;
-    if (!cuotas ) return <Spinner />;
+    const { cuotas, busqueda } = this.props;
+    if (!cuotas) return <Spinner />;
+    let cuotasBusqueda = [];
+
+    if (busqueda) {
+      cuotasBusqueda = cuotas.filter(
+        cuota =>
+          cuota.rubro.toLowerCase().includes(busqueda) ||
+          (cuota.fecha_inicio
+            ? moment(cuota.fecha_inicio.toDate()).format("LL")
+            : ""
+          )
+            .toLowerCase()
+            .includes(busqueda) ||
+          cuota.valor.toFixed(2).includes(busqueda) ||
+          cuota.id.toLowerCase().includes(busqueda) ||
+          (cuota.fecha_pago
+            ? moment(cuota.fecha_pago.toDate()).format("LLL")
+            : ""
+          )
+            .toLowerCase()
+            .includes(busqueda) ||
+          cuota.estado.toLowerCase().includes(busqueda) 
+      );
+    }
 
     return (
       <div className="app-wrapper">
-        {/* <Card>
-          <TableCuotas
-            cuotas={cuotas}
-          />
-        </Card> */}
-        <DataTableCuotas cuotas={cuotas}/>
+        <DataTableCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} />
       </div>
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = ({ firestore, busqueda }) => {
   return {
-    cuotas: state.firestore.ordered.cuotas
+    busqueda: busqueda.busqueda.toLowerCase(),
+    cuotas: firestore.ordered.cuotas
   };
 };
 

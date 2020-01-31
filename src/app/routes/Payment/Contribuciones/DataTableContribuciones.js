@@ -71,13 +71,13 @@ const headCells = [
         id: "fecha_inicio",
         numeric: false,
         disablePadding: false,
-        label: "Cumpleaños"
+        label: "Fecha Inicio"
     },
     {
         id: "fecha_fin",
         numeric: false,
         disablePadding: false,
-        label: "Cumpleaños"
+        label: "Fecha Fin"
     },
     {
         id: "estado",
@@ -284,7 +284,7 @@ const DataTableContribuciones = ({ contribuciones, history }) => {
                                             {row.fecha_inicio ? moment(row.fecha_inicio.toDate()).format("LL") : ""}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {row.fecha_inicio ? moment(row.fecha_fin.toDate()).format("LL") : ""}
+                                            {row.fecha_fin ? moment(row.fecha_fin.toDate()).format("LL") : ""}
                                         </TableCell>
                                         <TableCell align="left">{row.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>}</TableCell>
                                         <TableCell>

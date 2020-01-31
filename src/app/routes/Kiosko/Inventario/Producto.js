@@ -9,7 +9,6 @@ class Producto extends Component {
     render() {
 
         const {producto} = this.props;
-        // console.log(producto);
         return (
             <Fragment>
                 <tr>

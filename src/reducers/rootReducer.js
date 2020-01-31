@@ -14,6 +14,7 @@ import ReportesReducer from "./ReportesReducer";
 import DevolucionReducer from "./DevolucionReducer";
 import AsociacionReducer from "./AsociacionReducer";
 import TopSocios from "./TopSociosReducer";
+import BusquedaReducer from "./BusquedaReducer";
 
 export default history =>
   combineReducers({
@@ -21,6 +22,7 @@ export default history =>
     settings: Settings,
     auth: Auth,
     authCustom: authReducer,
+    busqueda: BusquedaReducer,
     estadisticas: Estadisticas,
     producto: productoReducer,
     compra: ComprasReducer,

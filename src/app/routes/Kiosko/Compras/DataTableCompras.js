@@ -251,7 +251,7 @@ const DataTableCompras = ({ compras, history }) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
                     {/* <TableCell align="left">{row.id}</TableCell> */}
-                    <TableCell align="left">$ {row.id_producto}</TableCell>
+                    <TableCell align="left">{row.id_producto}</TableCell>
                     <TableCell align="left">{row.cantidad}</TableCell>
                     <TableCell align="left">
                       $ {row.precio_compra.toFixed(2)}

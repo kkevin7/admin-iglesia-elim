@@ -17,7 +17,7 @@ import CardSocio from "./CardSocio";
 import CardContribucion from "./CardContribucion";
 import CardCuotas from "./CardCuotas";
 //Reducers
-import {buscarContribucionAndSocio} from "actions/contribucionesActions";
+import { buscarContribucionAndSocio } from "actions/contribucionesActions";
 
 class DetalleContribucion extends Component {
   state = {
@@ -25,13 +25,36 @@ class DetalleContribucion extends Component {
   };
 
   componentDidMount() {
-    const {buscarContribucionAndSocio} = this.props;
-    buscarContribucionAndSocio(this.props.match.params.id_contribucion)
+    const { buscarContribucionAndSocio } = this.props;
+    buscarContribucionAndSocio(this.props.match.params.id_contribucion);
   }
 
   render() {
-    const { contribucion, cuotas, socio } = this.props;
+    const { contribucion, cuotas, socio, busqueda } = this.props;
     if (!contribucion || !cuotas || !socio) return <Spinner />;
+    let cuotasBusqueda = [];
+
+    if (busqueda) {
+      cuotasBusqueda = cuotas.filter(
+        cuota =>
+          cuota.rubro.toLowerCase().includes(busqueda) ||
+          (cuota.fecha_inicio
+            ? moment(cuota.fecha_inicio.toDate()).format("LL")
+            : ""
+          )
+            .toLowerCase()
+            .includes(busqueda) ||
+          cuota.valor.toFixed(2).includes(busqueda) ||
+          cuota.id.toLowerCase().includes(busqueda) ||
+          (cuota.fecha_pago
+            ? moment(cuota.fecha_pago.toDate()).format("LLL")
+            : ""
+          )
+            .toLowerCase()
+            .includes(busqueda) ||
+          cuota.estado.toLowerCase().includes(busqueda)
+      );
+    }
 
     return (
       <div className="app-wrapper">
@@ -43,7 +66,7 @@ class DetalleContribucion extends Component {
             <CardContribucion contribucion={contribucion} />
           </div>
           <div className="col-lg-12 col-lg-12 col-sm-12 col-12 my-2">
-            <CardCuotas cuotas={cuotas} />
+            <CardCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} />
           </div>
         </div>
       </div>
@@ -51,8 +74,9 @@ class DetalleContribucion extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore, contribucion }) => {
+const mapStateToProps = ({ firestore, contribucion, busqueda }) => {
   return {
+    busqueda: busqueda.busqueda.toLowerCase(),
     socio: contribucion.socio,
     contribucion: contribucion.contribucion && contribucion.contribucion,
     cuotas: firestore.ordered.cuotas
@@ -61,13 +85,17 @@ const mapStateToProps = ({ firestore, contribucion }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    buscarContribucionAndSocio: async (busqueda) => dispatch(buscarContribucionAndSocio(busqueda))
+    buscarContribucionAndSocio: async busqueda =>
+      dispatch(buscarContribucionAndSocio(busqueda))
   };
 };
 
 export default withRouter(
   compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
     firestoreConnect(props => [
       {
         collection: "cuotas",

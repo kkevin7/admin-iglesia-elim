@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 //Icons
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from "@material-ui/icons/Send";
 //Components
 import Spinner from "components/Spinner/Spinner";
 import DataTableDevoluciones from "./DataTableDevoluciones";
@@ -25,12 +25,23 @@ class Devoluciones extends Component {
 
   redirectRealizarDevolucion = () => {
     const { history } = this.props;
-    history.push(`/app/realizarDevolucion`);
+    history.push(`/app/devolucionSocio`);
   };
 
   render() {
-    const { devoluciones } = this.props;
+    const { devoluciones, busqueda } = this.props;
     if (!devoluciones) return <Spinner />;
+    let devolucionesBusqueda = [];
+
+    if (busqueda) {
+      devolucionesBusqueda = devoluciones.filter(devol =>
+        devol.carnet.toLowerCase().includes(busqueda) ||
+        devol.monto.toFixed(2).includes(busqueda) ||
+        devol.descripcion.toLowerCase().includes(busqueda) ||
+        (devol.fecha ? moment(devol.fecha.toDate()).format("LLL"): "").toLowerCase().includes(busqueda) ||
+        (devol.estado ? devol.estado : "").toLowerCase().includes(busqueda) 
+      );
+    }
 
     return (
       <div className="app-wrapper">
@@ -53,14 +64,17 @@ class Devoluciones extends Component {
         >
           Realizar Devolución
         </Button>
-        <DataTableDevoluciones devoluciones={devoluciones} />
+        <DataTableDevoluciones
+          devoluciones={busqueda ? devolucionesBusqueda : devoluciones}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, busqueda }) => {
   return {
+    busqueda: busqueda.busqueda.toLowerCase(),
     devoluciones: firestore.ordered.devoluciones
   };
 };

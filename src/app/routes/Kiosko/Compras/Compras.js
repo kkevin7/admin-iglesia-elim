@@ -20,10 +20,21 @@ class Compras extends Component {
     const { history } = this.props;
     history.goBack();
   };
-  
+
   render() {
-    const { compras } = this.props;
+    const { compras, busqueda } = this.props;
     if (!compras) return <Spinner />;
+    let comprasBusqueda = [];
+
+    if (busqueda) {
+      comprasBusqueda = compras.filter(com =>
+        com.id_producto.toLowerCase().includes(busqueda) ||
+        com.cantidad.toString().includes(busqueda) ||
+        com.precio_compra.toFixed(2).toString().includes(busqueda) ||
+        com.total.toFixed(2).toString().includes(busqueda) ||
+        (com.fecha ? moment(com.fecha.toDate()).format("LLL") : "").toLowerCase().includes(busqueda)
+      );
+    }
 
     return (
       <div className="app-wrapper">
@@ -38,14 +49,15 @@ class Compras extends Component {
             VOLVER
           </Button>
         </div>
-        <DataTableCompras compras={compras} />
+        <DataTableCompras compras={busqueda ? comprasBusqueda : compras} />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, busqueda }) => {
   return {
+    busqueda: busqueda.busqueda.toLowerCase(),
     compras: firestore.ordered.compras
   };
 };

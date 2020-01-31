@@ -28,7 +28,7 @@ class TopSocios extends Component {
     especificarFecha: false,
     showTop: false,
     fechaInicio: new Date(),
-    fechaFin: new Date(),
+    fechaFin: new Date()
   };
 
   // componentDidMount() {
@@ -36,35 +36,46 @@ class TopSocios extends Component {
   //   // buscarTopSocios();
   // }
 
-  handleEspeficiarFecha = (state) => {
+  handleEspeficiarFecha = state => {
     this.setState({
       especificarFecha: state
-    })
-  }
+    });
+  };
 
-  handleShowTop = (state) => {
+  handleShowTop = state => {
     this.setState({
       showTop: state
-    })
-  }
+    });
+  };
 
   handleTopSocios = async () => {
     const { buscarTopSocios } = this.props;
     await buscarTopSocios(this.state);
-  }
+  };
 
-  handleFechas = async (fechas) =>{
+  handleFechas = async fechas => {
     await this.setState({
-      fechaInicio: fechas.fechaInicio, 
+      fechaInicio: fechas.fechaInicio,
       fechaFin: fechas.fechaFin
     });
     await this.handleReportProductosColocados();
     await this.handleShowReport(true);
-  }
+  };
 
   render() {
-    const { topSocios } = this.props;
+    const { topSocios, busqueda } = this.props;
     if (!topSocios) return <Spinner />;
+    let topSociosBusqueda = [];
+
+    if (busqueda) {
+      topSociosBusqueda = topSocios.filter(topSocio =>
+        topSocio.carnet.toLowerCase().includes(busqueda) ||
+        topSocio.nombre.toLowerCase().includes(busqueda) ||
+        topSocio.apellido.toLowerCase().includes(busqueda) ||
+        topSocio.totalPagado.toFixed(2).includes(busqueda) ||
+        topSocio.cantidadCuotas.toString().includes(busqueda) 
+      );
+    }
 
     return (
       <div className="app-wrapper">
@@ -78,7 +89,7 @@ class TopSocios extends Component {
             </Typography>
             <div className="col-12 my-4">
               <div className="row">
-              <div className="mt-3 col-6 col-md-4">
+                <div className="mt-3 col-6 col-md-4">
                   <Button
                     variant="contained"
                     color="primary"
@@ -132,9 +143,9 @@ class TopSocios extends Component {
                     fullWidth
                     onClick={async () => {
                       await this.setState({
-                        fechaInicio: new Date((new Date()).getFullYear(), 0, 1), 
+                        fechaInicio: new Date(new Date().getFullYear(), 0, 1),
                         fechaFin: new Date()
-                      })
+                      });
                       await this.handleEspeficiarFecha(false);
                       await this.handleShowTop(true);
                       await this.handleTopSocios();
@@ -145,7 +156,10 @@ class TopSocios extends Component {
                 </div>
               </div>
             </div>
-            <DataTableTopSocios topSocios={topSocios} showTop={this.state.showTop} />
+            <DataTableTopSocios
+              topSocios={busqueda ? topSociosBusqueda : topSocios}
+              showTop={this.state.showTop}
+            />
           </CardContent>
         </Card>
       </div>
@@ -153,8 +167,9 @@ class TopSocios extends Component {
   }
 }
 
-const mapStateToProps = ({ topSocios }) => {
+const mapStateToProps = ({ topSocios, busqueda }) => {
   return {
+    busqueda: busqueda.busqueda.toLowerCase(),
     topSocios: topSocios.topSocios
   };
 };
