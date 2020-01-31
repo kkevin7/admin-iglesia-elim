@@ -41,6 +41,12 @@ const CardContribucion = ({ contribucion }) => {
       </div>
       <CardContent>
         <div className="pt-md-3 pl-md-3 pr-md-3 mx-auto">
+        <p className="font-weight-bold">
+            ID Contribución: {""}
+            <span className="font-weight-normal">
+              {contribucion.id}
+            </span>
+          </p>
           <p className="font-weight-bold">
             Valor de la Cuota: {""}
             <span className="font-weight-normal">
@@ -74,7 +80,7 @@ const CardContribucion = ({ contribucion }) => {
           <p className="font-weight-bold">
             Estado: {""}
             <span className="font-weight-normal">
-              {contribucion.estado ? "ACTIVO" : "INACTIVO"}
+              {contribucion.estado ? "ACTIVO" : "FINALIZADO"}
             </span>
           </p>
         </div>

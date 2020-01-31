@@ -277,7 +277,7 @@ const DataTableContribuciones = ({ contribuciones, history }) => {
                                             {row.carnet ? row.carnet : ""}
                                         </TableCell>
                                         <TableCell align="left">
-                                            {row.valor_cuota ? row.valor_cuota : ""}
+                                            $ {row.valor_cuota ? row.valor_cuota.toFixed(2) : ""}
                                         </TableCell>
                                         <TableCell align="left">{row.cantidad_cuota ? row.cantidad_cuota : ""}</TableCell>
                                         <TableCell align="left">
@@ -286,7 +286,7 @@ const DataTableContribuciones = ({ contribuciones, history }) => {
                                         <TableCell align="left">
                                             {row.fecha_fin ? moment(row.fecha_fin.toDate()).format("LL") : ""}
                                         </TableCell>
-                                        <TableCell align="left">{row.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>}</TableCell>
+                                        <TableCell align="left">{row.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >FINALIZADO</p>}</TableCell>
                                         <TableCell>
                                             <Button
                                                 startIcon={<FormatListBulletedIcon />}

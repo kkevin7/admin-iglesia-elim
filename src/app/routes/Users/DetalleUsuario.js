@@ -67,7 +67,7 @@ export default withRouter(
       return [
         {
           collection: "usuarios",
-          doc: props.match.params.id,
+          where: [["carnet", "==", props.match.params.id]],
           storeAs: "usuario"
         }
       ];

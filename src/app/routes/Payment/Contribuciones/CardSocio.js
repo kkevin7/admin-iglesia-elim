@@ -40,8 +40,9 @@ const CardSocio = ({ socio }) => {
         </h3>
       </div>
       <CardContent>
+      <div className="pt-md-3 pl-md-3 pr-md-3 mx-auto">
             <p className={`font-weight-bold ${socio.id ? "" : "d-none"}`}>
-              ID: {""}
+              ID Usuario: {""}
               <span className="font-weight-normal">{socio.id ? socio.id : ""}</span>
             </p>
             <p className="font-weight-bold">
@@ -64,6 +65,7 @@ const CardSocio = ({ socio }) => {
               Dirección: {""}
               <span className="font-weight-normal">{socio.direccion ? socio.direccion : ""}</span>
             </p>
+            </div>
       </CardContent>
     </Card>
   );

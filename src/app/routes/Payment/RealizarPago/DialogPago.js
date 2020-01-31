@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+//Redux
+import { realizarPagoCuota } from "actions/realizarPagoActions";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -16,7 +18,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-const DialogPago = ({ cuota, firestore, history }) => {
+const DialogPago = ({ cuota, firestore, history, realizarPagoCuota, estadoContribucion }) => {
   const [open, setOpen] = React.useState(false);
   const [valorCuota, setValorCuota] = React.useState("");
   const [error, setError] = React.useState(false);
@@ -42,45 +44,21 @@ const DialogPago = ({ cuota, firestore, history }) => {
     }
   };
 
-  const handlePagoCuota = e => {
+  const handlePagoCuota = async e => {
     e.preventDefault();
     if (valorCuota == cuota.valor && cuota.estado === "VIGENTE") {
       const editCuota = {
+        id: cuota.id,
+        id_contribucion: cuota.id_contribucion,
         saldo_anterior: cuota.saldo_actualizado,
         saldo_actualizado: valorCuota,
-        fecha_pago: new Date(),
-        estado: "PAGADA"
+        estado_contribucion: estadoContribucion != null ? estadoContribucion : true
       };
 
-      firestore
-        .update(
-          {
-            collection: "cuotas",
-            doc: cuota.id
-          },
-          editCuota
-        )
-        .then(pago => {
-          const editContribucion = {
-            fecha_ultimo_pago: new Date()
-          };
-          firestore.update(
-            {
-              collection: "contribuciones",
-              doc: cuota.id_contribucion
-            },
-            editContribucion
-          );
-          return pago;
-        })
-        // .then(pago => {
-        //   // setOpen(false);
-        //   // setValorCuota("");
-        //   // return pago
-        // })
-        .then(() => {
-          history.push(`/app/comprobanteCuota/${cuota.id}`);
-        });
+      await realizarPagoCuota(editCuota).then(async () => {
+        await history.push(`/app/comprobanteCuota/${cuota.id}`);
+      });
+
     } else {
       handleError(true);
       return;
@@ -145,4 +123,22 @@ const DialogPago = ({ cuota, firestore, history }) => {
   );
 };
 
-export default withRouter(firestoreConnect()(DialogPago));
+const mapStateToProps = () => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    realizarPagoCuota: async editCuota => dispatch(realizarPagoCuota(editCuota))
+  };
+};
+
+export default withRouter(
+  compose(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
+    firestoreConnect()
+  )(DialogPago)
+);

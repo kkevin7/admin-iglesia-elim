@@ -1,6 +1,7 @@
 const initState = {
     socio: {},
-    noResultados: false
+    noResultados: false,
+    error: "",
   };
 
   const realizarPagoReducer = (state = initState, action) => {
@@ -20,7 +21,9 @@ const initState = {
       case "BUSCAR_SOCIO_ERROR":
         return {
           ...state,
-          noResultados: true
+          socio: {},
+          noResultados: true,
+          error: action.error
         };
       default:
         return state;

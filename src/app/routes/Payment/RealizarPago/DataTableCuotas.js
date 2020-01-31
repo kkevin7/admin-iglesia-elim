@@ -67,13 +67,28 @@ function getSorting(order, orderBy) {
 
 const headCells = [
   { id: "rubro", numeric: true, disablePadding: false, label: "Rubro" },
-  { id: "fecha_inicio", numeric: false, disablePadding: false, label: "Fecha Incio" },
+  {
+    id: "fecha_inicio",
+    numeric: false,
+    disablePadding: false,
+    label: "Fecha Incio"
+  },
   { id: "valor", numeric: true, disablePadding: false, label: "Monto" },
   { id: "id", numeric: false, disablePadding: false, label: "Código" },
-  { id: "fecha_pago", numeric: false, disablePadding: false, label: "Fecha Pago" },
+  {
+    id: "fecha_pago",
+    numeric: false,
+    disablePadding: false,
+    label: "Fecha Pago"
+  },
   { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
   { id: "acciones", numeric: false, disablePadding: false, label: "Acciones" },
-  { id: "comprobante", numeric: false, disablePadding: false, label: "Comprobante" },
+  {
+    id: "comprobante",
+    numeric: false,
+    disablePadding: false,
+    label: "Comprobante"
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -218,102 +233,118 @@ const DataTableCuotas = ({ cuotas, history }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, cuotas.length - page * rowsPerPage);
 
-    const btnRedirectComprobante = id => {
-        history.push(`/app/comprobanteCuota/${id}`);
-      };
+  const btnRedirectComprobante = id => {
+    history.push(`/app/comprobanteCuota/${id}`);
+  };
+
+  let estadoContribucion = true;
+  let countPagadas = 0;
+  cuotas.forEach(cuota => {
+    if(cuota.estado == "PAGADA"){
+    countPagadas+=1;
+    }
+  });
+  if(countPagadas == cuotas.length-1){
+    estadoContribucion=false
+  }
 
   return (
-      <Paper className={classes.paper}>
-        <TableContainer 
-        // className={classes.container}
+    <Paper className={classes.paper}>
+      <TableContainer
+      // className={classes.container}
+      >
+        <Table
+          stickyHeader
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size={dense ? "small" : "medium"}
+          aria-label="enhanced table"
         >
-            <Table 
-            stickyHeader 
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={cuotas.length}
-            />
-            <TableBody>
-              {stableSort(cuotas, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+          <EnhancedTableHead
+            classes={classes}
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={cuotas.length}
+          />
+          <TableBody>
+            {stableSort(cuotas, getSorting(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                const isItemSelected = isSelected(row.name);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      // onClick={event => handleClick(event, row.name)}
-                      // role="checkbox"
-                      // aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      // selected={isItemSelected}
-                    >
-                      <TableCell align="left" >{row.rubro}</TableCell>
-                      <TableCell align="left">
-                        {row.fecha_inicio ? moment(row.fecha_inicio.toDate()).format("LL") : ""}
-                      </TableCell>
-                      <TableCell align="left">
-                        $ {row.valor.toFixed(2)}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="left" >
-                      {row.fecha_pago
-                  ? moment(row.fecha_pago.toDate()).format("LLL")
-                  : ""}
-                      </TableCell>
-                      <TableCell align="left">{row.estado}</TableCell>
-                      <TableCell>
-                        {row.estado === "VIGENTE" ? <DialogPago cuota={row} /> : ""}
-                      </TableCell>
-                      <TableCell>
-                      {row.estado === "PAGADA" ? (
-                  <Button
-                    startIcon={<PrintIcon />}
-                    className="bg-cyan text-white"
-                    variant="contained"
-                    onClick={() => btnRedirectComprobante(row.id)}
+                return (
+                  <TableRow
+                    hover
+                    // onClick={event => handleClick(event, row.name)}
+                    // role="checkbox"
+                    // aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    // selected={isItemSelected}
                   >
-                    GENERAR
-                  </Button>
-                ) : (
-                  ""
-                )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[12, 24, 36]}
-          component="div"
-          count={cuotas.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
+                    <TableCell align="left">{row.rubro}</TableCell>
+                    <TableCell align="left">
+                      {row.fecha_inicio
+                        ? moment(row.fecha_inicio.toDate()).format("LL")
+                        : ""}
+                    </TableCell>
+                    <TableCell align="left">$ {row.valor.toFixed(2)}</TableCell>
+                    <TableCell align="left">{row.id}</TableCell>
+                    <TableCell align="left">
+                      {row.fecha_pago
+                        ? moment(row.fecha_pago.toDate()).format("LLL")
+                        : ""}
+                    </TableCell>
+                    <TableCell align="left">{row.estado}</TableCell>
+                    <TableCell>
+                      {row.estado === "VIGENTE" ? (
+                        <DialogPago 
+                        cuota={row} 
+                        estadoContribucion = {estadoContribucion}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {row.estado === "PAGADA" ? (
+                        <Button
+                          startIcon={<PrintIcon />}
+                          className="bg-cyan text-white"
+                          variant="contained"
+                          onClick={() => btnRedirectComprobante(row.id)}
+                        >
+                          GENERAR
+                        </Button>
+                      ) : (
+                        ""
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[12, 24, 36]}
+        component="div"
+        count={cuotas.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 };
 

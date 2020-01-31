@@ -24,7 +24,7 @@ class Contribuciones extends Component {
         contrib.cantidad_cuota.toString().includes(busqueda) || 
         (contrib.fecha_inicio ? moment(contrib.fecha_inicio.toDate()).format("LL") : "").toLowerCase().includes(busqueda) ||
         (contrib.fecha_fin ? moment(contrib.fecha_fin.toDate()).format("LL") : "").toLowerCase().includes(busqueda) ||
-        (contrib.estado ? "ACTIVO" : "INACTIVO").toLowerCase().includes(busqueda)
+        (contrib.estado ? "ACTIVO" : "FINALIZADO").toLowerCase().includes(busqueda)
       );
     }
 

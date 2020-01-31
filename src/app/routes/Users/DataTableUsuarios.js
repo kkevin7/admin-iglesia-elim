@@ -224,8 +224,8 @@ const DataTableUsuarios = ({ usuarios, history }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, usuarios.length - page * rowsPerPage);
 
-  const btnRedirectDetalle = id => {
-    history.push(`/app/detalleUsuario/${id}`);
+  const btnRedirectDetalle = carnet => {
+    history.push(`/app/detalleUsuario/${carnet}`);
   };
 
   return (
@@ -259,8 +259,8 @@ const DataTableUsuarios = ({ usuarios, history }) => {
                 return (
                   <TableRow hover tabIndex={-1} key={row.id}>
                     <TableCell align="left">
-                        {row.carnet ? row.carnet : ""}
-                        </TableCell>
+                      {row.carnet ? row.carnet : ""}
+                    </TableCell>
                     <TableCell align="left">
                       <div className="user-profile d-flex flex-row align-items-center">
                         <Avatar
@@ -277,12 +277,16 @@ const DataTableUsuarios = ({ usuarios, history }) => {
                     <TableCell align="left">{row.telefono}</TableCell>
                     <TableCell align="left">{row.rol}</TableCell>
                     <TableCell align="left">
-                      {row.estado ? <p className="badge badge-green ml-auto" >ACTIVO</p> : <p className="badge badge-red ml-auto" >INACTIVO</p>}
+                      {row.estado ? (
+                        <p className="badge badge-green ml-auto">ACTIVO</p>
+                      ) : (
+                        <p className="badge badge-red ml-auto">INACTIVO</p>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Button
                         startIcon={<FormatListBulletedIcon />}
-                          onClick={() => btnRedirectDetalle(row.id)}
+                        onClick={() => btnRedirectDetalle(row.carnet)}
                         variant="contained"
                         color="primary"
                       >
