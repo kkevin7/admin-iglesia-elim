@@ -58,6 +58,9 @@ class FormProducto extends Component {
       urlImage: "",
       uploadValue: 0,
       //Error
+      nombre_error: false,
+      existencia_error: false,
+      precio_error: false,
       proveedor_error: false,
       categoria_producto_error: false
     };
@@ -82,10 +85,29 @@ class FormProducto extends Component {
   };
 
   handleChangeNumber = e => {
-    this.setState({
-      [e.target.name]: Math.floor(Number(e.target.value))
-    });
+    if(e.target.value){
+      this.setState({
+        [e.target.name]: Math.floor(Number(e.target.value))
+      });
+    }else{
+      this.setState({
+        [e.target.name]: ""
+      });
+    }
   };
+
+  handleChangeNumberError = e => {
+    if (e.target.value > 0) {
+      this.setState({
+        [e.target.name + "_error"]: false
+      });
+    } else {
+      this.setState({
+        [e.target.name + "_error"]: true
+      });
+    }
+  };
+
 
   handleSubmit = e => {
     e.preventDefault();
@@ -174,11 +196,16 @@ class FormProducto extends Component {
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
                           required
+                          error={this.state.nombre_error}
+                          helperText={this.state.nombre_error ? "El campo no puede estar vacío" : ""}
                           name="nombre"
                           label="Nombre"
                           variant="outlined"
                           value={this.state.nombre}
-                          onChange={this.handleChangeFilds}
+                          onChange={(e) => {
+                            this.handleChangeFilds(e);
+                            this.handleChangeError(e);
+                          }}
                         />
                       </div>
                     </div>
@@ -186,15 +213,18 @@ class FormProducto extends Component {
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
                           required
+                          error={this.state.existencia_error}
+                          helperText={this.state.existencia_error ? "El valor debe ser mayor a cero" : ""}
                           type="number"
                           InputProps={{ inputProps: { min: 1, step: 1 } }}
-                          min="1"
-                          step="1"
                           name="existencia"
                           label="Existencia"
                           variant="outlined"
                           value={this.state.existencia}
-                          onChange={this.handleChangeNumber}
+                          onChange={(e) => {
+                            this.handleChangeNumber(e);
+                            this.handleChangeNumberError(e);
+                          }}
                         />
                       </div>
                     </div>
@@ -202,6 +232,8 @@ class FormProducto extends Component {
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <TextField
                           required
+                          error={this.state.precio_error}
+                          helperText={this.state.precio_error ? "El valor debe ser mayor a cero" : ""}
                           type="number"
                           name="precio"
                           InputProps={{
@@ -210,7 +242,11 @@ class FormProducto extends Component {
                           label="Precio"
                           variant="outlined"
                           value={this.state.precio}
-                          onChange={this.handleChangeFilds}
+                          onChange={(e) => {
+                            this.handleChangeFilds(e);
+                            this.handleChangeNumberError(e);
+                          }
+                          }
                         />
                       </div>
                     </div>

@@ -17,7 +17,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import AddIcon from "@material-ui/icons/Add";
 import Spinner from "components/Spinner/Spinner";
 
-const FormDialog = ({ history, producto, firestore, createCompra, updateProducto }) => {
+const FormDialog = ({
+  history,
+  producto,
+  firestore,
+  createCompra,
+  updateProducto
+}) => {
   const [open, setOpen] = React.useState(false);
   const [existencia, setExistencia] = React.useState("");
   const [precioCompra, setPrecioCompra] = React.useState("");
@@ -39,16 +45,16 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
     setOpen(false);
   };
   //Error
-  const handleError = (error, e )=> {
-    if(e.target.name == "existencia"){
+  const handleError = (error, e) => {
+    if (e.target.name == "existencia") {
       setExistencia(e.target.value);
       setErrorExistencia(error);
     }
-    if(e.target.name == "precio_compra"){
-      setPrecioCompra(e.target.value);
-      setErrorPrecioCompra(error);
-    }
-    if(e.target.name == "total"){
+    // if (e.target.name == "precio_compra") {
+    //   setPrecioCompra(e.target.value);
+    //   setErrorPrecioCompra(error);
+    // }
+    if (e.target.name == "total") {
       setTotal(e.target.value);
       setErrorTotal(error);
     }
@@ -64,15 +70,15 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
 
   const handleBtnAgregar = async e => {
     e.preventDefault();
-    if (existencia > 0 && total>0) {
+    if (existencia > 0 && total > 0) {
       let editProducto = { ...producto };
-      editProducto.existencia += existencia;
+      editProducto.existencia += Number(existencia);
 
       const compra = {
         id_producto: producto.id,
-        cantidad: existencia,
-        precio_compra: precioCompra ? precioCompra.toFixed(2) : "",
-        total: total.toFixed(2)
+        cantidad: Number(existencia),
+        precio_compra: Number((total/existencia).toFixed(2)) ,
+        total: Number(total)
       };
 
       await updateProducto(editProducto)
@@ -82,15 +88,16 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
         .then(async () => {
           await setOpen(false);
           await setExistencia("");
-        }).then(async () => {
-          await history.push("/app/compras")
+        })
+        .then(async () => {
+          await history.push("/app/compras");
         });
     } else {
-      if(!existencia > 0){
-      setErrorExistencia(true);
+      if (!existencia > 0) {
+        setErrorExistencia(true);
       }
-      if(!total > 0){
-      setErrorTotal(true);
+      if (!total > 0) {
+        setErrorTotal(true);
       }
       return;
     }
@@ -114,15 +121,16 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
         <DialogTitle id="form-dialog-title">Agregar una Compra</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Estas a punto de realizar un compra de productos.
-            La cantidad que ingreses se agregar a la cantidad existente en el
-            inventario
+            Estas a punto de realizar un compra de productos. La cantidad que
+            ingreses se agregar a la cantidad existente en el inventario
           </DialogContentText>
           <TextField
-           autoFocus
+            autoFocus
             required
             error={errorExistencia}
-            helperText={errorExistencia ? "La cantidad debe ser mayor a cero" : ""}
+            helperText={
+              errorExistencia ? "La cantidad debe ser mayor a cero" : ""
+            }
             margin="dense"
             type="number"
             inputProps={{ min: "1", step: "1" }}
@@ -133,9 +141,11 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
             onChange={handleValidation}
             fullWidth
           />
-          <TextField
+          {/* <TextField
             error={errorPrecioCompra}
-            helperText={errorPrecioCompra ? "El precio debe ser mayor a cero" : ""}
+            helperText={
+              errorPrecioCompra ? "El precio debe ser mayor a cero" : ""
+            }
             margin="dense"
             type="number"
             inputProps={{ min: "0.01", step: "0.01" }}
@@ -145,7 +155,7 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
             value={precioCompra}
             onChange={handleValidation}
             fullWidth
-          />
+          /> */}
           <TextField
             required
             error={errorTotal}
@@ -154,7 +164,7 @@ const FormDialog = ({ history, producto, firestore, createCompra, updateProducto
             type="number"
             inputProps={{ min: "0.01", step: "0.01" }}
             name="total"
-            label="Total"
+            label="Costo Total"
             variant="outlined"
             value={total}
             onChange={handleValidation}

@@ -85,7 +85,15 @@ const CardDetalle = ({
               </div>
             </div>
             <div className="col-md-6 col-12">
-              <div className="row  my-2">
+              <div className="row my-2">
+              <div className="col-md-12 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className="font-weight-bold">ID Producto:</span> {""}
+                      {producto.id ? producto.id : ""}
+                    </h4>
+                  </div>
+                </div>
                 <div className="col-md-6 col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>

@@ -15,20 +15,15 @@ class RealizarVenta extends Component {
     state = {}
     render() {
         const {productos, id_vendedor, nombre_vendedor} = this.props;
-        
         const vendedor = {
             id: id_vendedor,
             nombre: nombre_vendedor
         }
-        
         if (!productos || !id_vendedor || !nombre_vendedor) return <Spinner />;
-        // console.log(vendedor);
-        // // console.log(this.props)
 
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={this.props.match} title="Realizar nueva venta" />
-                {/* <OrderTableCell/> */}
 
                 <div className="row mb-md-3">
                     <div className="col-lg-12">
