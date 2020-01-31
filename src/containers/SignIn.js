@@ -47,6 +47,7 @@ class SignIn extends React.Component {
     const { showMessage, loader, alertMessage } = this.props;
 
     return (
+      // <div className="app-main-content-wrapper">
       <div className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
         <div className="app-login-main-content">
           <div className="app-logo-content d-flex align-items-center justify-content-center">
@@ -161,6 +162,7 @@ class SignIn extends React.Component {
         {showMessage && NotificationManager.error(alertMessage)}
         <NotificationContainer />
       </div>
+      // </div>
     );
   }
 }
