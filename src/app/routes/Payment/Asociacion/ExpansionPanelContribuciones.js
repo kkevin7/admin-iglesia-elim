@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 
 const ExpansionPanelContribuciones = ({ contribuciones }) => {
   const classes = useStyles();
-  console.log(contribuciones);
   return (
     <div className={`${classes.root} my-4`}>
       <ExpansionPanel>

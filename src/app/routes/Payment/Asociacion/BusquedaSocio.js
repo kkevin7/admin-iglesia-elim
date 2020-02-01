@@ -40,22 +40,23 @@ class BusquedaSocio extends Component {
   buscarSocio = async e => {
     e.preventDefault();
     const { busqueda } = this.state;
-    const { buscarSocioCarnet, buscarContribucionActivas } = this.props;
+    const { buscarSocioCarnet, buscarContribucionActivas, disableNext, } = this.props;
     const socioResp = await buscarSocioCarnet(busqueda);
     if (socioResp) {
       await buscarContribucionActivas(busqueda);
+      disableNext(false);
+    }else{
+      disableNext(true);
     }
   };
 
   render() {
-    const { socio, noResultados, disableNext, contribuciones, noContribucion } = this.props;
+    const { socio, noResultados,  contribuciones, noContribucion } = this.props;
 
     let fichaSocio = "";
     if (socio) {
-      disableNext(false);
       fichaSocio = <FichaSocio socio={socio} />;
     } else {
-      disableNext(true);
       fichaSocio = "";
     }
 
@@ -137,7 +138,7 @@ class BusquedaSocio extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore, asociacion }) => {
+const mapStateToProps = ({asociacion }) => {
   return {
     socio: asociacion.socio && asociacion.socio[0],
     noResultados: asociacion.noResultados,

@@ -85,9 +85,7 @@ class EspeficarCuota extends Component {
         fecha.getMonth() + Number(e.target.value) + 1,
         0
       );
-      this.setState({
-        fecha_fin: lastDay
-      });
+      this.handleFechaFin(lastDay);
     }
     if (e.target.value > 0) {
       this.setState({
@@ -106,17 +104,12 @@ class EspeficarCuota extends Component {
     });
     const {fecha_inicio, fecha_fin} = this.state;
     const fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    console.log(fecha_inicio < fecha_fin ? "TRUE": "FALSE");
-    console.log(fecha_inicio);
-    console.log(fecha_fin);
     if (date >= fechaActual && fecha_inicio < fecha_fin) {
-      console.log("CUMPLE")
       await this.setState({
         fecha_inicio: date,
         fecha_inicio_error: false
       });
     } else {
-      console.log("NO CUMPLE")
       await this.setState({
         fecha_inicio_error: true
       });
@@ -129,16 +122,12 @@ class EspeficarCuota extends Component {
     });
     const {fecha_inicio, fecha_fin} = this.state;
     const fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    console.log(fecha_inicio < fecha_fin ? "TRUE": "FALSE");
-    console.log(fecha_inicio);
-    console.log(fecha_fin);
-    if (date >= fechaActual && fecha_inicio < fecha_fin) {
-      console.log("CUMPLE")
+    const fechaFinal = new Date().setFullYear(Number(new Date().getFullYear())+100);
+    if (date >= fechaActual && fecha_inicio < fecha_fin && fecha_fin < fechaFinal) {
       await this.setState({
         fecha_fin_error: false
       });
     } else {
-      console.log("NO CUMPLE")
       await this.setState({
         fecha_fin_error: true
       });
@@ -174,7 +163,8 @@ class EspeficarCuota extends Component {
   };
 
   render() {
-    const maxYear = new Date().setFullYear(new Date().getFullYear() + 100);
+    const minDate = new Date();
+    const maxDate = new Date().setFullYear(new Date().getFullYear() + 100);
 
     const BadMessage = (
       <div className="col-12">
@@ -229,8 +219,6 @@ class EspeficarCuota extends Component {
                   label="Cantidad de Cuotas"
                   type="number"
                   name="cantidad_cuota"
-                  minDate={new Date()}
-                  maxDate={maxYear}
                   value={this.state.cantidad_cuota}
                   onChange={async e => {
                     await this.handleCantidadCouta(e);
@@ -248,14 +236,17 @@ class EspeficarCuota extends Component {
                   <Grid container justify="space-around">
                     <KeyboardDatePicker
                       required
+                      id="date-picker-fecha-inicio"
                       margin="normal"
                       fullWidth
                       readOnly
-                      id="date-picker-dialog"
+                      InputProps={{
+                        readOnly: true,
+                      }}
                       label="Fecha Inicio"
                       format="dd/MM/yyyy"
                       minDate={new Date()}
-                      maxDate={maxYear}
+                      maxDate={maxDate}
                       value={this.state.fecha_inicio}
                       onChange={async (e) => {
                         await this.handleFechaInicio(e);
@@ -276,13 +267,17 @@ class EspeficarCuota extends Component {
                   <Grid container justify="space-around">
                     <KeyboardDatePicker
                       required
+                      id="date-picker-fecha-fin"
                       margin="normal"
                       fullWidth
                       readOnly
-                      id="date-picker-dialog"
+                      InputProps={{
+                        readOnly: true,
+                      }}
                       label="Fecha Fin"
                       format="dd/MM/yyyy"
                       minDate={new Date()}
+                      maxDate={maxDate}
                       value={this.state.fecha_fin}
                       onChange={async (e) => {
                         await this.handleFechaFin(e);

@@ -119,8 +119,8 @@ export const registrarUsuarioSinCorreo = newUser => {
             .where("carnet", "<=", carnet + "\uf8ff")
             .get()
             .then(async snapshotUsuarios => {
-                carnet += (snapshotUsuarios.size + 1).toString().padStart(3, "0");
-                return await firestore.collection("usuarios").add({
+                carnet += await (snapshotUsuarios.size + 1).toString().padStart(3, "0");
+                await firestore.collection("usuarios").add({
                     carnet: carnet,
                     nombre: newUser.nombre,
                     apellido: newUser.apellido,
@@ -133,6 +133,7 @@ export const registrarUsuarioSinCorreo = newUser => {
                     estado: true,
                     rol: "Socio"
                 });
+                return carnet;
             })
             .then(async resp => {
                 await dispatch({

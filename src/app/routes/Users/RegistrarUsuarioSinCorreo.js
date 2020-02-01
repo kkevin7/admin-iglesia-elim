@@ -48,8 +48,8 @@ class RegistrarUsuarioSinCorreo extends Component {
 
   actionComponent = async usuario => {
     const { history, registrarUsuarioSinCorreo } = this.props;
-    await registrarUsuarioSinCorreo(usuario).then(async resp => {
-      await history.push(`/app/users`);
+    await registrarUsuarioSinCorreo(usuario).then(async carnet => {
+      await history.push(`/app/detalleUsuario/${carnet}`);
     });
   };
 

@@ -28,7 +28,7 @@ const TopVendidos = ({ productos }) => {
         <div className="jr-card jr-card-widget jr-card-ticketlist card">
           <div className="d-flex flex-row mb-3">
             <h4 className="mb-1">Top de Ventas</h4>
-            <span class="text-primary font-weight-medium mb-0 pointer ml-auto d-none d-sm-block">
+            <span className="text-primary font-weight-medium mb-0 pointer ml-auto d-none d-sm-block">
               Últimos 6 meses{" "}
             </span>
           </div>

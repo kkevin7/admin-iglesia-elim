@@ -66,7 +66,7 @@ class StepperAsociacion extends Component {
   };
 
   handleAgregarPago = async () => {
-    const { history, socio, firestore, createContribucion } = this.props;
+    const { history, socio, createContribucion } = this.props;
     const nuevaContribucion = {
       id_usuario: socio.id,
       carnet: socio.carnet,
@@ -88,13 +88,10 @@ class StepperAsociacion extends Component {
   };
 
   getStepContent = stepIndex => {
-    const { firestore } = this.props;
-    if (!firestore) return <Spinner />;
     switch (stepIndex) {
       case 0:
         return (
           <BusquedaSocio
-            firestore={firestore}
             setUpSocio={this.setUpSocio}
             disableNext={this.disableNext}
           />
@@ -250,7 +247,7 @@ class StepperAsociacion extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore, asociacion }) => {
+const mapStateToProps = ({ asociacion }) => {
   return {
     socio: asociacion.socio && asociacion.socio[0],
     noResultados: asociacion.noResultados
@@ -267,7 +264,7 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(
   compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect(),
-    withStyles(useStyles)
+    // firestoreConnect(),
+    withStyles(useStyles),
   )(StepperAsociacion)
 );
