@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 //Redux
-import { buscarSocioCarnet } from "actions/AsociacionActions";
+import {
+  buscarSocioCarnet,
+  buscarContribucionActivas
+} from "actions/AsociacionActions";
 
 import { Link } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -14,18 +17,17 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-
+//Alert
+import { Alert, AlertTitle } from '@material-ui/lab';
 //Components
 import FichaSocio from "./FichaSocio";
+import ExpasionPanelContribuciones from "./ExpansionPanelContribuciones";
 
 class BusquedaSocio extends Component {
   constructor(props) {
     super(props);
     this.state = {
       busqueda: "",
-      noResultados: false,
-      socio: {},
-      pago: {}
     };
   }
 
@@ -38,12 +40,15 @@ class BusquedaSocio extends Component {
   buscarSocio = async e => {
     e.preventDefault();
     const { busqueda } = this.state;
-    const { buscarSocioCarnet, noResultados } = this.props;
-    await buscarSocioCarnet(busqueda);
+    const { buscarSocioCarnet, buscarContribucionActivas } = this.props;
+    const socioResp = await buscarSocioCarnet(busqueda);
+    if (socioResp) {
+      await buscarContribucionActivas(busqueda);
+    }
   };
 
   render() {
-    const { socio, noResultados, disableNext,} = this.props;
+    const { socio, noResultados, disableNext, contribuciones, noContribucion } = this.props;
 
     let fichaSocio = "";
     if (socio) {
@@ -54,6 +59,29 @@ class BusquedaSocio extends Component {
       fichaSocio = "";
     }
 
+    let contribucionesActivas = "";
+    if (noContribucion == false && contribuciones.length > 0) {
+      contribucionesActivas = (
+        <Fragment>
+          <Alert severity="warning">
+            <AlertTitle className="text-uppercase">El socio tiene contribuciones activas</AlertTitle>
+            Desea continuar con la operación agregando otra contribución
+        </Alert>
+          <ExpasionPanelContribuciones
+            contribuciones={contribuciones}
+          />
+        </Fragment>
+      );
+    }
+    if (noContribucion == true && contribuciones.length == 0) {
+      contribucionesActivas = (
+        <Alert severity="success">
+          <AlertTitle className="text-uppercase">No se encontraron contribuciones activas</AlertTitle>
+          Puede continuar con la operación
+        </Alert>
+      );
+    }
+
     //Mostrar mensaje de error
     let mensajeResultado = "";
     if (noResultados === true) {
@@ -61,6 +89,7 @@ class BusquedaSocio extends Component {
         <div className="alert alert-danger text-center font-weight-bold text-uppercase">
           No se encontro el socio
         </div>
+        // <Alert severity="error" className="text-center font-weight-bold text-uppercase" >No se encontro el socio</Alert>
       );
     } else {
       mensajeResultado = "";
@@ -98,6 +127,7 @@ class BusquedaSocio extends Component {
                 Buscar Socio
               </Button>
             </form>
+            {contribucionesActivas}
             {fichaSocio}
             {mensajeResultado}
           </div>
@@ -107,23 +137,29 @@ class BusquedaSocio extends Component {
   }
 }
 
-
 const mapStateToProps = ({ firestore, asociacion }) => {
   return {
     socio: asociacion.socio && asociacion.socio[0],
-    noResultados: asociacion.noResultados
+    noResultados: asociacion.noResultados,
+    contribuciones: asociacion.contribuciones,
+    noContribucion: asociacion.noContribucion,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    buscarSocioCarnet: async socio => dispatch(buscarSocioCarnet(socio))
+    buscarSocioCarnet: async socio => dispatch(buscarSocioCarnet(socio)),
+    buscarContribucionActivas: async socio =>
+      dispatch(buscarContribucionActivas(socio))
   };
 };
 
 export default withRouter(
   compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect(),
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    ),
+    firestoreConnect()
   )(BusquedaSocio)
 );

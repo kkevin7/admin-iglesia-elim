@@ -11,6 +11,7 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
+import moment from "moment";
 
 class EspeficarCuota extends Component {
   constructor(props) {
@@ -21,8 +22,11 @@ class EspeficarCuota extends Component {
       fecha_inicio: new Date(),
       fecha_fin: null,
       observaciones: "",
+      //Errores
       valor_cuota_error: false,
       cantidad_cuota_error: false,
+      fecha_inicio_error: false,
+      fecha_fin_error: false,
       showMessage: ""
     };
   }
@@ -31,6 +35,10 @@ class EspeficarCuota extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    this.handleChangeError(e);
+  };
+
+  handleChangeError = e => {
     if (e.target.value > 0) {
       this.setState({
         [e.target.name + "_error"]: false
@@ -42,16 +50,34 @@ class EspeficarCuota extends Component {
     }
   };
 
-  handleChangeFilds = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+  handleChangeNumber = e => {
+    if (e.target.value) {
+      this.setState({
+        [e.target.name]: Math.floor(Number(e.target.value))
+      });
+    } else {
+      this.setState({
+        [e.target.name]: ""
+      });
+    }
+    this.handleChangeError(e);
+  };
+
+  handleChangeDecimal = e => {
+    if (e.target.value) {
+      this.setState({
+        [e.target.name]: Number(e.target.value)
+      });
+    } else {
+      this.setState({
+        [e.target.name]: ""
+      });
+    }
+    this.handleChangeError(e);
   };
 
   handleCantidadCouta = e => {
-    this.setState({
-      cantidad_cuota: e.target.value
-    });
+    this.handleChangeNumber(e);
     if (e.target.value) {
       const fecha = new Date();
       let lastDay = new Date(
@@ -73,23 +99,60 @@ class EspeficarCuota extends Component {
       });
     }
   };
-  handleFechaInicio = date => {
-    this.setState({
-      fecha_inicio: date
+
+  handleFechaInicio = async date => {
+    await this.setState({
+      fecha_inicio: date,
     });
-  };
-  handleFechaFin = date => {
-    this.setState({
-      fecha_fin: date
+    const {fecha_inicio, fecha_fin} = this.state;
+    const fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    console.log(fecha_inicio < fecha_fin ? "TRUE": "FALSE");
+    console.log(fecha_inicio);
+    console.log(fecha_fin);
+    if (date >= fechaActual && fecha_inicio < fecha_fin) {
+      console.log("CUMPLE")
+      await this.setState({
+        fecha_inicio: date,
+        fecha_inicio_error: false
+      });
+    } else {
+      console.log("NO CUMPLE")
+      await this.setState({
+        fecha_inicio_error: true
+      });
+    }
+  }
+
+  handleFechaFin = async date => {
+    await this.setState({
+      fecha_fin: date,
     });
+    const {fecha_inicio, fecha_fin} = this.state;
+    const fechaActual = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    console.log(fecha_inicio < fecha_fin ? "TRUE": "FALSE");
+    console.log(fecha_inicio);
+    console.log(fecha_fin);
+    if (date >= fechaActual && fecha_inicio < fecha_fin) {
+      console.log("CUMPLE")
+      await this.setState({
+        fecha_fin_error: false
+      });
+    } else {
+      console.log("NO CUMPLE")
+      await this.setState({
+        fecha_fin_error: true
+      });
+    }
   };
 
+
   handleVerificarFields = e => {
-    // e.preventDefault();
     const { disableNext, setUpPago } = this.props;
     if (
       this.state.cantidad_cuota_error == false && this.state.cantidad_cuota &&
-      this.state.valor_cuota_error == false && this.state.valor_cuota
+      this.state.valor_cuota_error == false && this.state.valor_cuota &&
+      this.state.fecha_inicio_error == false && this.state.fecha_inicio &&
+      this.state.fecha_fin_error == false && this.state.fecha_fin
     ) {
       this.setState({
         showMessage: true
@@ -111,6 +174,8 @@ class EspeficarCuota extends Component {
   };
 
   render() {
+    const maxYear = new Date().setFullYear(new Date().getFullYear() + 100);
+
     const BadMessage = (
       <div className="col-12">
         <div className="alert alert-danger text-center font-weight-bold text-uppercase">
@@ -146,7 +211,7 @@ class EspeficarCuota extends Component {
                   name="valor_cuota"
                   value={this.state.valor_cuota}
                   onChange={async e => {
-                    await this.handleChange(e);
+                    await this.handleChangeDecimal(e);
                     await this.handleVerificarFields(e);
                   }}
                   InputProps={{
@@ -164,6 +229,8 @@ class EspeficarCuota extends Component {
                   label="Cantidad de Cuotas"
                   type="number"
                   name="cantidad_cuota"
+                  minDate={new Date()}
+                  maxDate={maxYear}
                   value={this.state.cantidad_cuota}
                   onChange={async e => {
                     await this.handleCantidadCouta(e);
@@ -188,8 +255,13 @@ class EspeficarCuota extends Component {
                       label="Fecha Inicio"
                       format="dd/MM/yyyy"
                       minDate={new Date()}
+                      maxDate={maxYear}
                       value={this.state.fecha_inicio}
-                      onChange={this.handleFechaInicio}
+                      onChange={async (e) => {
+                        await this.handleFechaInicio(e);
+                        await this.handleVerificarFields(e);
+                      }
+                      }
                       KeyboardButtonProps={{
                         "aria-label": "change date"
                       }}
@@ -212,7 +284,10 @@ class EspeficarCuota extends Component {
                       format="dd/MM/yyyy"
                       minDate={new Date()}
                       value={this.state.fecha_fin}
-                      onChange={this.handleFechaInicio}
+                      onChange={async (e) => {
+                        await this.handleFechaFin(e);
+                        await this.handleVerificarFields(e);
+                      }}
                       KeyboardButtonProps={{
                         "aria-label": "change date"
                       }}

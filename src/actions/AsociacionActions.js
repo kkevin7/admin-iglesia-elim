@@ -96,7 +96,7 @@ export const buscarSocioCarnet = busqueda => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const usuariosRef = firestore.collection("usuarios");
-    await usuariosRef
+    return await usuariosRef
       .where("carnet", "==", busqueda)
       .get()
       .then(async snapshot => {
@@ -109,9 +109,10 @@ export const buscarSocioCarnet = busqueda => {
             type: "BUSCAR_SOCIO",
             socio
           });
+          return socio;
         } else {
           await dispatch({
-            type: "SOCIO_NOT_FOUND",
+            type: "BUSCAR_SOCIO_NOT_FOUND",
             socio: {}
           });
         }
@@ -124,3 +125,40 @@ export const buscarSocioCarnet = busqueda => {
       });
   };
 };
+
+export const buscarContribucionActivas = busqueda => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    const contribucionesRef = firestore.collection("contribuciones")
+    await contribucionesRef
+      .where("carnet", "==", busqueda)
+      .where("estado", "==", true)
+      .get()
+      .then(async snapshot => {
+        if (!snapshot.empty) {
+          const contribuciones = snapshot.docs.map(item => ({
+            id: item.id,
+            ...item.data()
+          }));
+          await dispatch({
+            type: "BUSCAR_CONTRIBUCIONES_ACTIVAS",
+            contribuciones
+          });
+          return contribuciones;
+        } else {
+          await dispatch({
+            type: "CONTRIBUCIONES_ACTIVAS_NOT_FOUND",
+            contribuciones: {}
+          });
+        }
+      })
+      .catch(async error => {
+        await dispatch({
+          type: "BUSCAR_CONTRIBUCIONES_ACTIVAS_ERROR",
+          error
+        });
+      });
+
+  }
+}

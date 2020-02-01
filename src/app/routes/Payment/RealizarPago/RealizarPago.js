@@ -23,7 +23,7 @@ class RealizarPago extends Component {
 
   redirectContribucion = () => {
     const {history, socio} = this.props;
-    history.push(`/app/contribucionesSocio/${socio.id}`)
+    history.push(`/app/contribucionesSocio/${socio.carnet}`)
   }
 
   render() {

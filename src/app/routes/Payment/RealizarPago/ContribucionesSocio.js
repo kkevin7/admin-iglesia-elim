@@ -93,7 +93,7 @@ export default withRouter(
       {
         collection: "contribuciones",
         where: [
-          ["id_usuario", "==", props.match.params.id_usuario],
+          ["carnet", "==", props.match.params.id_usuario],
           ["estado", "==", true]
         ],
         orderBy: [["fecha_inicio", "desc"]]
