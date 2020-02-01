@@ -243,3 +243,70 @@ export const buscarProductoHayExistencia = producto => {
             });
     };
 };
+
+export const buscarProducto = id => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+
+        const productosRef = await firestore.collection("productos");
+        const proveedoresRef = await firestore.collection("proveedores");
+        const categoriaProductoRef = await firestore.collection("categoria_producto");
+        let producto = {};
+        let proveedor = {};
+        let categoriaProducto = {};
+
+        await productosRef.doc(id)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.exists) {
+                    producto = { ...snapshot.data() };
+                }else{
+                    producto= {};
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "BUSCAR_PRODUCTO_ERROR",
+                    error
+                });
+            });
+
+        if(producto){
+            await proveedoresRef.doc(producto.proveedor)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.exists) {
+                    const proveedor = snapshot.data();
+                    producto.proveedor = proveedor.nombre +" "+ proveedor.apellido;
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "BUSCAR_PRODUCTO_ERROR",
+                    error
+                });
+            });
+
+            await categoriaProductoRef.doc(producto.categoria_producto)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.exists) {
+                    const categoriaProducto = snapshot.data();
+                    producto.categoria_producto = categoriaProducto.nombre;
+                }
+            })
+            .catch(async error => {
+                await dispatch({
+                    type: "BUSCAR_PRODUCTO_ERROR",
+                    error
+                });
+            });
+        }
+
+        await dispatch({
+            type: "BUSCAR_PRODUCTO",
+            producto,
+        });
+
+    };
+};

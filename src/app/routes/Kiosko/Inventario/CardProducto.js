@@ -120,7 +120,7 @@ const mapDispatchToProps = dispatch => {
   return {
     deleteProducto: async producto => dispatch(deleteProducto(producto)),
     deleteImageProducto: async producto =>
-      dispatch(deleteImageProducto(producto))
+    dispatch(deleteImageProducto(producto))
   };
 };
 

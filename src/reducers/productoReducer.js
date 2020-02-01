@@ -1,13 +1,27 @@
 const initState = {
   productos: [],
+  producto: {},
   error: ""
 };
 
 const productoReducer = (state = initState, action) => {
   switch (action.type) {
     case "CREATE_PRODUCTO":
-      return state;
+      return {
+        ...state,
+        error: action.error
+      };
     case "CREATE_PRODUCTO_ERROR":
+      return {
+        ...state,
+        error: action.error
+      };
+      case "BUSCAR_PRODUCTO":
+      return {
+        ...state,
+        producto: action.producto
+      };
+    case "BUSCAR_PRODUCTO_ERROR":
       return {
         ...state,
         error: action.error

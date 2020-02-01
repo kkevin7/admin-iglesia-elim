@@ -26,8 +26,11 @@ const productoReducer = (state = initState, action) => {
       return {
         ...state,
         cuotas: action.cuotas,
-        cantidadCuotas: action.cantidadCuotas,
-        totalCuotas: action.totalCuotas,
+      };
+    case "REPORTE_CUOTAS_NOT_FOUND":
+      return {
+        ...state,
+        cuotas: {},
       };
     case "RREPORTE_CUOTAS_GENERADAS_ERROR":
       return {
@@ -38,8 +41,11 @@ const productoReducer = (state = initState, action) => {
       return {
         ...state,
         devoluciones: action.devoluciones,
-        cantidadDevoluciones: action.cantidadDevoluciones,
-        totalDevoluciones: action.totalDevoluciones,
+      };
+    case "REPORTE_DEVOLUCIONES_NOT_FOUND":
+      return {
+        ...state,
+        devoluciones: {},
       };
     case "RREPORTE_DEVOLUCIONES_REALIZADAS_ERROR":
       return {

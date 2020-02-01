@@ -123,25 +123,6 @@ const CardDetalle = ({
                 <div className="col-md-6 col-12 my-2">
                   <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                     <h4>
-                      <span className={`font-weight-bold`}>Categoria:</span>{" "}
-                      {""}
-                      {producto.categoria_producto
-                        ? producto.categoria_producto
-                        : ""}
-                    </h4>
-                  </div>
-                </div>
-                <div className="col-md-6 col-12 my-2">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <h4>
-                      <span className="font-weight-bold">Proveedor:</span> {""}
-                      {producto.proveedor ? producto.proveedor : ""}
-                    </h4>
-                  </div>
-                </div>
-                <div className="col-md-6 col-12 my-2">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                    <h4>
                       <span className="font-weight-bold">Estado:</span> {""}
                       {producto.estado ? (
                         <div className="badge badge-green ml-auto">
@@ -166,6 +147,26 @@ const CardDetalle = ({
                           </Typography>
                         </div>
                       )}
+                    </h4>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className={`font-weight-bold`}>Categoria:</span>{" "}
+                      {""}
+                      {producto.categoria_producto
+                        ? producto.categoria_producto
+                        : ""}
+                    </h4>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 my-2">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <h4>
+                      <span className="font-weight-bold">Proveedor:</span> {""}
+                      {producto.proveedor ? producto.proveedor : ""}
                     </h4>
                   </div>
                 </div>
@@ -223,15 +224,14 @@ const CardDetalle = ({
 };
 
 const mapStateToProps = ({ firestore }) => ({
-  producto: firestore.ordered.producto && firestore.ordered.producto[0],
-  firestore: firestore
+  // producto: firestore.ordered.producto && firestore.ordered.producto[0],
 });
 
 const mapDispatchToProps = dispatch => {
   return {
     deleteProducto: async producto => dispatch(deleteProducto(producto)),
     deleteImageProducto: async producto =>
-      dispatch(deleteImageProducto(producto))
+    dispatch(deleteImageProducto(producto))
   };
 };
 
@@ -242,11 +242,11 @@ export default withRouter(
       mapDispatchToProps
     ),
     firestoreConnect(props => [
-      {
-        collection: "productos",
-        storeAs: "producto",
-        doc: props.match.params.id
-      }
+      // {
+      //   collection: "productos",
+      //   storeAs: "producto",
+      //   doc: props.match.params.id
+      // }
     ])
   )(CardDetalle)
 );

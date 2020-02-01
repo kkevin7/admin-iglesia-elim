@@ -93,7 +93,10 @@ export const reportCuotasGeneradas = fechas => {
       .then(async snapshot => {
         if (snapshot.empty) {
           console.log("No se encontraron cuotas.");
-          return;
+          await dispatch({
+            type: "REPORTE_CUOTAS_NOT_FOUND",
+            cuotas: {}
+          });
         } else {
           cuotas = await snapshot.docs.map(item => ({
             id: item.id,
@@ -102,8 +105,6 @@ export const reportCuotasGeneradas = fechas => {
           await dispatch({
             type: "REPORTE_CUOTAS_GENERADAS",
             cuotas,
-            cantidadCuotas: snapshot.size,
-            totalCuotas
           });
         }
       })
@@ -133,7 +134,10 @@ export const reportDevoluciones = fechas => {
       .then(async snapshot => {
         if (snapshot.empty) {
           console.log("No se encontraron devoluciones.");
-          return;
+          await dispatch({
+            type: "REPORTE_DEVOLUCIONES_NOT_FOUND",
+            devoluciones: {},
+          });
         } else {
           devoluciones = await snapshot.docs.map(item => ({
             id: item.id,
@@ -142,8 +146,6 @@ export const reportDevoluciones = fechas => {
           await dispatch({
             type: "REPORTE_DEVOLUCIONES_REALIZADAS",
             devoluciones,
-            cantidadDevoluciones: snapshot.size,
-            totalDevoluciones: totalDevoluciones
           });
         }
       })

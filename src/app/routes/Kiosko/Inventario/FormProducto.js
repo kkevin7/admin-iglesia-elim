@@ -49,7 +49,7 @@ class FormProducto extends Component {
         ? props.producto.categoria_producto
         : props.categoria_producto
         ? props.categoria_producto.length > 0
-          ? props.categoria_producto[0].nombre
+          ? props.categoria_producto[0].id
           : ""
         : "",
       url: props.producto ? props.producto.url : "",
@@ -311,7 +311,7 @@ class FormProducto extends Component {
                           {categoria_producto.map((categoria, index) => (
                             <MenuItem
                               key={categoria.id}
-                              value={categoria.nombre}
+                              value={categoria.id}
                             >
                               {categoria.nombre}
                             </MenuItem>
