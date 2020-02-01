@@ -47,12 +47,10 @@ import userImageDefault from "../../../assets/images/users/user.png";
 class RegistrarUsuario extends Component {
   state = {};
 
-  actionComponent = usuario => {
+  actionComponent = async usuario => {
     const { history, registrarUsuario, authError, userSignOut } = this.props;
-    console.log(authError);
-    registrarUsuario(usuario).then(() => {
-      // history.push('/app/users');
-      userSignOut();
+    await registrarUsuario(usuario).then(async () => {
+      await userSignOut();
     });
   };
 

@@ -71,7 +71,17 @@ class FormUsuario extends Component {
       fecha_socio: props.usuario ? props.usuario.fecha_socio.toDate() : new Date(),
       email: props.usuario ? props.usuario.email : "",
       password: "",
-      showPassword: false
+      showPassword: false,
+      //Errores
+      nombre_error: false,
+      apellido_error: false,
+      telefono_error: false,
+      direccion_error: false,
+      departamento_error: false,
+      fecha_nacimiento_error: false,
+      fecha_socio_error: false,
+      email_error: false,
+      password_error: false,
     };
   }
 
@@ -85,6 +95,18 @@ class FormUsuario extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+  };
+
+  handleChangeError = e => {
+    if (e.target.value) {
+      this.setState({
+        [e.target.name + "_error"]: false
+      });
+    } else {
+      this.setState({
+        [e.target.name + "_error"]: true
+      });
+    }
   };
 
   handleFechaNacimiento = e => {
@@ -187,12 +209,16 @@ class FormUsuario extends Component {
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
                         required
+                        error={this.state.nombre_error}
                         name="nombre"
                         label="Nombres"
                         variant="outlined"
                         helperText="Ingresa los Nombres"
                         value={this.state.nombre}
-                        onChange={this.handleChange}
+                        onChange={e => {
+                          this.handleChange(e);
+                          this.handleChangeError(e);
+                        }}
                       />
                     </div>
                   </div>
@@ -201,11 +227,15 @@ class FormUsuario extends Component {
                       <TextField
                         required
                         name="apellido"
+                        error={this.state.apellido_error}
                         label="Apellidos"
                         helperText="Ingresa los Apellidos"
                         variant="outlined"
                         value={this.state.apellido}
-                        onChange={this.handleChange}
+                        onChange={e => {
+                          this.handleChange(e);
+                          this.handleChangeError(e);
+                        }}
                       />
                     </div>
                   </div>
@@ -216,12 +246,10 @@ class FormUsuario extends Component {
                           Número de Teléfono
                         </InputLabel>
                         <Input
-                          // required
                           value={this.state.telefono}
                           onChange={this.handleChange}
                           id="telefono"
                           name="telefono"
-                          // defaultValue={""}
                           inputComponent={TextMaskCustom}
                         />
                       </FormControl>
@@ -230,12 +258,17 @@ class FormUsuario extends Component {
                   <div className="col-md-4 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
+                      required
+                      error={this.state.departamento_error}
                         id="outlined-select-currency"
                         name="departamento"
                         select
                         label="Departamento"
                         value={this.state.departamento}
-                        onChange={this.handleChange}
+                        onChange={e => {
+                          this.handleChange(e);
+                          this.handleChangeError(e);
+                        }}
                         helperText="Selecciona el departamento"
                         variant="outlined"
                       >
@@ -289,13 +322,18 @@ class FormUsuario extends Component {
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
                         required
+                        error={this.state.email_error}
+                        helperText={this.state.email_error ? "Debes ingresar un correo eléctronico" : ""}
                         name="email"
                         type="email"
                         label="Correo Eléctronico"
                         helperText="Ingresa el correo eléctronico"
                         variant="outlined"
                         value={this.state.email}
-                        onChange={this.handleChange}
+                        onChange={e => {
+                          this.handleChange(e);
+                          this.handleChangeError(e);
+                        }}
                       />
                     </div>
                   </div>) : ""}
@@ -309,14 +347,19 @@ class FormUsuario extends Component {
                           Contraseña
                         </InputLabel>
                         <OutlinedInput
-                          id="outlined-adornment-password"
                           required
+                          error={this.state.password_error}
+                          helperText={this.state.password_error ? "Debes ingresar una contraseña" : ""}
+                          id="password"
                           name="password"
                           type={this.state.showPassword ? "text" : "password"}
                           label="Contraseña"
-                          // helperText="Ingresa la contraseña"
+                          
                           value={this.state.password}
-                          onChange={this.handleChange}
+                          onChange={e => {
+                            this.handleChange(e);
+                            this.handleChangeError(e);
+                          }}
                           endAdornment={
                             <InputAdornment position="end">
                               <IconButton

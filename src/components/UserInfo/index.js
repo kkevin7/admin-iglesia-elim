@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 // user image
 import avatarImg from '../../assets/images/users/user.png';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+import Spinner from "components/Spinner/Spinner";
 
 class UserInfo extends React.Component {
 
@@ -43,7 +43,12 @@ class UserInfo extends React.Component {
   render() {
 
     const {profile} = this.props;
-
+    let nombresArray = []
+    let apellidosArray = []
+    if(profile.nombre || profile.apellido){
+    nombresArray = (profile.nombre).split(" ", 1)
+    apellidosArray = (profile.apellido).split(" ", 1)
+    }
     
     return (
       <Fragment>
@@ -63,13 +68,13 @@ class UserInfo extends React.Component {
               </SweetAlert>
       <div className="user-profile d-flex flex-row align-items-center">
         <Avatar
-          alt='...'
+          alt={profile.nombre+" "+profile.apellido}
           src={avatarImg}
           className="user-avatar "
         />
         <div className="user-detail">
           <h4 className="user-name" onClick={this.handleClick}>
-            {profile.isEmpty ? 'Nombre de Usuario' : profile.nombre+" "+profile.apellido }
+            {profile.isEmpty ? 'Nombre de Usuario' : nombresArray[0]+" "+apellidosArray[0] }
             <i className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
           </h4>
         </div>

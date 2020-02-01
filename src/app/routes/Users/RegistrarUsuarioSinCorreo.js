@@ -37,7 +37,7 @@ import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import clsx from "clsx";
-import userImageDefault from "../../../assets/images/users/user.png";
+import userImageDefault from "assets/images/users/user.png";
 //Components
 import ContainerHeader from "components/ContainerHeader/index";
 import FormUsuario from "./FormUsuario";
@@ -46,10 +46,10 @@ class RegistrarUsuarioSinCorreo extends Component {
   state = {
   };
 
-  actionComponent = usuario => {
+  actionComponent = async usuario => {
     const { history, registrarUsuarioSinCorreo } = this.props;
-    registrarUsuarioSinCorreo(usuario).then(resp => {
-      history.push(`/app/detalleUsuario/${resp.id}`);
+    await registrarUsuarioSinCorreo(usuario).then(async resp => {
+      await history.push(`/app/users`);
     });
   };
 

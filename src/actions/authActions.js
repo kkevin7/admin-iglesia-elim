@@ -42,49 +42,62 @@ export const registrarUsuario = newUser => {
             (fecha.getMonth() + 1) +
             fecha.getFullYear();
         carnet = carnet.toString().toUpperCase();
-        return await firebase
+
+        const signUpUser = await firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
-            .then(async resp => {
-                // return await firestore.collection('usuarios').orderBy('carnet').startAt(carnet).endAt(carnet+ "\uf8ff");
-                await firestore
-                    .collection("usuarios")
-                    .where("carnet", ">=", carnet)
-                    .where("carnet", "<=", carnet + "\uf8ff")
-                    .get()
-                    .then(async snapshotUsuarios => {
-                        carnet += (snapshotUsuarios.size + 1).toString().padStart(3, "0");
-                        await firestore
-                            .collection("usuarios")
-                            .doc(resp.user.uid)
-                            .set({
-                                carnet: carnet,
-                                nombre: newUser.nombre,
-                                apellido: newUser.apellido,
-                                telefono: newUser.telefono,
-                                direccion: newUser.direccion,
-                                fecha_nacimiento: new Date(newUser.fecha_nacimiento),
-                                departamento: newUser.departamento,
-                                fecha_socio: new Date(newUser.fecha_socio),
-                                email: newUser.email,
-                                estado: true,
-                                rol: "Socio"
-                            });
-                    });
-                return resp;
-            })
-            .then(resp => {
-                dispatch({
-                    type: "REGISTRAR_USUARIO_SUCCESS"
-                });
-                return resp;
-            })
-            .catch(err => {
-                dispatch({
-                    type: "REGISTRAR_USUARIO_ERROR",
+            .catch(async err => {
+                await dispatch({
+                    type: "NUEVO_USUARIO_ERROR",
                     err
                 });
             });
+
+        if (signUpUser.message) {
+            await dispatch({
+                type: "SHOW_MESSAGE",
+                payload: signUpUser.message
+            });
+        } else {
+            await firestore
+                .collection("usuarios")
+                .where("carnet", ">=", carnet)
+                .where("carnet", "<=", carnet + "\uf8ff")
+                .get()
+                .then(async snapshotUsuarios => {
+                    carnet += await (snapshotUsuarios.size + 1)
+                        .toString()
+                        .padStart(3, "0");
+                    await firestore
+                        .collection("usuarios")
+                        .doc(signUpUser.user.uid)
+                        .set({
+                            carnet: carnet,
+                            nombre: newUser.nombre,
+                            apellido: newUser.apellido,
+                            telefono: newUser.telefono,
+                            direccion: newUser.direccion,
+                            fecha_nacimiento: new Date(newUser.fecha_nacimiento),
+                            departamento: newUser.departamento,
+                            fecha_socio: new Date(newUser.fecha_socio),
+                            email: newUser.email,
+                            estado: true,
+                            rol: "Socio"
+                        });
+                })
+                .then(async resp => {
+                    await dispatch({
+                        type: "REGISTRAR_USUARIO_SUCCESS"
+                    });
+                    return resp;
+                })
+                .catch(async err => {
+                    await dispatch({
+                        type: "REGISTRAR_USUARIO_ERROR",
+                        err
+                    });
+                });
+        }
     };
 };
 
@@ -94,13 +107,12 @@ export const registrarUsuarioSinCorreo = newUser => {
         const fecha = new Date(newUser.fecha_nacimiento);
         let carnet = "";
         carnet =
-            newUser.nombre.charAt(0) +
+            (newUser.nombre.charAt(0)) +
             newUser.apellido.charAt(0) +
             fecha.getDate() +
             (fecha.getMonth() + 1) +
             fecha.getFullYear();
         carnet = carnet.toString().toUpperCase();
-        // return await firestore.collection('usuarios').orderBy('carnet').startAt(carnet).endAt(carnet+ "\uf8ff");
         return await firestore
             .collection("usuarios")
             .where("carnet", ">=", carnet)
@@ -122,14 +134,14 @@ export const registrarUsuarioSinCorreo = newUser => {
                     rol: "Socio"
                 });
             })
-            .then(resp => {
-                dispatch({
+            .then(async resp => {
+                await dispatch({
                     type: "REGISTRAR_USUARIO_SIN_CORREO_SUCCESS"
                 });
                 return resp;
             })
-            .catch(err => {
-                dispatch({
+            .catch(async err => {
+                await dispatch({
                     type: "REGISTRAR_USUARIO_SIN_CORREO_ERROR",
                     err
                 });
@@ -157,13 +169,13 @@ export const editUser = usuario => {
                 },
                 editUsuario
             )
-            .then(() => {
-                dispatch({
+            .then(async () => {
+                await dispatch({
                     type: "EDIT_USUARIO_SUCCESS"
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async err => {
+                await dispatch({
                     type: "EDIT_USUARIO_ERROR",
                     err
                 });
@@ -179,13 +191,13 @@ export const deleteOnlyUser = id => {
                 collection: "usuarios",
                 doc: id
             })
-            .then(() => {
-                dispatch({
+            .then(async () => {
+                await dispatch({
                     type: "DELETE_USUARIO_SUCCESS"
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async err => {
+                await dispatch({
                     type: "DELETE_USUARIO_ERROR",
                     err
                 });
@@ -206,13 +218,13 @@ export const darBajaUser = id => {
                     estado: false
                 }
             )
-            .then(() => {
-                dispatch({
+            .then(async () => {
+                await dispatch({
                     type: "DAR_BAJA_USUARIO_SUCCESS"
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async err => {
+                await dispatch({
                     type: "DAR_BAJA_USUARIO_ERROR",
                     err
                 });
@@ -233,13 +245,13 @@ export const reactivarUser = id => {
                     estado: true
                 }
             )
-            .then(() => {
-                dispatch({
+            .then(async () => {
+                await dispatch({
                     type: "REACTIVAR_USUARIO_SUCCESS"
                 });
             })
-            .catch(err => {
-                dispatch({
+            .catch(async err => {
+                await dispatch({
                     type: "REACTIVAR_USUARIO_ERROR",
                     err
                 });
