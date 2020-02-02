@@ -21,7 +21,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import imageDefault from "../../../../assets/images/products/product1.png";
+import imageDefault from "assets/images/products/product1.png";
 //Components
 import Spinner from "components/Spinner/Spinner";
 //Icons

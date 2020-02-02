@@ -40,32 +40,32 @@ const CardSocio = ({ socio }) => {
         </h3>
       </div>
       <CardContent>
-      <div className="pt-md-3 pl-md-3 pr-md-3 mx-auto">
-            <p className={`font-weight-bold ${socio.id ? "" : "d-none"}`}>
-              ID Usuario: {""}
-              <span className="font-weight-normal">{socio.id ? socio.id : ""}</span>
-            </p>
-            <p className="font-weight-bold">
-              Carnet: {""}
-              <span className="font-weight-normal">{socio.carnet ? socio.carnet : ""}</span>
-            </p>
-            <p className="font-weight-bold">
-              Nombre: {""}
-              <span className="font-weight-normal">{socio.nombre ? socio.nombre : ""}</span>
-            </p>
-            <p className="font-weight-bold">
-              Apellido: {""}
-              <span className="font-weight-normal">{socio.apellido ? socio.apellido : ""}</span>
-            </p>
-            <p className="font-weight-bold">
-              Télefono: {""}
-              <span className="font-weight-normal">{socio.telefono ? socio.telefono : ""}</span>
-            </p>
-            <p className="font-weight-bold">
-              Dirección: {""}
-              <span className="font-weight-normal">{socio.direccion ? socio.direccion : ""}</span>
-            </p>
-            </div>
+        <div className="pt-md-3 pl-md-3 pr-md-3 mx-auto">
+          <p className={`font-weight-bold ${socio.id ? "" : "d-none"}`}>
+            ID Usuario: {""}
+            <span className="font-weight-normal">{socio.id ? socio.id : ""}</span>
+          </p>
+          <p className="font-weight-bold">
+            Carnet: {""}
+            <span className="font-weight-normal">{socio.carnet ? socio.carnet : ""}</span>
+          </p>
+          <p className="font-weight-bold">
+            Nombre: {""}
+            <span className="font-weight-normal">{socio.nombre ? socio.nombre : ""}</span>
+          </p>
+          <p className="font-weight-bold">
+            Apellido: {""}
+            <span className="font-weight-normal">{socio.apellido ? socio.apellido : ""}</span>
+          </p>
+          <p className="font-weight-bold">
+            Télefono: {""}
+            <span className="font-weight-normal">{socio.telefono ? socio.telefono : ""}</span>
+          </p>
+          <p className="font-weight-bold">
+            Dirección: {""}
+            <span className="font-weight-normal">{socio.direccion ? socio.direccion : ""}</span>
+          </p>
+        </div>
       </CardContent>
     </Card>
   );

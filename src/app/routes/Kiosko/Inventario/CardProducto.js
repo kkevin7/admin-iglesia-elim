@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 import DeleteIcon from "@material-ui/icons/Delete";
 //Image
-import DefaultImgProducto from "../../../../assets/images/products/caja.png";
+import DefaultImgProducto from "assets/images/products/caja.png";
 import SweetAlert from "react-bootstrap-sweetalert";
 import SweetAlertEliminar from "./SweetAlertEliminar";
 

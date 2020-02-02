@@ -7,8 +7,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import moment from "moment";
 import ContainerHeader from "components/ContainerHeader/index";
 import IntlMessages from "util/IntlMessages";
-import userImageDefault from "../../../assets/images/users/user.png";
-import Spinner from "../../../components/Spinner/Spinner";
+import userImageDefault from "assets/images/users/user.png";
+import Spinner from "components/Spinner/Spinner";
 import Button from "@material-ui/core/Button";
 import DataTableUsuarios from "./DataTableUsuarios";
 

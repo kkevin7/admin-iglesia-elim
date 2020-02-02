@@ -154,17 +154,25 @@ class App extends React.Component {
 
                   {/* Users */}
                   <Route path={`${match.url}/users`}
-                         component={asyncComponent(() => import('./routes/Users/Usuarios'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Users/Usuarios'))}/>
                   <Route path={`${match.url}/RegistrarUsuario`}
-                         component={asyncComponent(() => import('./routes/Users/RegistrarUsuario'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Users/RegistrarUsuario'))}/>
                      <Route path={`${match.url}/RegistrarUsuarioSinCorreo`}
-                         component={asyncComponent(() => import('./routes/Users/RegistrarUsuarioSinCorreo'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Users/RegistrarUsuarioSinCorreo'))}/>
                      <Route path={`${match.url}/DetalleUsuario/:id`}
-                         component={asyncComponent(() => import('./routes/Users/DetalleUsuario'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Users/DetalleUsuario'))}/>
                      <Route path={`${match.url}/editarUsuario/:id`}
-                         component={asyncComponent(() => import('./routes/Users/EditarUsuario'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Users/EditarUsuario'))}/>
+
+                         {/* Cumpleaños */}
                       <Route path={`${match.url}/birthdays`}
-                         component={asyncComponent(() => import('./routes/Users/Birthdays'))}/>
+                         component={asyncComponent(() => import('./routes/Users/Birthdays/Birthdays'))}/>
+
+                         {/* Privilegios */}
+                      <Route path={`${match.url}/cambiarPrivilegios/:carnet`}
+                         component={asyncComponent(() => import('./routes/Users/Privilegios/CambiarPrivilegios'))}/>  
+
+                 {/*--------------------------------------------- PROFILE ---------------------------------------------*/}
 
                   {/* Profile */}
                   <Route path={`${match.url}/profile`}
@@ -173,6 +181,7 @@ class App extends React.Component {
                          component={asyncComponent(() => import('./routes/Profile/ProfileContribucion'))}/>
                   
                 <Route component={asyncComponent(() => import('components/Error404'))}/>
+
               </Switch>
             </div>
             <Footer/>

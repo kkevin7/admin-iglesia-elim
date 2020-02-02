@@ -17,8 +17,9 @@ import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import WrapTextIcon from "@material-ui/icons/WrapText";
+import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 //Image
-import userImageDefault from "../../../assets/images/users/user.png";
+import userImageDefault from "assets/images/users/user.png";
 //Components
 import SweetAlertDarBaja from "./SweetAlertDarBaja";
 
@@ -27,9 +28,13 @@ const CardDetalle = ({ history, usuario }) => {
     history.push(`/app/editarUsuario/${id}`);
   };
 
-  const redirectContribuciones = id => {
-    history.push(`/app/contribucionesSocio/${id}`);
+  const redirectContribuciones = (id) => {
+    history.push(`/app/contribucionesSocio/${usuario.id}`);
   };
+
+  const redirectChangeTipoUsuario = (carnet) => {
+    history.push(`/app/cambiarPrivilegios/${usuario.carnet}`);
+  }
 
   return (
     <Card>
@@ -200,6 +205,18 @@ const CardDetalle = ({ history, usuario }) => {
                     } text-white`}
                     estado={usuario.estado}
                   />
+                </div>
+              </div>
+              <div className="col-12 my-2">
+                <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                  <Button
+                    startIcon={<LocalOfferIcon/>}
+                    className="btn-block bg-blue text-white"
+                    variant="contained"
+                    onClick={() => redirectChangeTipoUsuario(usuario.carnet)}
+                  >
+                    Cambiar Privilegios
+                  </Button>
                 </div>
               </div>
             </div>

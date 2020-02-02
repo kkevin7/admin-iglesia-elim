@@ -7,7 +7,7 @@ import { compose } from "redux";
 import Spinner from 'components/Spinner/Spinner';
 import ContainerHeader from 'components/ContainerHeader/index';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import OrderTableCell from '../../../../components/dashboard/eCommerce/OrderTable';
+import OrderTableCell from 'components/dashboard/eCommerce/OrderTable';
 import Select from 'react-select';
 import ContenidoPedido from './ContenidoPedido';
 

@@ -4,6 +4,7 @@ export const buscarSocioCarnet = busqueda => {
     const usuariosRef = firestore.collection("usuarios");
     await usuariosRef
       .where("carnet", "==", busqueda)
+      .where("estado", "==", true)
       .get()
       .then(async snapshot => {
         if (!snapshot.empty) {

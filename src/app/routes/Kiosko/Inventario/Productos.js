@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 //components
-import Spinner from "../../../../components/Spinner/Spinner";
+import Spinner from "components/Spinner/Spinner";
 import ContainerHeader from "components/ContainerHeader/index";
 import CardProducto from "./CardProducto";
 import CircularProgress from "@material-ui/core/CircularProgress";

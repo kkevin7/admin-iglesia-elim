@@ -42,7 +42,7 @@ import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 //Image
-import userImageDefault from "../../../assets/images/users/user.png";
+import userImageDefault from "assets/images/users/user.png";
 
 class RegistrarUsuario extends Component {
   state = {};

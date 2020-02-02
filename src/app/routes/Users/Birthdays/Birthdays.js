@@ -21,7 +21,7 @@ import Button from "@material-ui/core/Button";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 //Components
 import Spinner from "components/Spinner/Spinner";
-import DataTableBirthdays from "app/routes/Users/DataTableBirthdays";
+import DataTableBirthdays from "./DataTableBirthdays";
 
 class Birthdays extends Component {
   state = {};
