@@ -16,14 +16,13 @@ import { buscarProducto } from "actions/productosActions";
 class DetalleProducto extends Component {
   state = {};
 
-  componentDidMount() {
-    const { buscarProducto } = this.props;
-    buscarProducto(this.props.match.params.id);
-  }
+  // componentDidMount() {
+  //   const { buscarProducto } = this.props;
+  //   buscarProducto(this.props.match.params.id);
+  // }
 
   render() {
     const { producto } = this.props;
-    console.log(producto);
 
     return (
       <div className="app-wrapper">
@@ -45,8 +44,8 @@ class DetalleProducto extends Component {
 }
 
 const mapStateToProps = ({ firestore, producto }) => ({
-  // producto: firestore.ordered.producto && firestore.ordered.producto[0],
-  producto: producto.producto
+  producto: firestore.ordered.producto && firestore.ordered.producto[0],
+  // producto: producto.producto
 });
 
 const mapDispatchToProps = dispatch => {
@@ -61,13 +60,17 @@ export default withRouter(
       mapStateToProps,
       mapDispatchToProps
     ),
-    firestoreConnect()
-    //   props => [
-    //   {
-    //     collection: "productos",
-    //     storeAs: "producto",
-    //     doc: props.match.params.id
-    //   }
-    // ]
+    firestoreConnect(
+      props => {
+        if (!props.match.params.id) return [];
+        return [
+          {
+            collection: "productos",
+            doc: props.match.params.id,
+            storeAs: "producto",
+          }
+        ]
+      }
+    )
   )(DetalleProducto)
 );

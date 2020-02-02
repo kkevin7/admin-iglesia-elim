@@ -60,8 +60,8 @@ export default withRouter(
     firestoreConnect(props => [
       {
         collection: "productos",
+        doc: props.match.params.id,
         storeAs: "producto",
-        doc: props.match.params.id
       },
       {
         collection: "categoria_producto",

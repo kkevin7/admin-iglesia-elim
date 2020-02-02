@@ -259,7 +259,7 @@ export const buscarProducto = id => {
             .get()
             .then(async snapshot => {
                 if (snapshot.exists) {
-                    producto = { ...snapshot.data() };
+                    producto = { id: snapshot.id, ...snapshot.data() };
                 }else{
                     producto= {};
                 }
