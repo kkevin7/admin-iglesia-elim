@@ -11,6 +11,10 @@ export const bajaExistenciasProductos = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "PRODUCTOS_BAJA_EXISTENCIA",
+                        bajaExistencias: []
+                    });
                     return;
                 } else {
                     const productos = snapshot.docs.map(item => ({id: item.id, ...item.data()}))
@@ -38,6 +42,10 @@ export const countProductos = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_PRODUCTOS",
+                        count_productos: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -64,6 +72,10 @@ export const countVentas = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_VENTAS",
+                        count_ventas: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -90,6 +102,10 @@ export const countCompras = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_COMPRAS",
+                        count_compras: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -116,6 +132,10 @@ export const countProveedores = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_PROVEEDORES",
+                        count_proveedores: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -224,6 +244,10 @@ export const countSocios = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_SOCIOS",
+                        count_socios: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -250,6 +274,10 @@ export const countContribuciones = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_CONTRIBUCIONES",
+                        count_contribuciones: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -276,6 +304,10 @@ export const countCuotas = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "COUNT_CUOTAS",
+                        count_cuotas: 0
+                    });
                     return;
                 } else {
                     await dispatch({
@@ -302,8 +334,11 @@ export const countDevoluciones = () => {
             .get()
             .then(async snapshot => {
                 if (snapshot.empty) {
-                    console.log('No hay registros poca existencia.');
-                    return;
+                    console.log('No hay registros de devoluciones.');
+                    await dispatch({
+                        type: "COUNT_DEVOLUCIONES",
+                        count_devoluciones: 0
+                    });
                 } else {
                     await dispatch({
                         type: "COUNT_DEVOLUCIONES",
@@ -314,6 +349,7 @@ export const countDevoluciones = () => {
             .catch(async error => {
                 await dispatch({
                     type: "COUNT_COMPRAS_ERROR",
+                    count_devoluciones: 0,
                     error
                 });
             });
@@ -332,6 +368,10 @@ export const ultimosPagos = () => {
             .then(async snapshot => {
                 if (snapshot.empty) {
                     console.log('No hay registros poca existencia.');
+                    await dispatch({
+                        type: "ULTIMOS_PAGOS",
+                        ultimasCuotas: []
+                    });
                     return;
                 } else {
                     const ultimasCuotas = snapshot.docs.map(item => ({id: item.id, ...item.data()}))

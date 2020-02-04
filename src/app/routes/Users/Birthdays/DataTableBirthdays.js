@@ -227,8 +227,6 @@ const DataTableBithdays = ({ history, usuarios, meses }) => {
     history.push(`/app/detalleUsuario/${id}`);
   };
 
-  
-
   return (
     <Paper className={classes.paper}>
       <TableContainer
@@ -277,7 +275,7 @@ const DataTableBithdays = ({ history, usuarios, meses }) => {
                     <TableCell align="left">{row.apellido}</TableCell>
                     <TableCell align="left">
                       {row.fecha_nacimiento
-                        ? `${new Date(row.fecha_nacimiento).getDate()} de ${meses[new Date(row.fecha_nacimiento).getMonth()]}`
+                        ? `${new Date(row.fecha_nacimiento.toDate()).getDate()} de ${meses[new Date(row.fecha_nacimiento.toDate()).getMonth()]}`
                         : ""}
                     </TableCell>
                     <TableCell align="left">{row.rol}</TableCell>

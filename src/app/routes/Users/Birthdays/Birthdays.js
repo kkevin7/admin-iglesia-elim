@@ -71,9 +71,7 @@ class Birthdays extends Component {
             .toLowerCase()
             .includes(busqueda) ||
           (usuario.fecha_nacimiento
-            ? `${new Date(usuario.fecha_nacimiento).getDate()} de ${
-                meses[new Date(usuario.fecha_nacimiento).getMonth()]
-              }`
+            ? `${moment(usuario.fecha_nacimiento.toDate()).format("LL")}`
             : ""
           )
             .toLowerCase()

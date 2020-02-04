@@ -110,7 +110,6 @@ class SidenavContent extends Component {
   render() {
     const { history, auth, profile } = this.props;
     if (!profile.isLoaded || !auth.isLoaded) return <Spinner />;
-    console.log(profile);
 
     return (
       <CustomScrollbars className=" scrollbar">

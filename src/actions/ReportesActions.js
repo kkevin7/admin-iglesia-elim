@@ -95,7 +95,7 @@ export const reportCuotasGeneradas = fechas => {
           console.log("No se encontraron cuotas.");
           await dispatch({
             type: "REPORTE_CUOTAS_NOT_FOUND",
-            cuotas: {}
+            cuotas: []
           });
         } else {
           cuotas = await snapshot.docs.map(item => ({
@@ -136,7 +136,7 @@ export const reportDevoluciones = fechas => {
           console.log("No se encontraron devoluciones.");
           await dispatch({
             type: "REPORTE_DEVOLUCIONES_NOT_FOUND",
-            devoluciones: {},
+            devoluciones: [],
           });
         } else {
           devoluciones = await snapshot.docs.map(item => ({

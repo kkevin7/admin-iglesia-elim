@@ -78,14 +78,14 @@ const Ingresos = ({
       <div className="col-12 my-5">
         <div className="row">
           <div className="col-12 col-md-6 text-center font-weight-bold">
-            <Typography variant="p" className="text-center ">
+            <p className="text-center ">
               Fecha Inicio: {moment(fechaInicio).format("LL")}
-            </Typography>
+            </p>
           </div>
           <div className="col-12 col-md-6 text-center font-weight-bold">
-            <Typography variant="p" className="text-center">
+            <p className="text-center">
               Fecha Fin: {moment(fechaFin).format("LL")}
-            </Typography>
+            </p>
           </div>
         </div>
       </div>
@@ -94,8 +94,8 @@ const Ingresos = ({
           <Table className={classes.table} aria-label="spanning table">
             <TableHead>
               <TableRow>
-                <TableCell className="w-50"  align="left">Cuotas Recaudadas</TableCell>
-                <TableCell className="w-50"  align="left">Total Generado</TableCell>
+                <TableCell className="w-50" align="left">Cuotas Recaudadas</TableCell>
+                <TableCell className="w-50" align="left">Total Generado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -111,8 +111,8 @@ const Ingresos = ({
           <Table className={classes.table} aria-label="spanning table">
             <TableHead>
               <TableRow>
-                <TableCell  className="w-50" align="left">Devoluciones Realizadas</TableCell>
-                <TableCell  className="w-50" align="left">Total Entregado</TableCell>
+                <TableCell className="w-50" align="left">Devoluciones Realizadas</TableCell>
+                <TableCell className="w-50" align="left">Total Entregado</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -128,7 +128,7 @@ const Ingresos = ({
           <Table className={classes.table} aria-label="spanning table">
             <TableBody>
               <TableRow>
-              <TableCell rowSpan={2}></TableCell>
+                <TableCell rowSpan={2}></TableCell>
                 <TableCell align="right" className="font-weight-bold" colSpan={2}>
                   Total Final
                 </TableCell>
@@ -144,9 +144,9 @@ const Ingresos = ({
       <div className="col-12 my-4">
         <div className="row">
           <div className="col-12  text-center font-weight-bold">
-            <Typography variant="p" className="text-center ">
+            <p variant="p" className="text-center ">
               Generado: {moment(new Date()).format("LLL")}
-            </Typography>
+            </p>
           </div>
         </div>
       </div>
@@ -163,8 +163,10 @@ const ReporteIngresos = ({
 }) => {
   if (!visible) return "";
   if (!cuotas || !devoluciones) return <Spinner />;
+  console.log(cuotas);
+  console.log(devoluciones);
 
-  if (!cuotas.length > 0 || !devoluciones.length > 0)
+  if (!(cuotas.length >= 0) || !(devoluciones.length >= 0))
     return (
       <Card className="my-3 text-center">
         <CardContent>

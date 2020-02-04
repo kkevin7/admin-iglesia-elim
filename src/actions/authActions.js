@@ -289,11 +289,11 @@ export const birthdaysMes = () => {
       });
 
     usuarios = await usuarios.filter(usuario => {
-        console.log(new Date(usuario.fecha_nacimiento).getMonth());
-      return (
-        new Date(usuario.fecha_nacimiento).getMonth() == new Date().getMonth()
-      );
-      // return usuario.fecha_nacimiento.toDate().getMonth() == new Date().getMonth()
+      try {
+        return usuario.fecha_nacimiento.toDate().getMonth() == new Date().getMonth()
+      } catch (error) {
+        console.log("Error: ", error);
+      }
     });
 
     await dispatch({

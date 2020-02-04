@@ -23,9 +23,7 @@ const ContentOneCuota = ({ cuota }) => {
           </div>
           <div className="col-md-12 col-12">
             <p className=" text-right">
-              FECHA: <span className="font-weight-bold">{moment(cuota.fecha_pago.toDate()).format(
-                "MMMM Do YYYY, h:mm:ss a"
-              )}</span>
+              FECHA: <span className="font-weight-bold">{moment(cuota.fecha_pago.toDate()).format("LLL")}</span>
             </p>
           </div>
         </div>

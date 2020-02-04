@@ -67,14 +67,14 @@ const ProductosColocados = ({ visible, productos, fechaInicio, fechaFin }) => {
       <div className="col-12 my-5">
         <div className="row">
           <div className="col-12 col-md-6 text-center font-weight-bold">
-            <Typography variant="p" className="text-center ">
+            <p className="text-center ">
               Fecha Inicio: {moment(fechaInicio).format("LL")}
-            </Typography>
+            </p>
           </div>
           <div className="col-12 col-md-6 text-center font-weight-bold">
-            <Typography variant="p" className="text-center">
+            <p className="text-center">
               Fecha Fin: {moment(fechaFin).format("LL")}
-            </Typography>
+            </p>
           </div>
         </div>
       </div>
@@ -115,10 +115,10 @@ const ProductosColocados = ({ visible, productos, fechaInicio, fechaFin }) => {
       </CardContent>
       <div className="col-12 my-4">
         <div className="row">
-        <div className="col-12  text-center font-weight-bold">
-            <Typography variant="p" className="text-center ">
+          <div className="col-12  text-center font-weight-bold">
+            <p className="text-center ">
               Generado: {moment(new Date()).format("LLL")}
-            </Typography>
+            </p>
           </div>
         </div>
       </div>
