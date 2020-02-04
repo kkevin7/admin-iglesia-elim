@@ -349,7 +349,7 @@ class FormUsuario extends Component {
                         <OutlinedInput
                           required
                           error={this.state.password_error}
-                          helperText={this.state.password_error ? "Debes ingresar una contraseña" : ""}
+                          // helperText={this.state.password_error ? "Debes ingresar una contraseña" : ""}
                           id="password"
                           name="password"
                           type={this.state.showPassword ? "text" : "password"}

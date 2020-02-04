@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from "moment";
 //Redux
-import { createDevolucion } from "actions/DevolucionesActions";
+import { updateUserRol } from "actions/authActions";
 //Inputs
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";

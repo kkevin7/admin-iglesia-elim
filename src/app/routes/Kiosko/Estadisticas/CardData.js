@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 const CardData = ({ titulo, resultado, img, color }) => {
   return (
-    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6">
+    <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-12">
       <div className={`jr-card jr-card-widget p-3 ${color} text-white card`}>
         <div className="media align-items-center flex-nowrap py-lg-2">
           <div className="mr-3">
