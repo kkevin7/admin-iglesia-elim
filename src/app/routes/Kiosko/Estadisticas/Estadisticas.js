@@ -21,8 +21,8 @@ import Spinner from "components/Spinner/Spinner";
 class Estadisticas extends Component {
   state = {};
 
-  componentDidMount(){
-    const {countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos,topVentas } = this.props;
+  componentDidMount() {
+    const { countProductos, countVentas, countCompras, countProveedores, bajaExistenciasProductos, topVentas } = this.props;
     countProductos();
     countVentas();
     countCompras();
@@ -32,8 +32,8 @@ class Estadisticas extends Component {
   }
 
   render() {
-    const {bajaExistencias, count_productos, count_ventas, count_compras, count_proveedores, top_ventas} = this.props;
-    if(!count_productos || !count_ventas || !count_proveedores || !bajaExistencias || !top_ventas.length > 0 ) return <Spinner/>
+    const { bajaExistencias, count_productos, count_ventas, count_compras, count_proveedores, top_ventas } = this.props;
+    if (!(count_productos >= 0) || !(count_ventas >= 0) || !(count_compras >= 0) || !(count_proveedores >= 0) || !bajaExistencias || !top_ventas.length > 0) return <Spinner />
     return (
       <div className="app-wrapper">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">
@@ -67,7 +67,7 @@ class Estadisticas extends Component {
 
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">
           <div className="row">
-            <TopVendidos 
+            <TopVendidos
               productos={top_ventas}
             />
             <BajaExistencias
@@ -80,12 +80,12 @@ class Estadisticas extends Component {
   }
 }
 
-const mapStateToProps = ({ estadisticas}) => {
+const mapStateToProps = ({ estadisticas }) => {
   return {
-    count_productos:  estadisticas.count_productos,
-    count_ventas:  estadisticas.count_ventas,
-    count_compras:  estadisticas.count_compras,
-    count_proveedores:  estadisticas.count_proveedores,
+    count_productos: estadisticas.count_productos,
+    count_ventas: estadisticas.count_ventas,
+    count_compras: estadisticas.count_compras,
+    count_proveedores: estadisticas.count_proveedores,
     bajaExistencias: estadisticas.bajaExistencias,
     top_ventas: estadisticas.topVentas,
   };
@@ -93,10 +93,10 @@ const mapStateToProps = ({ estadisticas}) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    countProductos:async () => dispatch(countProductos()),
-    countVentas:async () => dispatch(countVentas()),
-    countCompras:async () => dispatch(countCompras()),
-    countProveedores:async () => dispatch(countProveedores()),
+    countProductos: async () => dispatch(countProductos()),
+    countVentas: async () => dispatch(countVentas()),
+    countCompras: async () => dispatch(countCompras()),
+    countProveedores: async () => dispatch(countProveedores()),
     bajaExistenciasProductos: async () => dispatch(bajaExistenciasProductos()),
     topVentas: async () => dispatch(topVentas()),
   };
