@@ -2,13 +2,25 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import ContainerHeader from "components/ContainerHeader/index";
 import { firestoreConnect } from "react-redux-firebase";
-import Spinner from "components/Spinner/Spinner";
+//Card
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardMedia from "@material-ui/core/CardMedia";
+import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+//Icons
 import PrintIcon from "@material-ui/icons/Print";
+//Components
+import ContainerHeader from "components/ContainerHeader/index";
+import Spinner from "components/Spinner/Spinner";
 import ContentComprobante from "./ContentComprobante";
 import PrintComponents from "react-print-components";
+
 
 class ComprobanteVenta extends Component {
   state = {};
@@ -20,7 +32,9 @@ class ComprobanteVenta extends Component {
       <div className="app-wrapper">
         <div className="row mb-md-3">
           <div className="col-lg-12">
-            <div className="jr-card">
+              <Card>
+                <CardContent>
+                  
               <div className="col-12">
                 {/* <Button variant="contained" 
                 className="my-3" 
@@ -46,7 +60,8 @@ class ComprobanteVenta extends Component {
                 </PrintComponents>
               </div>
               <ContentComprobante venta={venta} />
-            </div>
+              </CardContent>
+              </Card>
           </div>
         </div>
       </div>

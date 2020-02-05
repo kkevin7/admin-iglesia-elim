@@ -115,7 +115,7 @@ class DetalleVenta extends Component {
                 <div className="col-12">
                   <div className="row">
                     {venta.pedido.map(producto => (
-                      <div className="col-md-4 col-12" key={producto.id}>
+                      <div className="col-md-4 col-12 mx-auto" key={producto.id}>
                         <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                           <ResumenProducto
                             key={producto.id}

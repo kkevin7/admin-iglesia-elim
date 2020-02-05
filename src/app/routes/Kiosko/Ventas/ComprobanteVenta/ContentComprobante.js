@@ -22,25 +22,23 @@ class ContentComprobante extends Component {
             COMPROBANTE: <span className="font-weight-bold">{this.props.venta.id}</span>
           </p>
           <p>
-            FECHA: <span className="font-weight-bold">{moment(this.props.venta.fecha_venta.toDate()).format(
-              "MMMM Do YYYY, h:mm:ss a"
-            )}</span>
+            FECHA: <span className="font-weight-bold">{moment(this.props.venta.fecha_venta.toDate()).format("LLL")}</span>
           </p>
         </div>
         <div className="table-responsive">
-          <table className="table table-striped table-inverse">
+          <table className="table  table-inverse">
             <tbody>
               <tr>
                 <td className="">Vendedor</td>
                 <td className="font-weight-bold">
-                  {this.props.venta.vendedor.nombre_vendedor}
+                  {this.props.venta.vendedor.nombre}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
         <div className="table-responsive">
-          <table className="table table-striped table-inverse">
+          <table className="table  table-inverse">
             <thead className="thead-inverse">
               <tr className="font-weight-bold">
                 <th className="align-middle">ID</th>
@@ -56,16 +54,16 @@ class ContentComprobante extends Component {
                   <tr key={producto.id}>
                     <td>{producto.id}</td>
                     <td>{producto.nombre}</td>
-                    <td>{producto.precio}</td>
+                    <td>$ {producto.precio.toFixed(2)}</td>
                     <td>{producto.cantidad}</td>
-                    <td>{producto.cantidad * producto.precio}</td>
+                    <td>$ {(producto.cantidad * producto.precio).toFixed(2)}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
           <div className="col-12 text-right my-1">
-            <h2>Total: <span className="font-weight-bold">$ {this.props.venta.total}</span></h2>
+            <h2>Total: <span className="font-weight-bold">$ {this.props.venta.total.toFixed(2)}</span></h2>
           </div>
         </div>
       </Fragment>
