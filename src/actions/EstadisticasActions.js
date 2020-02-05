@@ -391,3 +391,46 @@ export const ultimosPagos = () => {
     };
 }
 
+export const chartUsers = () => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        let meses = [];
+        let resultados = []
+
+        const usuariosRef = await firestore.collection("usuarios");
+
+        for (let i = 0; i < 6; i++) {
+            const fecha = new Date();
+            const fechaInicio = new Date(fecha.getFullYear(), fecha.getMonth() - i, 1);
+            const fechaFin = new Date(fecha.getFullYear(), fecha.getMonth() + 1 - i, 0);
+
+            await usuariosRef
+            .where("fecha_socio",">=", fechaInicio)
+            .where("fecha_socio","<=", fechaFin)
+            .get()
+            .then(async snapshot => {
+                if (snapshot.empty) {
+                    console.log('No se encontraron usuarios.');
+                    meses.push(fechaInicio.getMonth());
+                    resultados.push(0);
+                } else {
+                    meses.push(fechaInicio.getMonth());
+                    resultados.push(snapshot.size);
+                }
+            })
+            .catch(err => {
+                console.log('Error al obtener los usuarios', err);
+            });
+        }
+
+        await dispatch({
+            type: "CHART_USERS",
+            resultados_users: {
+                meses,
+                resultados,
+            }
+        });
+
+    };
+}
+

@@ -10,6 +10,7 @@ const initState = {
   ultimasCuotas: [],
   bajaExistencias: [],
   topVentas: [],
+  resultados_users: [],
   error: ""
 };
 
@@ -117,10 +118,16 @@ const EstadisticasReducer = (state = initState, action) => {
         ...state,
         ultimasCuotas: action.ultimasCuotas
       };
-      case "ULTIMOS_PAGOS_ERROR":
+    case "ULTIMOS_PAGOS_ERROR":
       return {
         ...state,
         error: action.error
+      };
+    case "CHART_USERS":
+      return {
+        ...state,
+        meses: action.meses,
+        resultados_users: action.resultados_users,
       };
 
     default:

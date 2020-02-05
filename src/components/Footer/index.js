@@ -7,7 +7,7 @@ const Footer = () => {
     let newDate = new Date()
     return (
       <footer className="app-footer">
-    <span className="d-inline-block">Copyright Misión Crisitiana Elim &copy; {newDate.getFullYear()}</span>
+    <span className="d-inline-block">Copyright Misión Crisitiana Elim - UES OCC &copy; {newDate.getFullYear()}</span>
       </footer>
     );
   }

@@ -6,7 +6,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 import moment from 'moment';
 //Redux
-import { countSocios, countContribuciones, countCuotas, countDevoluciones, ultimosPagos} from "actions/EstadisticasActions";
+import { countSocios, countContribuciones, countCuotas, countDevoluciones, ultimosPagos, chartUsers} from "actions/EstadisticasActions";
 //Images
 import socioImg from "assets/images/dashboard/companero.png";
 import contribucionImg from "assets/images/dashboard/beneficio.png";
@@ -16,24 +16,26 @@ import devolucionesImg from "assets/images/dashboard/transferir.png";
 import Spinner from "components/Spinner/Spinner";
 import CardData from "app/routes/Kiosko/Estadisticas/CardData";
 import UltimosPagos from "./UltimosPagos";
+import ChartUsers from "./ChartUsers";
 
 class Estadisticas extends Component {
   state = {};
 
   componentDidMount(){
-    const {countSocios, countContribuciones, countCuotas, countDevoluciones, ultimosPagos } = this.props;
+    const {countSocios, countContribuciones, countCuotas, countDevoluciones, ultimosPagos, chartUsers } = this.props;
     countSocios();
     countContribuciones();
     countCuotas();
     countDevoluciones();
     ultimosPagos();
+    chartUsers();
   }
 
   render() {
-    const {count_socios, count_contribuciones, count_cuotas, count_devoluciones, ultimasCuotas} = this.props;
+    const {count_socios, count_contribuciones, count_cuotas, count_devoluciones, ultimasCuotas, resultados_users} = this.props;
     console.log(this.props);
     console.log(count_devoluciones);
-    if(!(count_socios > 0)|| !(count_contribuciones > 0) || !(count_cuotas > 0) || !(count_devoluciones >= 0) || !ultimasCuotas ) return <Spinner/>
+    if(!(count_socios >= 0)|| !(count_contribuciones >= 0) || !(count_cuotas >= 0) || !(count_devoluciones >= 0) || !ultimasCuotas || !resultados_users ) return <Spinner/>
     return (
       <div className="app-wrapper">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">
@@ -70,12 +72,9 @@ class Estadisticas extends Component {
             <UltimosPagos
               cuotas={ultimasCuotas}
             />
-            {/* <TopVendidos 
-              productos={top_ventas}
+            <ChartUsers 
+            resultados_users={resultados_users}
             />
-            <BajaExistencias
-              productos={bajaExistencias}
-            /> */}
           </div>
         </div>
       </div>
@@ -90,6 +89,7 @@ const mapStateToProps = ({ estadisticas}) => {
     count_cuotas:  estadisticas.count_cuotas,
     count_devoluciones:  estadisticas.count_devoluciones,
     ultimasCuotas: estadisticas.ultimasCuotas,
+    resultados_users: estadisticas.resultados_users
   };
 };
 
@@ -100,6 +100,7 @@ const mapDispatchToProps = dispatch => {
     countCuotas:async () => dispatch(countCuotas()),
     countDevoluciones:async () => dispatch(countDevoluciones()),
     ultimosPagos: async () => dispatch(ultimosPagos()),
+    chartUsers: async () => dispatch(chartUsers())
   };
 };
 
