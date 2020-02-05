@@ -1,58 +1,116 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
+//Card
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardMedia from "@material-ui/core/CardMedia";
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
+
+//Coponents
 import ContainerHeader from "components/ContainerHeader/index";
-import { firestoreConnect } from "react-redux-firebase";
 import Spinner from "components/Spinner/Spinner";
 import ResumenProducto from "./ResumenProducto";
+//Image
+import userImageDefault from "assets/images/users/user.png";
+import DefaultImgProducto from "assets/images/products/caja.png";
 
 class DetalleVenta extends Component {
   state = {};
   render() {
     const { venta, firestore } = this.props;
     if (!venta || !firestore) return <Spinner />;
-    console.log(venta);
 
     return (
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title="Detalle de la venta" />
-        <div className="row mb-md-3">
-          <div className="col-lg-12">
-            <div className="jr-card">
-            <h3 className="card-text text-center mb-4 text-uppercase">Datos del pedido</h3>
-              <div className="row">
+        <div className="row">
+          <div className="col-12">
+            <Card>
+              <CardContent>
                 <div className="col-12">
-                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                <h3 className="card-text text-center mb-4 text-uppercase font-weight-bold">Datos del pedido</h3>
                   <div className="border mb-4 p-4 ">
-                    <p className="font-weight-bold">
-                      Pedido ID:
-                      <span className="font-weight-normal"> {venta.id}</span>
-                    </p>
-                    <p className="font-weight-bold">
-                      Fecha Pedido:
+                    <div className="row">
+
+                      <div className="col-md-2 col-6 mx-auto my-2">
+                        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                          <Card>
+                            <CardActionArea>
+                              <CardMedia
+                                component="img"
+                                alt="Contemplative Reptile"
+                                height="150"
+                                image={userImageDefault}
+                                title="Contemplative Reptile"
+                              />
+                            </CardActionArea>
+                          </Card>
+                        </div>
+                      </div>
+
+                      <div className="col-md-10 col-12">
+                        <div className="row">
+
+                          <div className="col-md-6 col-12 my-3">
+                            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                              <h4 className="font-weight-bold text-center">
+                                Pedido ID:
+                                <span className="font-weight-normal"> {venta.id}</span>
+                              </h4>
+                            </div>
+                          </div>
+
+                          <div className="col-md-6 col-12 my-3">
+                            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                              <h4 className="font-weight-bold text-center">
+                                Fecha Pedido:
                       <span className="font-weight-normal">
-                        {" "}
-                        {moment(venta.fecha_venta.toDate()).format("lll")}
-                      </span>
-                    </p>
-                    <p className="font-weight-bold">
-                      Vendedor:
+                                  {" "}
+                                  {moment(venta.fecha_venta.toDate()).format("lll")}
+                                </span>
+                              </h4>
+                            </div>
+                          </div>
+
+                          <div className="col-md-6 col-12 my-3">
+                            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                              <h4 className="font-weight-bold text-center">
+                                Vendedor:
                       <span className="font-weight-normal"> {venta.vendedor.nombre}</span>
-                    </p>
-                    <p className="font-weight-bold">
-                      Total:
+                              </h4>
+                            </div>
+                          </div>
+
+                          <div className="col-md-6 col-12 my-3">
+                            <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                              <h4 className="font-weight-bold text-center">
+                                Total:
                       <span className="font-weight-normal">
-                        {" "}
-                        $ {venta.total}{" "}
-                      </span>
-                    </p>
+                                  {" "}
+                                  $ {venta.total.toFixed(2)}{" "}
+                                </span>
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                     
+
                     </div>
+                    
                   </div>
-                </div>
-                <div className="col-12">
-                <h3 className="card-text text-center mb-4 text-uppercase">Productos</h3>
+                  <div className="col-12">
+                <h3 className="card-text text-center mb-4 text-uppercase font-weight-bold">Productos</h3>
                 </div>
                 <div className="col-12">
                   <div className="row">
@@ -68,8 +126,10 @@ class DetalleVenta extends Component {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
       </div>

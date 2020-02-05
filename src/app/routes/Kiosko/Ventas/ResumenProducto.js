@@ -4,15 +4,15 @@ const ResumenProducto = ({producto}) => {
     return (
         <Fragment>
             <div className="border mb-4 p-4">
-                <p className="card-text font-weight-bold">
+                <h4 className="card-text font-weight-bold mb-3">
                     Producto: <span className="font-weight-normal">{producto.nombre}</span>
-                </p>
-                <p className="card-text font-weight-bold">
+                </h4>
+                <h4 className="card-text font-weight-bold mb-3">
                     Cantidad: <span className="font-weight-normal">{producto.cantidad}</span>
-                </p>
-                <p className="card-text font-weight-bold">
-                    Precio Unitario: <span className="font-weight-normal">$ {producto.precio}</span>
-                </p>
+                </h4>
+                <h4 className="card-text font-weight-bold mb-3">
+                    Precio Unitario: <span className="font-weight-normal">$ {producto.precio.toFixed(2)}</span>
+                </h4>
             </div>
         </Fragment>
     );
