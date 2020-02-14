@@ -186,7 +186,7 @@ const CardDetalle = ({ history, usuario }) => {
                     startIcon={<WrapTextIcon />}
                     className="btn-block bg-cyan text-white"
                     variant="contained"
-                    onClick={() => redirectContribuciones(usuario.id)}
+                    onClick={() => redirectContribuciones(usuario.carnet)}
                   >
                     Ver Contribciones
                   </Button>
