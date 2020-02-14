@@ -28,8 +28,8 @@ const CardDetalle = ({ history, usuario }) => {
     history.push(`/app/editarUsuario/${id}`);
   };
 
-  const redirectContribuciones = (id) => {
-    history.push(`/app/contribucionesSocio/${usuario.id}`);
+  const redirectContribuciones = (carnet) => {
+    history.push(`/app/contribucionesSocio/${usuario.carnet}`);
   };
 
   const redirectChangeTipoUsuario = (carnet) => {

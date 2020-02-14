@@ -134,7 +134,7 @@ class SidenavContent extends Component {
               <span className="MuiButton-label">
                 <i className="zmdi zmdi-collection-text zmdi-hc-fw" />
                 <span className="nav-text">
-                  <span>Quisco</span>
+                  <span>Quiosco</span>
                 </span>
               </span>
               <span className="MuiTouchRipple-root"></span>
