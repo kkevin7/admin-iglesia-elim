@@ -19,10 +19,21 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Typography from "material-ui/styles/typography";
 
-const DialogPago = ({ cuota, firestore, history, realizarPagoCuota, estadoContribucion }) => {
+const DialogPago = ({
+  cuotas,
+  firestore,
+  history,
+  realizarPagoCuota,
+  estadoContribucion,
+  limpairSeleccionados,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [valorCuota, setValorCuota] = React.useState("");
   const [error, setError] = React.useState(false);
+
+  const totalSumaCuotas = cuotas.reduce((total, c) => {
+    return total + c.valor;
+  }, 0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,31 +46,29 @@ const DialogPago = ({ cuota, firestore, history, realizarPagoCuota, estadoContri
   const handleError = error => {
     setError(error);
   };
-  //Valor Cuota
-  const handleValorCuota = e => {
-    setValorCuota(Number(e.target.value));
-    if (e.target.value == cuota.valor) {
-      handleError(false);
-    } else {
-      handleError(true);
-    }
-  };
 
-  const handlePagoCuota = async e => {
+  const handleMultiplePagos = async (e) => {
     e.preventDefault();
+    cuotas.forEach(cuota => {
+         handlePagoCuota(cuota);
+    })
+  }
+
+  const handlePagoCuota = async (cuota) => {
     if (cuota.valor && cuota.estado === "VIGENTE") {
       const editCuota = {
         id: cuota.id,
         id_contribucion: cuota.id_contribucion,
         saldo_anterior: cuota.saldo_actualizado,
         saldo_actualizado: cuota.valor,
-        estado_contribucion: estadoContribucion != null ? estadoContribucion : true
+        estado_contribucion:
+          estadoContribucion != null ? estadoContribucion : true
       };
 
-      await realizarPagoCuota(editCuota).then(async () => {
-        await history.push(`/app/comprobanteCuota/${cuota.id}`);
+      await realizarPagoCuota(editCuota).then(async () => limpairSeleccionados()
+      ).then(async () => {
+        await handleClose();
       });
-
     } else {
       handleError(true);
       return;
@@ -74,45 +83,39 @@ const DialogPago = ({ cuota, firestore, history, realizarPagoCuota, estadoContri
         startIcon={<AttachMoneyIcon />}
         onClick={handleClickOpen}
       >
-        Pagar
+        REALIZAR VARIOS PAGOS
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Pago de la Cuota</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          Multiples Pagos de la Cuotas
+        </DialogTitle>
         <DialogContent>
-          <h3 className="text-center">Total a cancelar: <span className="font-weight-bold bg-green text-white p-1 m-3">$ {cuota.valor}</span></h3>
+          <h2 className="text-center">
+            Cantidad de cuotas :{" "}
+            <span className="font-weight-bold bg-cyan text-white px-3 p-1">
+              {cuotas.length}
+            </span>
+          </h2>
+          <h2 className="text-center">
+            Total a cancelar:{" "}
+            <span className="font-weight-bold bg-green text-white p-1">
+              $ {totalSumaCuotas.toFixed(2)}
+            </span>
+          </h2>
           <DialogContentText>
-            Para asegurarnos de pago se realizará de forma correcta, deberá
-            confirmar la cuota a sido recibido
+            Deberás confirmar cuando el monto de la cuota sea recibida
           </DialogContentText>
-          {/* <TextField
-            required
-            error={error}
-            helperText={
-              error ? "La cantidad debe exacta al valor de la cuota" : ""
-            }
-            autoFocus
-            margin="dense"
-            type="number"
-            inputProps={{ min: "0.01", step: "0.01", max: cuota.valor }}
-            max={cuota.valor}
-            name="valorCuota"
-            label="Valor de la cuota"
-            variant="outlined"
-            value={valorCuota}
-            onChange={handleValorCuota}
-            fullWidth
-          /> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary" variant="contained">
             Cancelar
           </Button>
           <Button
-            onClick={e => handlePagoCuota(e)}
+            onClick={e => handleMultiplePagos(e)}
             disabled={error}
             color="primary"
             variant="contained"

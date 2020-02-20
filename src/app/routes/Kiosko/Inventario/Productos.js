@@ -26,10 +26,10 @@ class BookStore extends Component {
 
     return (
       <div className="app-wrapper">
-        <ContainerHeader match={this.props.match} title="Librería" />
+        <ContainerHeader match={this.props.match} title="Quiosco" />
         <div className="jr-entry-header">
           <h3 className="entry-heading">
-            <span>Productos del Kiosko</span>
+            <span>Productos del Quiosco</span>
           </h3>
         </div>
         <div className="row mb-md-3">
