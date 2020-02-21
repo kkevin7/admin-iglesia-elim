@@ -163,7 +163,7 @@ const useToolbarStyles = makeStyles(theme => ({
 
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
-  const { numSelected, selectedCuotas, cuotas, estadoContribucion, limpairSeleccionados } = props;
+  const { numSelected, selectedCuotas, cuotas, estadoContribucion, limpairSeleccionados, countPagadas, totalCantidadCuotas } = props;
 
   let cuotasFiltradas = [];
   selectedCuotas.forEach(id => {
@@ -188,9 +188,11 @@ const EnhancedTableToolbar = props => {
 
       {numSelected > 0 ? (
         <DialogVariosPagos
+          totalCantidadCuotas={totalCantidadCuotas}
           cuotas={cuotasFiltradas}
           estadoContribucion = {estadoContribucion}
           limpairSeleccionados = {limpairSeleccionados}
+          countPagadas = {countPagadas}
         />
       ) : (
         ""
@@ -232,7 +234,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DataTableCuotas = ({ cuotas, history }) => {
+const DataTableCuotas = ({ cuotas, history, totalCantidadCuotas }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("fecha_inicio");
@@ -259,7 +261,6 @@ const DataTableCuotas = ({ cuotas, history }) => {
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
-    console.log(selected);
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
@@ -304,7 +305,7 @@ const DataTableCuotas = ({ cuotas, history }) => {
     countPagadas+=1;
     }
   });
-  if(countPagadas == cuotas.length-1){
+  if(countPagadas == totalCantidadCuotas-1){
     estadoContribucion=false
   }
 
@@ -316,11 +317,13 @@ const DataTableCuotas = ({ cuotas, history }) => {
 <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar 
+        totalCantidadCuotas={totalCantidadCuotas}
         selectedCuotas={selected}
         numSelected={selected.length} 
         cuotas={cuotas}
         estadoContribucion = {estadoContribucion}
         limpairSeleccionados = {limpairSeleccionados}
+        countPagadas = {countPagadas}
         />
         <TableContainer>
           <Table

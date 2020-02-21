@@ -1,7 +1,8 @@
 const initState = {
   contribuciones: [{}],
   contribucion: {},
-  socio: {}
+  socio: {},
+  error: ""
 };
 
 const contribucionReducer = (state = initState, action) => {
@@ -27,10 +28,32 @@ const contribucionReducer = (state = initState, action) => {
         socio: action.contribucion
       };
     case "BUSCAR_CONTRIBUCION_ERROR":
-      console.log("ERROR AL ENCONTRAR SOCIO", action.err);
+      console.log("ERROR AL ENCONTRAR SOCIO", action.error);
       return {
-        ...state
+        ...state,
+        error: action.error
       };
+    case "ACTIVAR_FINALIZAR_CONTRIBUCION":
+      return {
+        ...state,
+        contribucion: action.contribucion,
+      }
+    case "ACTIVAR_FINALIZAR_CONTRIBUCION_ERROR":
+      console.log("ERROR ACTIVAR_FINALIZAR_CONTRIBUCION", action.error);
+      return {
+        ...state,
+        error: action.error
+      };
+      case "FINALIZAR_CONTRIBUCION":
+        return {
+          ...state,
+        }
+      case "FINALIZAR_CONTRIBUCION_ERROR":
+        console.log("ERROR FINALIZAR_CONTRIBUCION", action.error);
+        return {
+          ...state,
+          error: action.error
+        };
     default:
       return state;
   }

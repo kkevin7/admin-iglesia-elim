@@ -14,7 +14,14 @@ import CardActions from "@material-ui/core/CardActions";
 //Components
 import Spinner from "components/Spinner/Spinner";
 
-const CardContribucion = ({ contribucion }) => {
+const CardContribucion = ({ contribucion, activarFinalizarContribucion }) => {
+
+  const handleActivarFinalizar = async () =>{
+    let editContribucion = {...contribucion};
+    editContribucion.estado = contribucion.estado == true ? false : true;
+    await activarFinalizarContribucion(editContribucion);
+  }
+
   if (!contribucion)
     return (
       <Card>
@@ -35,9 +42,16 @@ const CardContribucion = ({ contribucion }) => {
   return (
     <Card>
       <div className="card-header py-3 d-flex align-items-center">
-        <h3 className="mb-0">
+        <h3 className="mb-0 d-flex ">
           <span className="text-uppercase">Contribución</span>
         </h3>
+        <Button
+          variant="contained"
+          className={`text-white ml-auto  ${contribucion.estado == true ? "bg-red" : "bg-green"}`}
+          onClick={handleActivarFinalizar}
+        >
+          {contribucion.estado == true ? "Finalizar" : "Reactivar"}
+        </Button>
       </div>
       <CardContent>
         <div className="pt-md-3 pl-md-3 pr-md-3 mx-auto">
@@ -79,7 +93,7 @@ const CardContribucion = ({ contribucion }) => {
           </p>
           <p className="font-weight-bold">
             Estado: {""}
-            <span className="font-weight-normal">
+            <span className={`${contribucion.estado ? "bg-green" : "bg-red"} text-white p-1 font-weight-normal`}>
               {contribucion.estado ? "ACTIVO" : "FINALIZADO"}
             </span>
           </p>
@@ -89,4 +103,8 @@ const CardContribucion = ({ contribucion }) => {
   );
 };
 
-export default CardContribucion;
+export default withRouter(
+  (CardContribucion)
+);
+
+

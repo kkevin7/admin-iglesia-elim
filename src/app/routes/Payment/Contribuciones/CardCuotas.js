@@ -16,7 +16,7 @@ import Spinner from "components/Spinner/Spinner";
 import TableCuotas from "app/routes/Payment/RealizarPago/TableCuotas";
 import DataTableCuotas from "app/routes/Payment/RealizarPago/DataTableCuotas";
 
-const CardCuotas = ({ cuotas }) => {
+const CardCuotas = ({ cuotas, totalCantidadCuotas }) => {
   if (!cuotas)
     return (
       <Card>
@@ -44,6 +44,7 @@ const CardCuotas = ({ cuotas }) => {
       <CardContent>
         <DataTableCuotas 
             cuotas={cuotas}
+            totalCantidadCuotas={totalCantidadCuotas}
         />
       </CardContent>
     </Card>

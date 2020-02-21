@@ -5,6 +5,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 //Redux
 import { realizarPagoCuota } from "actions/realizarPagoActions";
+import { buscarContribucionAndSocio, finalizarContribucion } from "actions/contribucionesActions";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -21,11 +22,15 @@ import Typography from "material-ui/styles/typography";
 
 const DialogPago = ({
   cuotas,
+  contribucion,
   firestore,
   history,
   realizarPagoCuota,
+  finalizarContribucion,
   estadoContribucion,
   limpairSeleccionados,
+  countPagadas,
+  totalCantidadCuotas,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [valorCuota, setValorCuota] = React.useState("");
@@ -50,8 +55,13 @@ const DialogPago = ({
   const handleMultiplePagos = async (e) => {
     e.preventDefault();
     cuotas.forEach(cuota => {
-         handlePagoCuota(cuota);
+      handlePagoCuota(cuota);
     })
+    if (countPagadas + cuotas.length == totalCantidadCuotas) {
+      contribucion.estado = false;
+      const id_contribucion = cuotas[0].id_contribucion;
+      await finalizarContribucion(id_contribucion);
+    }
   }
 
   const handlePagoCuota = async (cuota) => {
@@ -65,9 +75,11 @@ const DialogPago = ({
           estadoContribucion != null ? estadoContribucion : true
       };
 
-      await realizarPagoCuota(editCuota).then(async () => limpairSeleccionados()
-      ).then(async () => {
+      await realizarPagoCuota(editCuota)
+      .then(async () => {
         await handleClose();
+      }).then(async () => {
+        await limpairSeleccionados()
       });
     } else {
       handleError(true);
@@ -128,13 +140,18 @@ const DialogPago = ({
   );
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ contribucion }) => {
+  return {
+    contribucion: contribucion.contribucion && contribucion.contribucion,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    realizarPagoCuota: async editCuota => dispatch(realizarPagoCuota(editCuota))
+    realizarPagoCuota: async editCuota => dispatch(realizarPagoCuota(editCuota)),
+    finalizarContribucion: async (id) => dispatch(finalizarContribucion(id)),
+    buscarContribucionAndSocio: async busqueda =>
+      dispatch(buscarContribucionAndSocio(busqueda)),
   };
 };
 

@@ -29,11 +29,60 @@ export const buscarContribucionAndSocio = busqueda => {
                 }
                 return usuario;
             })
-        }).catch(err => {
+        }).catch(error => {
             dispatch({
                 type: "BUSCAR_CONTRIBUCION_ERROR",
-                err
+                error
             });
         });
+    };
+};
+
+export const activarFinalizarContribucion = (contribucion) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const { id, estado } = contribucion;
+        return await firestore.update(
+            {
+                collection: "contribuciones",
+                doc: id
+            },
+            {
+                estado: estado
+            }).then(async () => {
+                dispatch({
+                    type: "ACTIVAR_FINALIZAR_CONTRIBUCION",
+                    contribucion
+
+                });
+            }).catch(error => {
+                dispatch({
+                    type: "ACTIVAR_FINALIZAR_CONTRIBUCION_ERROR",
+                    error
+                });
+            });
+    };
+};
+
+export const finalizarContribucion = (id) => {
+    return async (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        return await firestore.update(
+            {
+                collection: "contribuciones",
+                doc: id
+            },
+            {
+                estado: false
+            }).then(async () => {
+                dispatch({
+                    type: "FINALIZAR_CONTRIBUCION",
+                });
+            }).catch(error => {
+                dispatch({
+                    type: "FINALIZAR_CONTRIBUCION_ERROR",
+                    error
+                });
+            });
     };
 };

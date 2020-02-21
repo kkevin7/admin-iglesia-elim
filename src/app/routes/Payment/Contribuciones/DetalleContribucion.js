@@ -17,7 +17,7 @@ import CardSocio from "./CardSocio";
 import CardContribucion from "./CardContribucion";
 import CardCuotas from "./CardCuotas";
 //Reducers
-import { buscarContribucionAndSocio } from "actions/contribucionesActions";
+import { buscarContribucionAndSocio, activarFinalizarContribucion } from "actions/contribucionesActions";
 
 class DetalleContribucion extends Component {
   state = {
@@ -30,7 +30,7 @@ class DetalleContribucion extends Component {
   }
 
   render() {
-    const { contribucion, cuotas, socio, busqueda } = this.props;
+    const { contribucion, cuotas, socio, busqueda, activarFinalizarContribucion } = this.props;
     if (!contribucion || !cuotas || !socio) return <Spinner />;
     let cuotasBusqueda = [];
 
@@ -63,10 +63,10 @@ class DetalleContribucion extends Component {
             <CardSocio socio={socio} />
           </div>
           <div className="col-lg-6 col-lg-6 col-sm-6 col-12 my-2">
-            <CardContribucion contribucion={contribucion} />
+            <CardContribucion contribucion={contribucion} activarFinalizarContribucion={activarFinalizarContribucion} />
           </div>
           <div className="col-lg-12 col-lg-12 col-sm-12 col-12 my-2">
-            <CardCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} />
+            <CardCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} totalCantidadCuotas={cuotas.length} />
           </div>
         </div>
       </div>
@@ -86,7 +86,8 @@ const mapStateToProps = ({ firestore, contribucion, busqueda }) => {
 const mapDispatchToProps = dispatch => {
   return {
     buscarContribucionAndSocio: async busqueda =>
-      dispatch(buscarContribucionAndSocio(busqueda))
+      dispatch(buscarContribucionAndSocio(busqueda)),
+    activarFinalizarContribucion: async contribucion => dispatch(activarFinalizarContribucion(contribucion)),
   };
 };
 

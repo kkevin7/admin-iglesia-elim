@@ -49,7 +49,7 @@ class Cuotas extends Component {
 
     return (
       <div className="app-wrapper">
-        <DataTableCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} />
+        <DataTableCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} totalCantidadCuotas={cuotas.length} />
       </div>
     );
   }

@@ -20,14 +20,6 @@ class ContribucionesSocio extends Component {
 
   componentDidMount() {
     const { firestore } = this.props;
-    // console.log(firestore)
-    // console.log( this.props.match.params.id_usuario);
-    // firestore
-    // .collection('contribuciones')
-    // .where('id_usuario', '==', this.props.match.params.id_usuario)
-    // .orderBy('fecha_inicio', 'desc')
-    // .get('contribuciones')
-    // .get();
   }
 
   render() {
