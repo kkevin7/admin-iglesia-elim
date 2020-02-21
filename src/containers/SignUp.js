@@ -122,6 +122,12 @@ class SignUp extends React.Component {
     });
   };
 
+  handleChangeTrim = e => {
+    this.setState({
+      [e.target.name]: e.target.value.trim()
+    });
+  };
+
   handleChangeError = e => {
     if (e.target.value) {
       this.setState({
@@ -361,7 +367,7 @@ class SignUp extends React.Component {
                     name="email"
                     value={this.state.email}
                     onChange={e => {
-                      this.handleChange(e);
+                      this.handleChangeTrim(e);
                       this.handleChangeError(e);
                     }}
                     label={<IntlMessages id="appModule.email" />}
@@ -376,7 +382,7 @@ class SignUp extends React.Component {
                     type="password"
                     name="password"
                     onChange={e => {
-                      this.handleChange(e);
+                      this.handleChangeTrim(e);
                       this.handleChangeError(e);
                     }}
                     label={<IntlMessages id="appModule.password" />}

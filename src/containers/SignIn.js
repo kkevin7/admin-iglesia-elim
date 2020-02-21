@@ -68,7 +68,7 @@ class SignIn extends React.Component {
                     label={`Correo Eléctronico`}
                     fullWidth
                     onChange={event =>
-                      this.setState({ email: event.target.value })
+                      this.setState({ email: event.target.value.trim() })
                     }
                     defaultValue={email}
                     margin="normal"
@@ -79,7 +79,7 @@ class SignIn extends React.Component {
                     label={`Contraseña`}
                     fullWidth
                     onChange={event =>
-                      this.setState({ password: event.target.value })
+                      this.setState({ password: event.target.value.trim() })
                     }
                     defaultValue={password}
                     margin="normal"
@@ -90,7 +90,7 @@ class SignIn extends React.Component {
                     <Button
                       onClick={() => {
                         this.props.showAuthLoader();
-                        this.props.userSignIn({ email, password });
+                        this.props.userSignIn({ email: email.trim(), password: password.trim() });
                       }}
                       variant="contained"
                       color="primary"
