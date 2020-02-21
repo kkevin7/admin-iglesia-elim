@@ -25,7 +25,7 @@ import Menu from "components/TopNav/Menu";
 import UserInfoPopup from "components/UserInfo/UserInfoPopup";
 import Button from "@material-ui/core/Button";
 //logo
-import logoElim from "../../assets/images/elim.png";
+import logoElim from "assets/images/elim-santa-ana.jpg";
 import SweetAlert from "react-bootstrap-sweetalert";
 // import SweetAlert from 'sweetalert2-react';
 

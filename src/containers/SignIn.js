@@ -20,7 +20,7 @@ import {
   userTwitterSignIn
 } from "actions/Auth";
 //logo
-import logoElim from "../assets/images/elim.png";
+import logoElim from "assets/images/elim-santa-ana.jpg";
 
 class SignIn extends React.Component {
   constructor() {

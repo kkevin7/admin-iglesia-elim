@@ -45,7 +45,7 @@ import {
 //Icons
 import IconButton from "@material-ui/core/IconButton";
 //Images
-import logoElim from "assets/images/elim.png";
+import logoElim from "assets/images/elim-santa-ana.jpg";
 
 function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
