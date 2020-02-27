@@ -53,7 +53,7 @@ export const registrarUsuario = newUser => {
         });
       });
 
-    if (signUpUser.message) {
+    if (signUpUser && signUpUser.message) {
       await dispatch({
         type: "SHOW_MESSAGE",
         payload: signUpUser.message
@@ -96,6 +96,7 @@ export const registrarUsuario = newUser => {
             type: "REGISTRAR_USUARIO_ERROR",
             err
           });
+          return false;
         });
     }
   };

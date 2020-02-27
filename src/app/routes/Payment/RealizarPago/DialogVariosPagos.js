@@ -103,7 +103,7 @@ const DialogPago = ({
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Multiples Pagos de la Cuotas
+          Múltiples Pagos de la Cuotas
         </DialogTitle>
         <DialogContent>
           <h2 className="text-center">

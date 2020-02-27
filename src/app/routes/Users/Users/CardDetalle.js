@@ -18,6 +18,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import WrapTextIcon from "@material-ui/icons/WrapText";
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 //Image
 import userImageDefault from "assets/images/users/user.png";
 //Components
@@ -35,6 +36,10 @@ const CardDetalle = ({ history, usuario, profile }) => {
   const redirectChangeTipoUsuario = (carnet) => {
     history.push(`/app/cambiarPrivilegios/${usuario.carnet}`);
   }
+
+  const redirectCambiarCredenciales = (carnet) => {
+    history.push(`/app/cambiarCredenciales/${usuario.carnet}`);
+  };
 
   return (
     <Card>
@@ -184,7 +189,7 @@ const CardDetalle = ({ history, usuario, profile }) => {
                 <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                   <Button
                     startIcon={<WrapTextIcon />}
-                    className="btn-block bg-cyan text-white"
+                    className="btn-block bg-green text-white"
                     variant="contained"
                     onClick={() => redirectContribuciones(usuario.carnet)}
                   >
@@ -207,6 +212,18 @@ const CardDetalle = ({ history, usuario, profile }) => {
                   />
                 </div>
               </div>
+              {/* <div className="col-12 my-2">
+                <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                  <Button
+                    startIcon={<AssignmentIndIcon/>}
+                    className="btn-block bg-cyan text-white"
+                    variant="contained"
+                    onClick={() => redirectCambiarCredenciales(usuario.carnet)}
+                  >
+                    Cambiar Credenciales
+                  </Button>
+                </div>
+              </div> */}
               { profile && profile.rol == "Administrador" ? (
                 <div className="col-12 my-2">
                 <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">

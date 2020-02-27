@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import PasswordField from 'material-ui-password-field'
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -67,7 +68,7 @@ class FormUsuario extends Component {
       telefono: props.usuario ? props.usuario.telefono : "",
       direccion: props.usuario ? props.usuario.direccion : "",
       departamento: props.usuario ? props.usuario.departamento : "Santa Ana",
-      fecha_nacimiento: props.usuario ? props.usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 15),
+      fecha_nacimiento: props.usuario ? props.usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 5),
       fecha_socio: props.usuario ? props.usuario.fecha_socio.toDate() : new Date(),
       email: props.usuario ? props.usuario.email : "",
       password: "",
@@ -88,7 +89,10 @@ class FormUsuario extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { actionComponent } = this.props;
-    actionComponent(this.state);
+    console.log(this.state.password_error)
+    if(!this.state.password_error && !this.state.fecha_nacimiento_error){
+      actionComponent(this.state);
+    }
   };
 
   handleChange = e => {
@@ -113,7 +117,31 @@ class FormUsuario extends Component {
     this.setState({
       fecha_nacimiento: e
     });
+    if(e <= new Date().setFullYear(new Date().getFullYear() - 5) && e >= new Date().setFullYear(1900)){
+      this.setState({
+        "fecha_nacimiento_error": false
+      });
+    }else{
+      this.setState({
+        "fecha_nacimiento_error": true
+      });
+    }
   };
+
+  handleChangePassword = e => {
+      this.setState({
+        [e.target.name]: e.target.value
+      });
+      if(e.target.value.length > 5){
+        this.setState({
+          password_error: false
+        });
+      }else{
+        this.setState({
+          password_error: true
+        });
+      }
+  }
 
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
@@ -357,8 +385,7 @@ class FormUsuario extends Component {
                           
                           value={this.state.password}
                           onChange={e => {
-                            this.handleChange(e);
-                            this.handleChangeError(e);
+                            this.handleChangePassword(e);
                           }}
                           endAdornment={
                             <InputAdornment position="end">
@@ -392,6 +419,18 @@ class FormUsuario extends Component {
                       isOpen={authError != null ? true : false}
                     >
                       {authError}
+                    </Alert>
+                    <Alert
+                      color="danger"
+                      isOpen={this.state.fecha_nacimiento_error}
+                    >
+                      <strong>Fecha de Nacimiento: </strong>Fecha Invalida
+                    </Alert>
+                    <Alert
+                      color="danger"
+                      isOpen={this.state.password_error}
+                    >
+                      <strong>Contraseña: </strong>6 Caracteres es la cantidad minima para la contraseña 
                     </Alert>
                   </div>
                 </div>

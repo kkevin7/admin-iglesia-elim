@@ -9,7 +9,7 @@ import { deleteProducto, deleteImageProducto } from "actions/productosActions";
 import { Input } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 //Card
-import imageDefault from "assets/images/products/product1.png";
+import imageDefault from "assets/images/products/caja.png";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";

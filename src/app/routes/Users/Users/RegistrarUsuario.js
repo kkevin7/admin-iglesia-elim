@@ -48,10 +48,14 @@ class RegistrarUsuario extends Component {
   state = {};
 
   actionComponent = async usuario => {
-    const { history, registrarUsuario, authError, userSignOut } = this.props;
-    await registrarUsuario(usuario).then(async () => {
-      await userSignOut();
+    const { history, registrarUsuario, userSignOut } = this.props;
+    await registrarUsuario(usuario).then(async() => {
+      const { authError } = this.props;
+      if(!authError){
+        await userSignOut();
+      }
     });
+
   };
 
   render() {
@@ -63,7 +67,8 @@ class RegistrarUsuario extends Component {
           match={this.props.match}
           title="Registrar nuevo usuario"
         />
-        <FormUsuario actionComponent={this.actionComponent} correo={true} />
+        <FormUsuario actionComponent={this.actionComponent} correo={true} authError={authError}/>
+        {authError}
       </div>
     );
   }
