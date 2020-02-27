@@ -53,7 +53,7 @@ class CambiarPrivilegios extends Component {
 
   render() {
     const { usuario } = this.props;
-    if (!usuario) return <Spinner />;
+    if (!usuario || !(usuario.carnet == this.props.match.params.carnet)) return <Spinner />;
 
     return (
       <div className="app-wrapper">

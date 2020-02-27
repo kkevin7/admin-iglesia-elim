@@ -72,7 +72,7 @@ const Ingresos = ({
     <Fragment>
       <div className="col-12 m-3">
         <Typography variant="h4" className="text-center font-weight-bold">
-          Reporte de Ingresos Generados
+          Reporte de ofrendas y diezmos
         </Typography>
       </div>
       <div className="col-12 my-5">

@@ -23,7 +23,7 @@ import userImageDefault from "assets/images/users/user.png";
 //Components
 import SweetAlertDarBaja from "./SweetAlertDarBaja";
 
-const CardDetalle = ({ history, usuario }) => {
+const CardDetalle = ({ history, usuario, profile }) => {
   const handleRedirectEdit = id => {
     history.push(`/app/editarUsuario/${id}`);
   };
@@ -207,7 +207,8 @@ const CardDetalle = ({ history, usuario }) => {
                   />
                 </div>
               </div>
-              <div className="col-12 my-2">
+              { profile && profile.rol == "Administrador" ? (
+                <div className="col-12 my-2">
                 <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                   <Button
                     startIcon={<LocalOfferIcon/>}
@@ -219,6 +220,7 @@ const CardDetalle = ({ history, usuario }) => {
                   </Button>
                 </div>
               </div>
+              ) : ""}
             </div>
           </div>
         </div>

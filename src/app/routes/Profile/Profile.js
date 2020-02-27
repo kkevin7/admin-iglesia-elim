@@ -22,7 +22,7 @@ class Profile extends Component {
 
   render() {
     const {usuario, profile, contribuciones} = this.props;
-    if(!usuario || profile.isEmpty || !contribuciones) return <Spinner/>
+    if(!usuario || !(usuario.uid == this.props.usuario.uid) || profile.isEmpty || !contribuciones) return <Spinner/>
 
     return (
       <div className="app-wrapper">

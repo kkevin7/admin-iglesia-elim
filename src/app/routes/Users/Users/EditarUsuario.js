@@ -40,7 +40,7 @@ class EditarUsuario extends Component {
 
   render() {
     const { usuario } = this.props;
-    if (!usuario) return <Spinner />;
+    if (!usuario || !(usuario.id == this.props.match.params.id)) return <Spinner />;
 
     return (
       <div className="app-wrapper">

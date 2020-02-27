@@ -25,7 +25,7 @@ class EditarProducto extends Component {
 
   render() {
     const { producto, proveedores, categoria_producto, } = this.props;
-    if (!producto || !proveedores || !categoria_producto) return <Spinner />;
+    if (!producto || !(producto.id == this.props.match.params.id) || !proveedores || !categoria_producto) return <Spinner />;
 
     return (
       <div className="app-wrapper">

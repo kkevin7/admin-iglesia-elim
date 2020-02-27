@@ -31,8 +31,8 @@ class DetalleUsuario extends Component {
   };
 
   render() {
-    const { usuario } = this.props;
-    if (!usuario) return <Spinner />;
+    const { usuario, profile } = this.props;
+    if (!usuario || !usuario.carnet == this.props.match.params.id || !profile) return <Spinner />;
 
     return (
       <div className="app-wrapper">
@@ -47,15 +47,16 @@ class DetalleUsuario extends Component {
             VOLVER
           </Button>
         </div>
-        <CardDetalle usuario={usuario} />
+        <CardDetalle usuario={usuario} profile={profile}/>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, firebase }) => {
   return {
-    usuario: firestore.ordered.usuario && firestore.ordered.usuario[0]
+    usuario: firestore.ordered.usuario && firestore.ordered.usuario[0],
+    profile: firebase.profile
   };
 };
 

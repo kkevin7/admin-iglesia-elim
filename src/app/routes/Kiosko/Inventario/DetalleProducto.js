@@ -16,10 +16,10 @@ import { buscarProducto } from "actions/productosActions";
 class DetalleProducto extends Component {
   state = {};
 
-  // componentDidMount() {
-  //   const { buscarProducto } = this.props;
-  //   buscarProducto(this.props.match.params.id);
-  // }
+  componentDidMount() {
+    const { buscarProducto } = this.props;
+    buscarProducto(this.props.match.params.id);
+  }
 
   render() {
     const { producto } = this.props;
@@ -44,8 +44,8 @@ class DetalleProducto extends Component {
 }
 
 const mapStateToProps = ({ firestore, producto }) => ({
-  producto: firestore.ordered.producto && firestore.ordered.producto[0],
-  // producto: producto.producto
+  // producto: firestore.ordered.producto && firestore.ordered.producto[0],
+  producto: producto.producto
 });
 
 const mapDispatchToProps = dispatch => {

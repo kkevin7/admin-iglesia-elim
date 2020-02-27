@@ -33,9 +33,8 @@ class Estadisticas extends Component {
 
   render() {
     const {count_socios, count_contribuciones, count_cuotas, count_devoluciones, ultimasCuotas, resultados_users} = this.props;
-    console.log(this.props);
-    console.log(count_devoluciones);
     if(!(count_socios >= 0)|| !(count_contribuciones >= 0) || !(count_cuotas >= 0) || !(count_devoluciones >= 0) || !ultimasCuotas || !resultados_users ) return <Spinner/>
+    console.log(ultimasCuotas);
     return (
       <div className="app-wrapper">
         <div className="col-xl-12 col-lg-12 col-md-12 col-12 order-sm-1">

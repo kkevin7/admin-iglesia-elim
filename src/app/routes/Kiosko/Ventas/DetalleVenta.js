@@ -27,7 +27,7 @@ class DetalleVenta extends Component {
   state = {};
   render() {
     const { venta, firestore } = this.props;
-    if (!venta || !firestore) return <Spinner />;
+    if (!venta || !(venta.id == this.props.match.params.id) || !firestore) return <Spinner />;
 
     return (
       <div className="app-wrapper">

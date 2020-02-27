@@ -28,7 +28,8 @@ class Profile extends Component {
 
   render() {
     const { usuario, profile, contribuciones } = this.props;
-    if (!usuario || profile.isEmpty || !contribuciones) return <Spinner />;
+    if (!usuario || !(usuario.uid == this.props.usuario.uid) || profile.isEmpty || !contribuciones) return <Spinner />;
+    console.log(usuario)
 
     return (
       <div className="app-wrapper">
@@ -76,7 +77,6 @@ class Profile extends Component {
 }
 
 const mapStateToProps = ({ firebase, firestore }) => {
-  console.log(firestore.ordered.contribuciones)
   return {
     usuario: firebase.auth,
     profile: firebase.profile,

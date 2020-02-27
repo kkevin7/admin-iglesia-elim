@@ -26,7 +26,7 @@ class ComprobanteVenta extends Component {
   state = {};
   render() {
     const venta = this.props.venta;
-    if (!venta) return <Spinner />;
+    if (!venta || !(venta.id == this.props.match.params.id)) return <Spinner />;
 
     return (
       <div className="app-wrapper">

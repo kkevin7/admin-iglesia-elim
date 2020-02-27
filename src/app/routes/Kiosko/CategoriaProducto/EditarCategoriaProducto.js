@@ -22,7 +22,7 @@ class EditarProveedor extends Component {
 
   render() {
     const {categoria_producto} = this.props;
-    if(!categoria_producto) return <Spinner/>
+    if(!categoria_producto || !(categoria_producto.id == this.props.match.params.id)) return <Spinner/>
 
     return (
       <div className="app-wrapper">
@@ -46,13 +46,16 @@ const mapStateToProps = ({ firestore }, props) => ({
 
 export default withRouter(
   compose(
+    firestoreConnect(props => {
+      console.log(props.match.params.id);
+      return [
+        {
+          collection: "categoria_producto",
+          storeAs: "categoria_producto",
+          doc: props.match.params.id
+        }
+      ]
+    }),
     connect(mapStateToProps),
-    firestoreConnect(props => [
-      {
-        collection: "categoria_producto",
-        storeAs: "categoria_producto",
-        doc: props.match.params.id
-      }
-    ])
   )(EditarProveedor)
 );

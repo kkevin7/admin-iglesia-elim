@@ -22,7 +22,7 @@ class EditarProveedor extends Component {
 
   render() {
     const {proveedor} = this.props;
-    if(!proveedor) return <Spinner/>
+    if(!proveedor || !(proveedor.id == this.props.match.params.id)) return <Spinner/>
 
     return (
       <div className="app-wrapper">
