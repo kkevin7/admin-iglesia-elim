@@ -1,3 +1,7 @@
+import {
+  admin
+} from "../firebase/firebase";
+
 export const signIn = credentials => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -260,6 +264,20 @@ export const reactivarUser = id => {
       });
   };
 };
+
+// export const deleteUserWithEmail = uid => {
+//   return async (dispatch, getState, { getFirebase, getFirestore }) => {
+//     // const firebase = getFirebase();
+//     console.log(admin);
+//     admin.auth().deleteUser(uid)
+//     .then(function() {
+//       console.log('Successfully deleted user');
+//     })
+//     .catch(function(error) {
+//       console.log('Error deleting user:', error);
+//     });
+//   }
+// }
 
 export const birthdaysMes = () => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {

@@ -35,6 +35,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import Spinner from "components/Spinner/Spinner";
 import DialogPago from "app/routes/Payment/RealizarPago/DialogPago";
 import DialogVariosPagos from "app/routes/Payment/RealizarPago/DialogVariosPagos";
+import SweetAlertCancelarPago from "app/routes/Payment/RealizarPago/SweetAlertCancelarPago";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -85,7 +86,8 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: "Comprobante"
-  }
+  },
+  { id: "cancelar_pago", numeric: false, disablePadding: false, label: "Cancelar Pago" },
 ];
 
 function EnhancedTableHead(props) {
@@ -405,6 +407,13 @@ const DataTableCuotas = ({ cuotas, history, totalCantidadCuotas }) => {
                         >
                           GENERAR
                         </Button>
+                      ) : (
+                        ""
+                      )}
+                    </TableCell>
+                    <TableCell>
+                    {row.estado === "PAGADA" ? (
+                        <SweetAlertCancelarPago id={row.id}/>
                       ) : (
                         ""
                       )}

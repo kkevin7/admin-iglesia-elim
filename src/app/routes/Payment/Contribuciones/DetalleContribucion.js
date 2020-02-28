@@ -17,7 +17,10 @@ import CardSocio from "./CardSocio";
 import CardContribucion from "./CardContribucion";
 import CardCuotas from "./CardCuotas";
 //Reducers
-import { buscarContribucionAndSocio, activarFinalizarContribucion } from "actions/contribucionesActions";
+import {
+  buscarContribucionAndSocio,
+  activarFinalizarContribucion
+} from "actions/contribucionesActions";
 
 class DetalleContribucion extends Component {
   state = {
@@ -29,11 +32,22 @@ class DetalleContribucion extends Component {
     buscarContribucionAndSocio(this.props.match.params.id_contribucion);
   }
 
-  render() {
-    const { contribucion, cuotas, socio, busqueda, activarFinalizarContribucion } = this.props;
-    if (!contribucion || !cuotas || !socio) return <Spinner />;
-    let cuotasBusqueda = [];
+  redirectEditContribucion = (id) => {
+    const {history} = this.props;
+    history.push(`/app/editarContribucion/${id}`);
+  }
 
+  render() {
+    const {
+      contribucion,
+      cuotas,
+      socio,
+      busqueda,
+      activarFinalizarContribucion
+    } = this.props;
+    if (!contribucion || !cuotas || !socio) return <Spinner />;
+
+    let cuotasBusqueda = [];
     if (busqueda) {
       cuotasBusqueda = cuotas.filter(
         cuota =>
@@ -58,15 +72,31 @@ class DetalleContribucion extends Component {
 
     return (
       <div className="app-wrapper">
+        <div className="page-heading d-sm-flex justify-content-sm-between align-items-sm-center">
+          <h2 className="title mb-3 mb-sm-0">Detalles de la contribución</h2>
+          <Button
+            variant="contained"
+            className="my-1 bg-warning text-white"
+            onClick={() => this.redirectEditContribucion(contribucion.id)}
+          >
+            Editar Contribución
+          </Button>
+        </div>
         <div className="row">
           <div className="col-lg-6 col-lg-6 col-sm-6 col-12 my-2">
             <CardSocio socio={socio} />
           </div>
           <div className="col-lg-6 col-lg-6 col-sm-6 col-12 my-2">
-            <CardContribucion contribucion={contribucion} activarFinalizarContribucion={activarFinalizarContribucion} />
+            <CardContribucion
+              contribucion={contribucion}
+              activarFinalizarContribucion={activarFinalizarContribucion}
+            />
           </div>
           <div className="col-lg-12 col-lg-12 col-sm-12 col-12 my-2">
-            <CardCuotas cuotas={busqueda ? cuotasBusqueda : cuotas} totalCantidadCuotas={cuotas.length} />
+            <CardCuotas
+              cuotas={busqueda ? cuotasBusqueda : cuotas}
+              totalCantidadCuotas={cuotas.length}
+            />
           </div>
         </div>
       </div>
@@ -87,7 +117,8 @@ const mapDispatchToProps = dispatch => {
   return {
     buscarContribucionAndSocio: async busqueda =>
       dispatch(buscarContribucionAndSocio(busqueda)),
-    activarFinalizarContribucion: async contribucion => dispatch(activarFinalizarContribucion(contribucion)),
+    activarFinalizarContribucion: async contribucion =>
+      dispatch(activarFinalizarContribucion(contribucion))
   };
 };
 

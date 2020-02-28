@@ -97,3 +97,26 @@ export const realizarPagoCuota = cuota => {
 
   }
 }
+
+export const cancelarCuota = id => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    await firestore
+      .update(
+        {
+          collection: "cuotas",
+          doc: id
+        },
+        {
+          estado: "VIGENTE"
+        }
+      )
+      .catch(async error => {
+        await dispatch({
+          type: "MODIFICACION_CUOTAS_ERROR",
+          error
+        });
+      });
+  };
+};

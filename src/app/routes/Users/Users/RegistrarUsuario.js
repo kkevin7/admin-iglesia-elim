@@ -30,7 +30,7 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 //reducers
-import { registrarUsuario, signOut } from "actions/authActions";
+import { registrarUsuario, signOut, deleteUserWithEmail } from "actions/authActions";
 import { userSignOut } from "actions/Auth";
 //Others components
 import clsx from "clsx";
@@ -48,14 +48,12 @@ class RegistrarUsuario extends Component {
   state = {};
 
   actionComponent = async usuario => {
-    const { history, registrarUsuario, userSignOut } = this.props;
-    await registrarUsuario(usuario).then(async() => {
-      const { authError } = this.props;
+    const { history, registrarUsuario, userSignOut, deleteUserWithEmail } = this.props;
+    await registrarUsuario(usuario);
+    const { authError } = await this.props;
       if(!authError){
         await userSignOut();
       }
-    });
-
   };
 
   render() {
@@ -68,7 +66,6 @@ class RegistrarUsuario extends Component {
           title="Registrar nuevo usuario"
         />
         <FormUsuario actionComponent={this.actionComponent} correo={true} authError={authError}/>
-        {authError}
       </div>
     );
   }
@@ -84,7 +81,7 @@ const mapDispatchToProps = dispatch => {
   return {
     registrarUsuario: async newUser => dispatch(registrarUsuario(newUser)),
     // signOut: async () => dispatch(signOut()),
-    userSignOut: () => dispatch(userSignOut())
+    userSignOut: () => dispatch(userSignOut()),
   };
 };
 

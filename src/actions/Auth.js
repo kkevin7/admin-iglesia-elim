@@ -156,7 +156,7 @@ export const nuevoUsuario = newUser => {
                 });
             });
 
-        if (signUpUser.message) {
+        if (signUpUser && signUpUser.message) {
             await dispatch({
                 type: SHOW_MESSAGE,
                 payload: signUpUser.message

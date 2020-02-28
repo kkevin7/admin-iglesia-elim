@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import 'firebase/firestore';
 import 'firebase/auth';
+// import * as admin from 'firebase-admin';
 
 // Initialize Firebase
 const config = {
@@ -13,8 +14,18 @@ const config = {
   messagingSenderId: "299275738665",
   appId: "1:299275738665:web:8eafc1c0835c08b9d90638"
 };
-
 firebase.initializeApp(config);
+
+var admin = require("firebase-admin");
+var serviceAccount = require("./serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://iglesia-elim-db.firebaseio.com"
+});
+// admin.initializeApp({
+//   credential: admin.credential.applicationDefault(),
+//   databaseURL: "https://iglesia-elim-db.firebaseio.com"
+// });
 
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
@@ -26,6 +37,7 @@ const fbConfig = firebase;
 
 export {
   fbConfig,
+  admin,
   auth,
   database,
   googleAuthProvider,

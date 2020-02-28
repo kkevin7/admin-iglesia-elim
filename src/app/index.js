@@ -168,6 +168,11 @@ class App extends React.Component {
                   <Route path={`${match.url}/detalleContribucion/:id_contribucion`}
                     component={asyncComponent(() => import('./routes/Payment/Contribuciones/DetalleContribucion'))} />
                 ) : ("")}
+                {(profile.rol == "SectorPagos" || profile.rol == "Administrador") && profile.estado == true ? (
+                  <Route path={`${match.url}/editarContribucion/:id_contribucion`}
+                    component={asyncComponent(() => import('./routes/Payment/Contribuciones/EditarContribucion'))} />
+                ) : ("")}
+
 
                 {/* Realizar un pago */}
                 {(profile.rol == "SectorPagos" || profile.rol == "Administrador") && profile.estado == true ? (
