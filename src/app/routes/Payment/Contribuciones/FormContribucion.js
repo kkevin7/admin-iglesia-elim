@@ -190,7 +190,16 @@ class FormContribucion extends Component {
         }
       };
 
+    
+
     render() {
+      if (
+        !this.props.contribucion ||
+        !this.props.contribucion.id_contribucion == this.props.match.params.id_contribucion
+      )
+        return <Spinner />;
+
+
         return (
             <Card>
           <CardContent>
@@ -286,4 +295,4 @@ class FormContribucion extends Component {
     }
 }
 
-export default FormContribucion;
+export default withRouter(FormContribucion);

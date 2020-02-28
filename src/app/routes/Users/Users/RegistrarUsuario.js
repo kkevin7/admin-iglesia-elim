@@ -51,6 +51,7 @@ class RegistrarUsuario extends Component {
     const { history, registrarUsuario, userSignOut, deleteUserWithEmail } = this.props;
     await registrarUsuario(usuario);
     const { authError } = await this.props;
+    console.log(authError)
       if(!authError){
         await userSignOut();
       }

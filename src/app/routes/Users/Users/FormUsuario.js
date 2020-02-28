@@ -414,6 +414,12 @@ class FormUsuario extends Component {
                     </Button>
                   </div>
                   <div className="col-12 mt-3">
+                  <Alert
+                      color="danger"
+                      isOpen={authError != null ? true : false}
+                    >
+                      <strong>Correo Electrónico: </strong> El correo ingresado puede que tenga un formato inválido o ya fue usado en otra cuenta.
+                    </Alert>
                     <Alert
                       color="danger"
                       isOpen={authError != null ? true : false}
