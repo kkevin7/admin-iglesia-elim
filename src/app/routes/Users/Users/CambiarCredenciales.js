@@ -4,6 +4,8 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+//Redux
+import {replaceUsuario} from "actions/authActions";
 //Inputs
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,6 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -43,28 +46,26 @@ import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-function TextMaskCustom(props) {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={ref => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={"\u2000"}
-      showMask
-    />
-  );
-}
-
 class CambiarCredenciales extends Component {
-  state = {};
+  state = {
+      email: "",
+      password: "",
+      showPassword: false,
+      //Errores
+      email_error: false,
+      password_error: false,
+  };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { actionComponent } = this.props;
-    actionComponent(this.state);
+    const { usuario, replaceUsuario } = this.props;
+    let editUsuario = {...usuario};
+
+    if(!this.state.email_error && !this.state.password_error){
+      editUsuario.email = this.state.email;
+      editUsuario.password = this.state.password;
+      replaceUsuario(editUsuario);
+    }
   };
 
   handleChange = e => {
@@ -91,14 +92,31 @@ class CambiarCredenciales extends Component {
     });
   };
 
+  handleChangePassword = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+    if (e.target.value.length > 5) {
+      this.setState({
+        password_error: false
+      });
+    } else {
+      this.setState({
+        password_error: true
+      });
+    }
+  };
+
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
   render() {
-    const { usuario } = this.props;
-    if (!usuario || !usuario.carnet == this.props.match.params.carnet)
+    const { usuario, authError } = this.props;
+    if (!usuario || !(usuario.id == this.props.match.params.id))
       return <Spinner />;
+
+    console.log(authError);
 
     const classes = makeStyles(theme => ({
       root: {
@@ -121,6 +139,9 @@ class CambiarCredenciales extends Component {
         <CardSocio usuario={usuario} />
         <Card>
           <CardContent>
+            <Typography className="text-center text-uppercase" variant="h5">
+              Cambio de credenciales
+            </Typography>
             <form onSubmit={this.handleSubmit} autoComplete="off">
               <div className="row">
                 <div className="col-md-6 col-12">
@@ -165,8 +186,7 @@ class CambiarCredenciales extends Component {
                         label="Contraseña"
                         value={this.state.password}
                         onChange={e => {
-                          this.handleChange(e);
-                          this.handleChangeError(e);
+                          this.handleChangePassword(e);
                         }}
                         endAdornment={
                           <InputAdornment position="end">
@@ -189,8 +209,32 @@ class CambiarCredenciales extends Component {
                     </FormControl>
                   </div>
                 </div>
+                <div className="col-12 col-md-2 mx-auto">
+                  <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      // startIcon={<SaveIcon />}
+                      type="submit"
+                    >
+                      Guardar
+                    </Button>
+                  </div>
+                </div>
               </div>
             </form>
+
+            <Alert color="danger" isOpen={authError != null ? true : false}>
+              <strong>Correo Electrónico: </strong> El correo ingresado puede
+              que tenga un formato inválido o ya fue usado en otra cuenta.
+            </Alert>
+            <Alert color="danger" isOpen={authError != null ? true : false}>
+              {authError}
+            </Alert>
+            <Alert color="danger" isOpen={this.state.password_error}>
+              <strong>Contraseña: </strong>6 Caracteres es la cantidad minima
+              para la contraseña
+            </Alert>
           </CardContent>
         </Card>
       </div>
@@ -198,14 +242,17 @@ class CambiarCredenciales extends Component {
   }
 }
 
-const mapStateToProps = ({ firestore }) => {
+const mapStateToProps = ({ firestore, authCustom }) => {
   return {
-    usuario: firestore.ordered.usuario && firestore.ordered.usuario[0]
+    usuario: firestore.ordered.usuario && firestore.ordered.usuario[0],
+    authError: authCustom.authError
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    replaceUsuario: async (usuario) => dispatch(replaceUsuario(usuario)), 
+  };
 };
 
 export default withRouter(
@@ -219,7 +266,7 @@ export default withRouter(
       return [
         {
           collection: "usuarios",
-          where: [["carnet", "==", props.match.params.carnet]],
+          doc: props.match.params.id,
           storeAs: "usuario"
         }
       ];

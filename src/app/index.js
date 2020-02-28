@@ -248,7 +248,7 @@ class App extends React.Component {
                     component={asyncComponent(() => import('./routes/Users/Users/EditarUsuario'))} />
                 ) : ("")}
                 {(profile.rol == "SectorPagos" || profile.rol == "Administrador") && profile.estado == true ? (
-                  <Route path={`${match.url}/cambiarCredenciales/:carnet`}
+                  <Route path={`${match.url}/cambiarCredenciales/:id`}
                     component={asyncComponent(() => import('./routes/Users/Users/CambiarCredenciales'))} />
                 ) : ("")}
 

@@ -36,6 +36,12 @@ const authReducer = (state = initState, action) => {
         ...state,
         authError: null
       };
+    case "NUEVO_USUARIO_ERROR":
+    console.log("registro de socio sin correo success");
+      return {
+        ...state,
+        authError: action.err.message
+      };
     case "REGISTRAR_USUARIO_ERROR":
       console.log("Error registrar usuario sin correo");
       return {

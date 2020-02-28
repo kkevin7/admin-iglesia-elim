@@ -37,8 +37,8 @@ const CardDetalle = ({ history, usuario, profile }) => {
     history.push(`/app/cambiarPrivilegios/${usuario.carnet}`);
   }
 
-  const redirectCambiarCredenciales = (carnet) => {
-    history.push(`/app/cambiarCredenciales/${usuario.carnet}`);
+  const redirectCambiarCredenciales = (id) => {
+    history.push(`/app/cambiarCredenciales/${usuario.id}`);
   };
 
   return (
@@ -212,18 +212,18 @@ const CardDetalle = ({ history, usuario, profile }) => {
                   />
                 </div>
               </div>
-              {/* <div className="col-12 my-2">
+              <div className="col-12 my-2">
                 <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                   <Button
                     startIcon={<AssignmentIndIcon/>}
                     className="btn-block bg-cyan text-white"
                     variant="contained"
-                    onClick={() => redirectCambiarCredenciales(usuario.carnet)}
+                    onClick={() => redirectCambiarCredenciales(usuario.id)}
                   >
                     Cambiar Credenciales
                   </Button>
                 </div>
-              </div> */}
+              </div>
               { profile && profile.rol == "Administrador" ? (
                 <div className="col-12 my-2">
                 <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">

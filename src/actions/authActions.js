@@ -1,6 +1,4 @@
-import {
-  admin
-} from "../firebase/firebase";
+import { admin } from "../firebase/firebase";
 
 export const signIn = credentials => {
   return async (dispatch, getState, { getFirebase }) => {
@@ -62,7 +60,7 @@ export const registrarUsuario = newUser => {
         type: "SHOW_MESSAGE",
         payload: signUpUser.message
       });
-    } else {
+    } else if (signUpUser) {
       await firestore
         .collection("usuarios")
         .where("carnet", ">=", carnet)
@@ -102,6 +100,99 @@ export const registrarUsuario = newUser => {
           });
           return false;
         });
+    }
+  };
+};
+
+export const replaceUsuario = usuario => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+    const {
+      id,
+      carnet,
+      nombre,
+      apellido,
+      telefono,
+      direccion,
+      fecha_nacimiento,
+      departamento,
+      fecha_socio,
+      email
+    } = usuario;
+
+    const signUpUser = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(usuario.email, usuario.password)
+      .catch(async err => {
+        await dispatch({
+          type: "NUEVO_USUARIO_ERROR",
+          err
+        });
+      });
+
+    if (signUpUser && signUpUser.message) {
+      await dispatch({
+        type: "SHOW_MESSAGE",
+        payload: signUpUser.message
+      });
+    } else if (signUpUser) {
+      //Create User
+      await firestore
+        .collection("usuarios")
+        .doc(signUpUser.user.uid)
+        .set({
+          carnet: carnet,
+          nombre: nombre,
+          apellido: apellido,
+          telefono: telefono,
+          direccion: direccion,
+          fecha_nacimiento: new Date(fecha_nacimiento.toDate()),
+          departamento: departamento,
+          fecha_socio: new Date(fecha_socio.toDate()),
+          email: email,
+          estado: true,
+          rol: "Socio"
+        })
+        .then(async resp => {
+          await dispatch({
+            type: "REGISTRAR_USUARIO_SUCCESS"
+          });
+          return resp;
+        })
+        .catch(async err => {
+          await dispatch({
+            type: "REGISTRAR_USUARIO_ERROR",
+            err
+          });
+          return false;
+        });
+
+      //Delete User
+      await firestore
+        .delete({
+          collection: "usuarios",
+          doc: id
+        })
+        .then(async () => {
+          await dispatch({
+            type: "DELETE_USUARIO_SUCCESS"
+          });
+        })
+        .catch(async err => {
+          await dispatch({
+            type: "DELETE_USUARIO_ERROR",
+            err
+          });
+        });
+
+      // //Exit
+      // await firebase
+      //   .auth()
+      //   .signOut()
+      //   .then(() => {
+      //     dispatch({ type: "SIGNOUT_SUCCESS" });
+      //   });
     }
   };
 };
@@ -309,7 +400,9 @@ export const birthdaysMes = () => {
 
     usuarios = await usuarios.filter(usuario => {
       try {
-        return usuario.fecha_nacimiento.toDate().getMonth() == new Date().getMonth()
+        return (
+          usuario.fecha_nacimiento.toDate().getMonth() == new Date().getMonth()
+        );
       } catch (error) {
         console.log("Error: ", error);
       }
@@ -325,8 +418,8 @@ export const birthdaysMes = () => {
 export const updateUserRol = user => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
-    const {id, rol} = user;
-    
+    const { id, rol } = user;
+
     return await firestore
       .update(
         {
@@ -343,7 +436,7 @@ export const updateUserRol = user => {
         });
       })
       .catch(async error => {
-        console.log(error)
+        console.log(error);
         await dispatch({
           type: "UPDATE_USUARIO_ROL_ERROR",
           error
