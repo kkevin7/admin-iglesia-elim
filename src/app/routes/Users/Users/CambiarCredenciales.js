@@ -153,13 +153,13 @@ class CambiarCredenciales extends Component {
                       error={this.state.email_error}
                       helperText={
                         this.state.email_error
-                          ? "Debes ingresar un correo eléctronico"
+                          ? "Debes ingresar un Correo Electrónico"
                           : ""
                       }
                       name="email"
                       type="email"
-                      label="Correo Eléctronico"
-                      helperText="Ingresa el correo eléctronico"
+                      label="Correo Electrónico"
+                      helperText="Ingresa el Correo Electrónico"
                       variant="outlined"
                       value={this.state.email}
                       onChange={e => {

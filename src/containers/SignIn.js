@@ -65,7 +65,7 @@ class SignIn extends React.Component {
               <form>
                 <fieldset>
                   <TextField
-                    label={`Correo Eléctronico`}
+                    label={`Correo Electrónico`}
                     fullWidth
                     onChange={event =>
                       this.setState({ email: event.target.value.trim() })
