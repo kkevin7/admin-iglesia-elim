@@ -49,10 +49,9 @@ class RegistrarUsuario extends Component {
 
   actionComponent = async usuario => {
     const { history, registrarUsuario, userSignOut, deleteUserWithEmail } = this.props;
-    await registrarUsuario(usuario);
+    const resp = await registrarUsuario(usuario);
     const { authError } = await this.props;
-    console.log(authError)
-      if(!authError){
+      if(resp == true){
         await userSignOut();
       }
   };

@@ -42,7 +42,7 @@ const SweetAlertCancelarPago = ({id, firestore, cancelarCuota}) => {
             onCancel={() => setAlertConfirm(false)}
             focusCancelBtn
           >
-            Esta acción podrá dispible la pago de la cuota
+            Esta acción podrá deshacer el pago de la cuota
           </SweetAlert>
           <SweetAlert
             show={alertOK}

@@ -60,8 +60,9 @@ export const registrarUsuario = newUser => {
         type: "SHOW_MESSAGE",
         payload: signUpUser.message
       });
+      return false;
     } else if (signUpUser) {
-      await firestore
+      return await firestore
         .collection("usuarios")
         .where("carnet", ">=", carnet)
         .where("carnet", "<=", carnet + "\uf8ff")
@@ -86,12 +87,13 @@ export const registrarUsuario = newUser => {
               estado: true,
               rol: "Socio"
             });
+          return true;
         })
         .then(async resp => {
           await dispatch({
             type: "REGISTRAR_USUARIO_SUCCESS"
           });
-          return resp;
+          return true;
         })
         .catch(async err => {
           await dispatch({
@@ -100,6 +102,8 @@ export const registrarUsuario = newUser => {
           });
           return false;
         });
+    }else{
+      return false;
     }
   };
 };
@@ -193,6 +197,11 @@ export const replaceUsuario = usuario => {
       //   .then(() => {
       //     dispatch({ type: "SIGNOUT_SUCCESS" });
       //   });
+
+        return await true;
+
+    }else{
+      return false;
     }
   };
 };

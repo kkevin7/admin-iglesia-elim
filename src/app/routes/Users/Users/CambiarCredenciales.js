@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 //Redux
 import {replaceUsuario} from "actions/authActions";
+import { userSignOut } from "actions/Auth";
 //Inputs
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -56,15 +57,18 @@ class CambiarCredenciales extends Component {
       password_error: false,
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    const { usuario, replaceUsuario } = this.props;
+    const { usuario, replaceUsuario, userSignOut } = this.props;
     let editUsuario = {...usuario};
 
     if(!this.state.email_error && !this.state.password_error){
       editUsuario.email = this.state.email;
       editUsuario.password = this.state.password;
-      replaceUsuario(editUsuario);
+      const resp = await replaceUsuario(editUsuario);
+      if(resp == true){
+        await userSignOut();
+      }
     }
   };
 
@@ -115,8 +119,6 @@ class CambiarCredenciales extends Component {
     const { usuario, authError } = this.props;
     if (!usuario || !(usuario.id == this.props.match.params.id))
       return <Spinner />;
-
-    console.log(authError);
 
     const classes = makeStyles(theme => ({
       root: {
@@ -252,6 +254,7 @@ const mapStateToProps = ({ firestore, authCustom }) => {
 const mapDispatchToProps = dispatch => {
   return {
     replaceUsuario: async (usuario) => dispatch(replaceUsuario(usuario)), 
+    userSignOut: () => dispatch(userSignOut()),
   };
 };
 
