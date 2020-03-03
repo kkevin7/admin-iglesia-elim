@@ -16,17 +16,6 @@ const config = {
 };
 firebase.initializeApp(config);
 
-var admin = require("firebase-admin");
-var serviceAccount = require("./serviceAccountKey.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://iglesia-elim-db.firebaseio.com"
-});
-// admin.initializeApp({
-//   credential: admin.credential.applicationDefault(),
-//   databaseURL: "https://iglesia-elim-db.firebaseio.com"
-// });
-
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
 const githubAuthProvider = new firebase.auth.GithubAuthProvider();
@@ -37,7 +26,6 @@ const fbConfig = firebase;
 
 export {
   fbConfig,
-  admin,
   auth,
   database,
   googleAuthProvider,
