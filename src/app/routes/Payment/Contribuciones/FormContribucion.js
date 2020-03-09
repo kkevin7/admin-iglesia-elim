@@ -46,12 +46,12 @@ class FormContribucion extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            valor_cuota: props.contribucion ? props.contribucion.valor_cuota: "",
-            cantidad_cuota: props.contribucion ? props.contribucion.cantidad_cuota: "",
-            fecha_inicio: props.contribucion ? props.contribucion.fecha_inicio: new Date(),
-            fecha_fin: props.contribucion ? props.contribucion.fecha_fin : null,
-            observaciones: props.contribucion ? props.contribucion.observaciones: "",
-            estado: props.contribucion ? props.contribucion.estado: "",
+            valor_cuota:  "",
+            cantidad_cuota: "",
+            fecha_inicio: new Date(),
+            fecha_fin: null,
+            observaciones:  "",
+            estado: "",
             //Errores
             valor_cuota_error: false,
             cantidad_cuota_error: false,
@@ -59,6 +59,32 @@ class FormContribucion extends Component {
             fecha_fin_error: false,
             showMessage: ""
          };
+    }
+
+    componentWillReceiveProps(nextProps) {
+      const { contribucion } = nextProps;
+  
+      if (contribucion) {
+        this.setState({
+          valor_cuota: contribucion
+            ? contribucion.valor_cuota
+            : "",
+          cantidad_cuota: contribucion
+            ? contribucion.cantidad_cuota
+            : "",
+          fecha_inicio: contribucion
+            ? contribucion.fecha_inicio
+            : new Date(),
+          fecha_fin: contribucion
+            ? contribucion.fecha_fin
+            : null,
+          observaciones: contribucion
+            ? contribucion.observaciones
+            : "",
+          estado: contribucion ? contribucion.estado : ""
+        });
+      }
+
     }
 
     handleChange = e => {

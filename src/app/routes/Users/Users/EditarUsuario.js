@@ -26,10 +26,10 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 class EditarUsuario extends Component {
   state = {};
 
-  handleEditUser = usuario => {
-    const { editUser, history } = this.props;
-    editUser(usuario).then(() => {
-      history.push(`/app/detalleUsuario/${this.props.match.params.id}`);
+  handleEditUser = user => {
+    const { editUser, history, usuario } = this.props;
+    editUser(user).then(() => {
+      history.push(`/app/detalleUsuario/${usuario.carnet}`);
     });
   };
 

@@ -265,7 +265,7 @@ export default withRouter(
       mapDispatchToProps
     ),
     firestoreConnect(props => {
-      if (!props.match.params.carnet) return [];
+      if (!props.match.params.id) return [];
       return [
         {
           collection: "usuarios",

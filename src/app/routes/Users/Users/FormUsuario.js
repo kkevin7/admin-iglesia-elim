@@ -86,6 +86,22 @@ class FormUsuario extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps){
+    const { usuario } = nextProps;
+    if(usuario){
+      this.setState({
+      id: usuario ? usuario.id : "",
+      nombre: usuario ? usuario.nombre : "",
+      apellido: usuario ? usuario.apellido : "",
+      telefono: usuario ? usuario.telefono : "",
+      direccion: usuario ? usuario.direccion : "",
+      departamento: usuario ? usuario.departamento : "Santa Ana",
+      fecha_nacimiento: usuario ? usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 5),
+      fecha_socio: usuario ? usuario.fecha_socio.toDate() : new Date(),
+      })
+    }
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     const { actionComponent } = this.props;
