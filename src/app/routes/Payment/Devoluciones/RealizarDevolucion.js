@@ -18,8 +18,9 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
+import MaskedInput from "react-text-mask";
+import NumberFormat from "react-number-format";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -35,6 +36,36 @@ import SaveIcon from "@material-ui/icons/Save";
 //Components
 import Spinner from "components/Spinner/Spinner";
 import CardSocio from "./CardSocio";
+
+function MoneyFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      prefix="$ "
+      decimalScale={2}
+    />
+  );
+}
+
+MoneyFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 class RealizarDevolucion extends Component {
   state = {
@@ -114,6 +145,7 @@ class RealizarDevolucion extends Component {
                         name="monto"
                         label="Monto a devolver"
                         InputProps={{
+                          inputComponent: MoneyFormatCustom,
                           inputProps: { min: 0, step: 0.01 }
                         }}
                         value={this.state.monto}

@@ -4,6 +4,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
 import moment from "moment";
 //Redux
 import {
@@ -17,7 +18,6 @@ import InputMask from "react-input-mask";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
@@ -35,12 +35,44 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
+import MaskedInput from "react-text-mask";
+import NumberFormat from "react-number-format";
 //Componets
 import { CardContent } from "@material-ui/core";
 import Spinner from "components/Spinner/Spinner";
 //Icons
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import SaveIcon from "@material-ui/icons/Save";
+
+function MoneyFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      prefix="$ "
+      decimalScale={2}
+    />
+  );
+}
+
+MoneyFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 class FormContribucion extends Component {
     constructor(props) {
@@ -219,6 +251,7 @@ class FormContribucion extends Component {
     
 
     render() {
+      
       if (
         !this.props.contribucion ||
         !this.props.contribucion.id_contribucion == this.props.match.params.id_contribucion
@@ -248,6 +281,7 @@ class FormContribucion extends Component {
                             : ""
                         }
                         id="valorCuota"
+                        variant="outlined"
                         label="Valor de Aportacion"
                         type="number"
                         name="valor_cuota"
@@ -256,6 +290,7 @@ class FormContribucion extends Component {
                           await this.handleChangeDecimal(e);
                         }}
                         InputProps={{
+                          inputComponent: MoneyFormatCustom,
                           inputProps: { min: 0, step: 0.01 }
                         }}
                       />
@@ -263,8 +298,8 @@ class FormContribucion extends Component {
                   </div>
                   <div className="col-md-6 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      <FormControl>
-                        <InputLabel id="demo-simple-select-label">
+                      <FormControl variant="outlined">
+                        <InputLabel htmlFor="estado">
                           Estado
                         </InputLabel>
                         <Select
@@ -272,6 +307,7 @@ class FormContribucion extends Component {
                           labelId="estado-label"
                           id="estado"
                           name="estado"
+                          variant="outlined"
                           className={`${
                             this.state.estado ? "bg-green" : "bg-red"
                           }`}
@@ -292,11 +328,12 @@ class FormContribucion extends Component {
                   <div className="col-md-12 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
+                      multiline
+                      rows="4"
+                      variant="outlined"
                         id="observaciones"
                         name="observaciones"
                         label="Observaciones"
-                        multiline
-                        rows="4"
                         value={this.state.observaciones}
                         onChange={this.handleChange}
                       />
@@ -321,4 +358,4 @@ class FormContribucion extends Component {
     }
 }
 
-export default withRouter(FormContribucion);
+export default withRouter( (FormContribucion));

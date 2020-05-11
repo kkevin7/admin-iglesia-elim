@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaskedInput from "react-text-mask";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import PasswordField from 'material-ui-password-field'
+import PasswordField from "material-ui-password-field";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -26,7 +26,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
-  KeyboardDatePicker
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 //Others components
 import clsx from "clsx";
@@ -42,21 +42,24 @@ import userImageDefault from "assets/images/users/user.png";
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
 
-function TextMaskCustom(props) {
+function TelefonoMask(props) {
   const { inputRef, ...other } = props;
-
   return (
     <MaskedInput
       {...other}
-      ref={ref => {
+      mask={[/[1-9]/, /\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+      placeholderChar={"\u2000"}
+      guide={false}
+      ref={(ref) => {
         inputRef(ref ? ref.inputElement : null);
       }}
-      mask={[/\d/, /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
-      placeholderChar={"\u2000"}
-      showMask
+      showMask={false}
     />
   );
 }
+TelefonoMask.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
 
 class FormUsuario extends Component {
   constructor(props) {
@@ -68,8 +71,12 @@ class FormUsuario extends Component {
       telefono: props.usuario ? props.usuario.telefono : "",
       direccion: props.usuario ? props.usuario.direccion : "",
       departamento: props.usuario ? props.usuario.departamento : "Santa Ana",
-      fecha_nacimiento: props.usuario ? props.usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 5),
-      fecha_socio: props.usuario ? props.usuario.fecha_socio.toDate() : new Date(),
+      fecha_nacimiento: props.usuario
+        ? props.usuario.fecha_nacimiento.toDate()
+        : new Date().setFullYear(new Date().getFullYear() - 5),
+      fecha_socio: props.usuario
+        ? props.usuario.fecha_socio.toDate()
+        : new Date(),
       email: props.usuario ? props.usuario.email : "",
       password: "",
       showPassword: false,
@@ -86,78 +93,83 @@ class FormUsuario extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { usuario } = nextProps;
-    if(usuario){
+    if (usuario) {
       this.setState({
-      id: usuario ? usuario.id : "",
-      nombre: usuario ? usuario.nombre : "",
-      apellido: usuario ? usuario.apellido : "",
-      telefono: usuario ? usuario.telefono : "",
-      direccion: usuario ? usuario.direccion : "",
-      departamento: usuario ? usuario.departamento : "Santa Ana",
-      fecha_nacimiento: usuario ? usuario.fecha_nacimiento.toDate() : new Date().setFullYear(new Date().getFullYear() - 5),
-      fecha_socio: usuario ? usuario.fecha_socio.toDate() : new Date(),
-      })
+        id: usuario ? usuario.id : "",
+        nombre: usuario ? usuario.nombre : "",
+        apellido: usuario ? usuario.apellido : "",
+        telefono: usuario ? usuario.telefono : "",
+        direccion: usuario ? usuario.direccion : "",
+        departamento: usuario ? usuario.departamento : "Santa Ana",
+        fecha_nacimiento: usuario
+          ? usuario.fecha_nacimiento.toDate()
+          : new Date().setFullYear(new Date().getFullYear() - 5),
+        fecha_socio: usuario ? usuario.fecha_socio.toDate() : new Date(),
+      });
     }
   }
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { actionComponent } = this.props;
-    console.log(this.state.password_error)
-    if(!this.state.password_error && !this.state.fecha_nacimiento_error){
+    console.log(this.state.password_error);
+    if (!this.state.password_error && !this.state.fecha_nacimiento_error) {
       actionComponent(this.state);
     }
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  handleChangeError = e => {
+  handleChangeError = (e) => {
     if (e.target.value) {
       this.setState({
-        [e.target.name + "_error"]: false
+        [e.target.name + "_error"]: false,
       });
     } else {
       this.setState({
-        [e.target.name + "_error"]: true
+        [e.target.name + "_error"]: true,
       });
     }
   };
 
-  handleFechaNacimiento = e => {
+  handleFechaNacimiento = (e) => {
     this.setState({
-      fecha_nacimiento: e
+      fecha_nacimiento: e,
     });
-    if(e <= new Date().setFullYear(new Date().getFullYear() - 5) && e >= new Date().setFullYear(1900)){
+    if (
+      e <= new Date().setFullYear(new Date().getFullYear() - 5) &&
+      e >= new Date().setFullYear(1900)
+    ) {
       this.setState({
-        "fecha_nacimiento_error": false
+        fecha_nacimiento_error: false,
       });
-    }else{
+    } else {
       this.setState({
-        "fecha_nacimiento_error": true
+        fecha_nacimiento_error: true,
       });
     }
   };
 
-  handleChangePassword = e => {
+  handleChangePassword = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+    if (e.target.value.length > 5) {
       this.setState({
-        [e.target.name]: e.target.value
+        password_error: false,
       });
-      if(e.target.value.length > 5){
-        this.setState({
-          password_error: false
-        });
-      }else{
-        this.setState({
-          password_error: true
-        });
-      }
-  }
+    } else {
+      this.setState({
+        password_error: true,
+      });
+    }
+  };
 
   handleClickShowPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
@@ -168,63 +180,63 @@ class FormUsuario extends Component {
 
     const departments = [
       {
-        value: "Ahuachapán"
+        value: "Ahuachapán",
       },
       {
-        value: "Cabañas"
+        value: "Cabañas",
       },
       {
-        value: "Chalatenango"
+        value: "Chalatenango",
       },
       {
-        value: "Cuscatlán"
+        value: "Cuscatlán",
       },
       {
-        value: "La Libertad"
+        value: "La Libertad",
       },
       {
-        value: "La Paz"
+        value: "La Paz",
       },
       {
-        value: "La Unión"
+        value: "La Unión",
       },
       {
-        value: "Morazán"
+        value: "Morazán",
       },
       {
-        value: "San Miguel"
+        value: "San Miguel",
       },
       {
-        value: "San Salvador"
+        value: "San Salvador",
       },
       {
-        value: "San Vicente"
+        value: "San Vicente",
       },
       {
-        value: "Santa Ana"
+        value: "Santa Ana",
       },
       {
-        value: "Sonsonate"
+        value: "Sonsonate",
       },
       {
-        value: "Usulután"
-      }
+        value: "Usulután",
+      },
     ];
 
-    const classes = makeStyles(theme => ({
+    const classes = makeStyles((theme) => ({
       root: {
         display: "flex",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
       },
       margin: {
-        margin: theme.spacing(1)
+        margin: theme.spacing(1),
       },
       withoutLabel: {
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
       },
       textField: {
-        width: 200
-      }
+        width: 200,
+      },
     }));
 
     return (
@@ -254,12 +266,12 @@ class FormUsuario extends Component {
                       <TextField
                         required
                         error={this.state.nombre_error}
+                        helperText={this.state.nombre_error ? "El nombre no pueder un campo vacío" : ""}
                         name="nombre"
                         label="Nombres"
                         variant="outlined"
-                        helperText="Ingresa los Nombres"
                         value={this.state.nombre}
-                        onChange={e => {
+                        onChange={(e) => {
                           this.handleChange(e);
                           this.handleChangeError(e);
                         }}
@@ -272,11 +284,11 @@ class FormUsuario extends Component {
                         required
                         name="apellido"
                         error={this.state.apellido_error}
+                        helperText={this.state.apellido_error ? "Los apellidos no pueden estar vacíos" : ""}
                         label="Apellidos"
-                        helperText="Ingresa los Apellidos"
                         variant="outlined"
                         value={this.state.apellido}
-                        onChange={e => {
+                        onChange={(e) => {
                           this.handleChange(e);
                           this.handleChangeError(e);
                         }}
@@ -285,38 +297,39 @@ class FormUsuario extends Component {
                   </div>
                   <div className="col-md-4 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      <FormControl>
-                        <InputLabel htmlFor="telefono">
-                          Número de Teléfono
-                        </InputLabel>
-                        <Input
-                          value={this.state.telefono}
-                          onChange={this.handleChange}
-                          id="telefono"
-                          name="telefono"
-                          inputComponent={TextMaskCustom}
-                        />
-                      </FormControl>
+                      <TextField
+                        fullWidth
+                        InputProps={{
+                          maxLength: 9,
+                          inputComponent: TelefonoMask,
+                        }}
+                        label="Número de Teléfono"
+                        variant="outlined"
+                        value={this.state.telefono}
+                        onChange={this.handleChange}
+                        id="telefono"
+                        name="telefono"
+                      />
                     </div>
                   </div>
                   <div className="col-md-4 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
-                      required
-                      error={this.state.departamento_error}
+                        required
+                        error={this.state.departamento_error}
                         id="outlined-select-currency"
                         name="departamento"
                         select
                         label="Departamento"
                         value={this.state.departamento}
-                        onChange={e => {
+                        onChange={(e) => {
                           this.handleChange(e);
                           this.handleChangeError(e);
                         }}
                         helperText="Selecciona el departamento"
                         variant="outlined"
                       >
-                        {departments.map(department => (
+                        {departments.map((department) => (
                           <MenuItem
                             key={department.value}
                             value={department.value}
@@ -333,14 +346,18 @@ class FormUsuario extends Component {
                         <Grid container justify="space-around">
                           <KeyboardDatePicker
                             required
+                            variant="inline"
+                            inputVariant="outlined"
                             margin="normal"
                             name="fecha_nacimiento"
                             label="Fecha de Nacimiento"
                             format="dd/MM/yyyy"
                             KeyboardButtonProps={{
-                              "aria-label": "change date"
+                              "aria-label": "change date",
                             }}
-                            maxDate={new Date().setFullYear(new Date().getFullYear() - 5)}
+                            maxDate={new Date().setFullYear(
+                              new Date().getFullYear() - 5
+                            )}
                             value={this.state.fecha_nacimiento}
                             onChange={this.handleFechaNacimiento}
                             helperText="Ingresa la fecha de nacimiento"
@@ -353,6 +370,7 @@ class FormUsuario extends Component {
                   <div className="col-md-8 col-12">
                     <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                       <TextField
+                        multiline
                         name="direccion"
                         label="Dirección"
                         helperText="Ingresa la direccion del domicilio"
@@ -362,79 +380,97 @@ class FormUsuario extends Component {
                       />
                     </div>
                   </div>
-                  {this.props.correo ? (<div className="col-md-6 col-12" >
-                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      <TextField
-                        required
-                        error={this.state.email_error}
-                        helperText={this.state.email_error ? "Debes ingresar un Correo Electrónico" : ""}
-                        name="email"
-                        type="email"
-                        label="Correo Electrónico"
-                        helperText="Ingresa el Correo Electrónico"
-                        variant="outlined"
-                        value={this.state.email}
-                        onChange={e => {
-                          this.handleChange(e);
-                          this.handleChangeError(e);
-                        }}
-                      />
-                    </div>
-                  </div>) : ""}
-                  {this.props.correo ? (<div className="col-md-6 col-12">
-                    <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
-                      <FormControl
-                        className={clsx(classes.margin, classes.textField)}
-                        variant="outlined"
-                      >
-                        <InputLabel htmlFor="outlined-adornment-password">
-                          Contraseña
-                        </InputLabel>
-                        <OutlinedInput
+                  {this.props.correo ? (
+                    <div className="col-md-6 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <TextField
                           required
-                          error={this.state.password_error}
-                          // helperText={this.state.password_error ? "Debes ingresar una contraseña" : ""}
-                          id="password"
-                          name="password"
-                          type={this.state.showPassword ? "text" : "password"}
-                          label="Contraseña"
-                          
-                          value={this.state.password}
-                          onChange={e => {
-                            this.handleChangePassword(e);
+                          error={this.state.email_error}
+                          helperText={
+                            this.state.email_error
+                              ? "Debes ingresar un Correo Electrónico"
+                              : ""
+                          }
+                          name="email"
+                          type="email"
+                          label="Correo Electrónico"
+                          helperText="Ingresa el Correo Electrónico"
+                          variant="outlined"
+                          value={this.state.email}
+                          onChange={(e) => {
+                            this.handleChange(e);
+                            this.handleChangeError(e);
                           }}
-                          endAdornment={
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={this.handleClickShowPassword}
-                                onMouseDown={this.handleMouseDownPassword}
-                                edge="end"
-                              >
-                                {this.state.showPassword ? (
-                                  <Visibility />
-                                ) : (
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {this.props.correo ? (
+                    <div className="col-md-6 col-12">
+                      <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
+                        <FormControl
+                          className={clsx(classes.margin, classes.textField)}
+                          variant="outlined"
+                        >
+                          <InputLabel htmlFor="outlined-adornment-password">
+                            Contraseña
+                          </InputLabel>
+                          <OutlinedInput
+                            required
+                            error={this.state.password_error}
+                            // helperText={this.state.password_error ? "Debes ingresar una contraseña" : ""}
+                            id="password"
+                            name="password"
+                            type={this.state.showPassword ? "text" : "password"}
+                            label="Contraseña"
+                            value={this.state.password}
+                            onChange={(e) => {
+                              this.handleChangePassword(e);
+                            }}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label="toggle password visibility"
+                                  onClick={this.handleClickShowPassword}
+                                  onMouseDown={this.handleMouseDownPassword}
+                                  edge="end"
+                                >
+                                  {this.state.showPassword ? (
+                                    <Visibility />
+                                  ) : (
                                     <VisibilityOff />
                                   )}
-                              </IconButton>
-                            </InputAdornment>
-                          }
-                          labelWidth={85}
-                        />
-                      </FormControl>
+                                </IconButton>
+                              </InputAdornment>
+                            }
+                            labelWidth={85}
+                          />
+                        </FormControl>
+                      </div>
                     </div>
-                  </div>) : ""}
+                  ) : (
+                    ""
+                  )}
                   <div className="col-12 mt-3">
-                    <Button variant="contained" color="primary" type="submit" startIcon={<SaveIcon/>}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      startIcon={<SaveIcon />}
+                    >
                       Guardar
                     </Button>
                   </div>
                   <div className="col-12 mt-3">
-                  <Alert
+                    <Alert
                       color="danger"
                       isOpen={authError != null ? true : false}
                     >
-                      <strong>Correo Electrónico: </strong> El correo ingresado puede que tenga un formato inválido o ya fue usado en otra cuenta.
+                      <strong>Correo Electrónico: </strong> El correo ingresado
+                      puede que tenga un formato inválido o ya fue usado en otra
+                      cuenta.
                     </Alert>
                     <Alert
                       color="danger"
@@ -448,11 +484,9 @@ class FormUsuario extends Component {
                     >
                       <strong>Fecha de Nacimiento: </strong>Fecha Invalida
                     </Alert>
-                    <Alert
-                      color="danger"
-                      isOpen={this.state.password_error}
-                    >
-                      <strong>Contraseña: </strong>6 Caracteres es la cantidad minima para la contraseña 
+                    <Alert color="danger" isOpen={this.state.password_error}>
+                      <strong>Contraseña: </strong>6 Caracteres es la cantidad
+                      minima para la contraseña
                     </Alert>
                   </div>
                 </div>

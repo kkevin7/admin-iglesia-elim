@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
 import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -13,6 +14,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
+import MaskedInput from "react-text-mask";
+import NumberFormat from "react-number-format";
 // cards
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -27,6 +30,62 @@ import Spinner from "components/Spinner/Spinner";
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
+
+
+function MoneyFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      prefix="$ "
+      decimalScale={2}
+    />
+  );
+}
+
+MoneyFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={async (values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      decimalScale={0}
+    />
+  );
+}
 
 class FormProducto extends Component {
   constructor(props) {
@@ -255,8 +314,11 @@ class FormProducto extends Component {
                               ? "El valor debe ser mayor a cero"
                               : ""
                           }
+                          pro
                           type="number"
-                          InputProps={{ inputProps: { min: 1, step: 1 } }}
+                          InputProps={{ 
+                            inputComponent: NumberFormatCustom,
+                            inputProps: { min: 1, step: 1 } }}
                           name="existencia"
                           label="Existencia"
                           variant="outlined"
@@ -281,6 +343,7 @@ class FormProducto extends Component {
                           type="number"
                           name="precio"
                           InputProps={{
+                            inputComponent: MoneyFormatCustom,
                             inputProps: { min: 0, step: 0.01 }
                           }}
                           label="Precio"
