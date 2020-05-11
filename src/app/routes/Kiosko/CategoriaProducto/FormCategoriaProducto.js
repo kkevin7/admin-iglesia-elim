@@ -12,7 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 //Icons
 import SaveIcon from "@material-ui/icons/Save";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -23,9 +23,22 @@ class FormCategoriaProducto extends Component {
 
     this.state = {
       nombre: !props.categoria_producto ? "" : props.categoria_producto.nombre,
-      descripcion: !props.categoria_producto ? "" : props.categoria_producto.descripcion,
+      descripcion: !props.categoria_producto
+        ? ""
+        : props.categoria_producto.descripcion,
       estado: !props.categoria_producto ? true : props.categoria_producto.estado
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { categoria_producto } = nextProps;
+    if (categoria_producto) {
+      this.setState({
+        nombre: categoria_producto ? "" : categoria_producto.nombre,
+        descripcion: categoria_producto ? "" : categoria_producto.descripcion,
+        estado: categoria_producto ? true : categoria_producto.estado
+      });
+    }
   }
 
   handleChange = e => {
@@ -62,7 +75,9 @@ class FormCategoriaProducto extends Component {
           Volver
         </Button>
         <div className="jr-card-header ">
-        <Typography variant="h5" className="text-center font-weight-bold">CATEGORÍA DE PRODUCTOS</Typography>
+          <Typography variant="h5" className="text-center font-weight-bold">
+            CATEGORÍA DE PRODUCTOS
+          </Typography>
         </div>
         <form autoComplete="off" onSubmit={this.handleSubmit}>
           <div className="col-12">
@@ -90,8 +105,8 @@ class FormCategoriaProducto extends Component {
                     onChange={this.handleChange}
                     value={this.state.descripcion}
                     variant="outlined"
-                  // multiline
-                  // rows="4"
+                    multiline
+                    // rows="4"
                   />
                 </div>
               </div>

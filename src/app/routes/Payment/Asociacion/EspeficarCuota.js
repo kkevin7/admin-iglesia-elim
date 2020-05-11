@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
+import PropTypes from "prop-types";
+import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 //calendar
 import "date-fns";
@@ -10,8 +11,68 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import Button from "@material-ui/core/Button";
-import moment from "moment";
+import MaskedInput from "react-text-mask";
+import NumberFormat from "react-number-format";
+import {TextField,Button} from "@material-ui/core";
+
+function MoneyFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      prefix="$ "
+      decimalScale={2}
+    />
+  );
+}
+
+MoneyFormatCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+function NumberFormatCustom(props) {
+  const { inputRef, onChange, name, type, checked, ...other } = props;
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={async (values) => {
+        onChange({
+          target: {
+            value: values.value,
+            name,
+            type,
+            checked,
+          },
+        });
+      }}
+      thousandSeparator={true}
+      isNumericString={true}
+      allowNegative={false}
+      decimalScale={0}
+      isAllowed={(values) => {
+        const {floatValue} = values;
+        return floatValue >= 0 &&  floatValue <= 1000;
+      }}
+    />
+  );
+}
+
 
 class EspeficarCuota extends Component {
   constructor(props) {
@@ -195,16 +256,19 @@ class EspeficarCuota extends Component {
                 <TextField
                   required
                   error={this.state.valor_cuota_error}
+                  helperText={this.state.valor_cuota_error ? "El valor debe ser mayor a cero" : ""}
                   id="valorCuota"
                   label="Valor de Aportacion"
                   type="number"
                   name="valor_cuota"
                   value={this.state.valor_cuota}
+                  variant="outlined"
                   onChange={async e => {
                     await this.handleChangeDecimal(e);
                     await this.handleVerificarFields(e);
                   }}
                   InputProps={{
+                    inputComponent: MoneyFormatCustom,
                     inputProps: { min: 0, step: 0.01 }
                   }}
                 />
@@ -215,16 +279,19 @@ class EspeficarCuota extends Component {
                 <TextField
                   required
                   error={this.state.cantidad_cuota_error}
+                  helperText={this.state.cantidad_cuota_error ? "La cantidad debe ser mayor a cero" : ""}
                   id="cantidadCuota"
                   label="Cantidad de Cuotas"
                   type="number"
                   name="cantidad_cuota"
                   value={this.state.cantidad_cuota}
+                  variant="outlined"
                   onChange={async e => {
                     await this.handleCantidadCouta(e);
                     await this.handleVerificarFields(e);
                   }}
                   InputProps={{
+                    inputComponent: NumberFormatCustom,
                     inputProps: { min: 1, step: 1 }
                   }}
                 />
@@ -234,28 +301,32 @@ class EspeficarCuota extends Component {
               <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Grid container justify="space-around">
-                    <KeyboardDatePicker
+                  <KeyboardDatePicker
                       required
                       id="date-picker-fecha-inicio"
-                      margin="normal"
+                      format="dd/MM/yyyy"
                       fullWidth
+                      variant="inline"
+                      inputVariant="outlined"
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                      label="Fecha Inicio"
+                      margin="normal"
                       readOnly
                       InputProps={{
                         readOnly: true,
                       }}
-                      label="Fecha Inicio"
-                      format="dd/MM/yyyy"
                       minDate={new Date()}
                       maxDate={maxDate}
+                      name="fecha_inicio"
                       value={this.state.fecha_inicio}
                       onChange={async (e) => {
                         await this.handleFechaInicio(e);
                         await this.handleVerificarFields(e);
                       }
                       }
-                      KeyboardButtonProps={{
-                        "aria-label": "change date"
-                      }}
+                      
                     />
                   </Grid>
                 </MuiPickersUtilsProvider>
@@ -271,6 +342,8 @@ class EspeficarCuota extends Component {
                       margin="normal"
                       fullWidth
                       readOnly
+                      variant="inline"
+                      inputVariant="outlined"
                       InputProps={{
                         readOnly: true,
                       }}
@@ -279,6 +352,7 @@ class EspeficarCuota extends Component {
                       minDate={new Date()}
                       maxDate={maxDate}
                       value={this.state.fecha_fin}
+                      variant="outlined"
                       onChange={async (e) => {
                         await this.handleFechaFin(e);
                         await this.handleVerificarFields(e);
@@ -294,13 +368,17 @@ class EspeficarCuota extends Component {
             <div className="col-md-12 col-12">
               <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                 <TextField
+                  multiline
+                  rows="4"
                   id="observaciones"
                   name="observaciones"
                   label="Observaciones"
-                  multiline
-                  rows="4"
+                  variant="outlined"
                   value={this.state.observaciones}
-                  onChange={this.handleChangeFilds}
+                  onChange={async (e) => {
+                    await this.handleChange(e);
+                    await this.handleVerificarFields(e);
+                  }}
                 />
               </div>
             </div>

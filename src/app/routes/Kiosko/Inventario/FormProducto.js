@@ -66,6 +66,39 @@ class FormProducto extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { producto, proveedores, categoria_producto } = nextProps;
+    if (producto) {
+      this.setState({
+        id: producto ? producto.id : "",
+        nombre: producto ? producto.nombre : "",
+        precio: producto ? producto.precio.toFixed(2) : "",
+        existencia: producto ? producto.existencia : "",
+        descripcion: producto ? producto.descripcion : "",
+        estado: producto ? producto.estado : true,
+        proveedor: producto
+          ? producto.proveedor
+          : proveedores
+          ? proveedores.length > 0
+            ? proveedores[0].id
+            : ""
+          : "",
+        categoria_producto: producto
+          ? producto.categoria_producto
+          : categoria_producto
+          ? categoria_producto.length > 0
+            ? categoria_producto[0].id
+            : ""
+          : "",
+        url: producto ? producto.url : "",
+        file_id: producto ? producto.file_id : "",
+        file: null,
+        urlImage: "",
+        uploadValue: 0
+      });
+    }
+  }
+
   handleChangeFilds = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -85,11 +118,11 @@ class FormProducto extends Component {
   };
 
   handleChangeNumber = e => {
-    if(e.target.value){
+    if (e.target.value) {
       this.setState({
         [e.target.name]: Math.floor(Number(e.target.value))
       });
-    }else{
+    } else {
       this.setState({
         [e.target.name]: ""
       });
@@ -107,7 +140,6 @@ class FormProducto extends Component {
       });
     }
   };
-
 
   handleSubmit = e => {
     e.preventDefault();
@@ -197,12 +229,16 @@ class FormProducto extends Component {
                         <TextField
                           required
                           error={this.state.nombre_error}
-                          helperText={this.state.nombre_error ? "El campo no puede estar vacío" : ""}
+                          helperText={
+                            this.state.nombre_error
+                              ? "El campo no puede estar vacío"
+                              : ""
+                          }
                           name="nombre"
                           label="Nombre"
                           variant="outlined"
                           value={this.state.nombre}
-                          onChange={(e) => {
+                          onChange={e => {
                             this.handleChangeFilds(e);
                             this.handleChangeError(e);
                           }}
@@ -214,14 +250,18 @@ class FormProducto extends Component {
                         <TextField
                           required
                           error={this.state.existencia_error}
-                          helperText={this.state.existencia_error ? "El valor debe ser mayor a cero" : ""}
+                          helperText={
+                            this.state.existencia_error
+                              ? "El valor debe ser mayor a cero"
+                              : ""
+                          }
                           type="number"
                           InputProps={{ inputProps: { min: 1, step: 1 } }}
                           name="existencia"
                           label="Existencia"
                           variant="outlined"
                           value={this.state.existencia}
-                          onChange={(e) => {
+                          onChange={e => {
                             this.handleChangeNumber(e);
                             this.handleChangeNumberError(e);
                           }}
@@ -233,7 +273,11 @@ class FormProducto extends Component {
                         <TextField
                           required
                           error={this.state.precio_error}
-                          helperText={this.state.precio_error ? "El valor debe ser mayor a cero" : ""}
+                          helperText={
+                            this.state.precio_error
+                              ? "El valor debe ser mayor a cero"
+                              : ""
+                          }
                           type="number"
                           name="precio"
                           InputProps={{
@@ -242,11 +286,10 @@ class FormProducto extends Component {
                           label="Precio"
                           variant="outlined"
                           value={this.state.precio}
-                          onChange={(e) => {
+                          onChange={e => {
                             this.handleChangeFilds(e);
                             this.handleChangeNumberError(e);
-                          }
-                          }
+                          }}
                         />
                       </div>
                     </div>
@@ -285,7 +328,7 @@ class FormProducto extends Component {
                               value={prov.id}
                               selected={index == 0 ? true : false}
                             >
-                              {prov.nombre+" "+prov.apellido}
+                              {prov.nombre + " " + prov.apellido}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -309,10 +352,7 @@ class FormProducto extends Component {
                           variant="outlined"
                         >
                           {categoria_producto.map((categoria, index) => (
-                            <MenuItem
-                              key={categoria.id}
-                              value={categoria.id}
-                            >
+                            <MenuItem key={categoria.id} value={categoria.id}>
                               {categoria.nombre}
                             </MenuItem>
                           ))}
@@ -326,9 +366,7 @@ class FormProducto extends Component {
                     >
                       <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal MuiFormControl-fullWidth">
                         <FormControl>
-                          <InputLabel id="label-estado">
-                            Estado
-                          </InputLabel>
+                          <InputLabel id="label-estado">Estado</InputLabel>
                           <Select
                             labelId="estado-label"
                             id="estado"
@@ -336,10 +374,16 @@ class FormProducto extends Component {
                             // defaultValue={true}
                             value={this.state.estado}
                             onChange={this.handleChangeFilds}
-                            className={`${this.state.estado ? "bg-green" : "bg-red"}`}
+                            className={`${
+                              this.state.estado ? "bg-green" : "bg-red"
+                            }`}
                           >
-                            <MenuItem value={true} className="bg-green" >Activo</MenuItem>
-                            <MenuItem value={false} className="bg-red" >No Disponible</MenuItem>
+                            <MenuItem value={true} className="bg-green">
+                              Activo
+                            </MenuItem>
+                            <MenuItem value={false} className="bg-red">
+                              No Disponible
+                            </MenuItem>
                           </Select>
                         </FormControl>
                       </div>
